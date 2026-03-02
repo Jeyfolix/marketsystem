@@ -46,6 +46,10 @@
             --white: #ffffff;
             --background: #f1f5f9;
             
+            /* Background Images - You can replace these URLs with your own */
+            --bg-pattern: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><circle cx="50" cy="50" r="40" fill="%232563eb"/></svg>');
+            --bg-dots: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="10" cy="10" r="2" fill="%237c3aed" opacity="0.2"/><circle cx="30" cy="30" r="2" fill="%232563eb" opacity="0.2"/><circle cx="50" cy="50" r="2" fill="%237c3aed" opacity="0.2"/><circle cx="70" cy="70" r="2" fill="%232563eb" opacity="0.2"/><circle cx="90" cy="90" r="2" fill="%237c3aed" opacity="0.2"/></svg>');
+            
             /* Shadows */
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -61,9 +65,24 @@
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: var(--dark);
-            background: var(--white);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             width: 100%;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: var(--bg-dots);
+            background-repeat: repeat;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: -1;
         }
 
         .container {
@@ -71,6 +90,8 @@
             margin: 0 auto;
             padding: 0 1.5rem;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
         /* ===== TYPOGRAPHY ===== */
@@ -88,6 +109,17 @@
             text-align: center;
             max-width: 700px;
             margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin: 1rem auto 0;
+            border-radius: 2px;
         }
 
         .section-header p {
@@ -99,10 +131,12 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             box-shadow: var(--shadow-sm);
             z-index: 1000;
             padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
         }
 
         .nav-container {
@@ -134,6 +168,23 @@
             font-weight: 500;
             transition: color 0.3s;
             font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
         }
 
         .nav-menu a:hover {
@@ -179,6 +230,7 @@
             border-radius: 10px;
             z-index: 1;
             margin-top: 0.5rem;
+            border: 1px solid #e2e8f0;
         }
 
         .user-dropdown:hover .dropdown-content {
@@ -251,17 +303,45 @@
         /* ===== HERO SECTION ===== */
         .hero {
             min-height: 100vh;
-            background: linear-gradient(135deg, #2563eb08, #7c3aed08);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(124, 58, 237, 0.05));
             display: flex;
             align-items: center;
             padding: 6rem 0 0;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
         }
 
         .hero-content {
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .badge {
@@ -275,6 +355,7 @@
             margin-bottom: 2rem;
             box-shadow: var(--shadow);
             border: 1px solid var(--primary-light);
+            backdrop-filter: blur(5px);
         }
 
         .gradient-text {
@@ -293,6 +374,11 @@
 
         .stat-item {
             text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            box-shadow: var(--shadow);
         }
 
         .stat-number {
@@ -322,6 +408,12 @@
             justify-content: center;
             gap: 2rem;
             flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
         }
 
         .trust-badges span {
@@ -336,8 +428,20 @@
         /* ===== FEATURES SECTION ===== */
         .features {
             padding: 5rem 0;
-            background: var(--white);
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+            backdrop-filter: blur(5px);
             width: 100%;
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
         }
 
         .features-grid {
@@ -348,13 +452,14 @@
         }
 
         .feature-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             padding: 2rem;
             border-radius: 20px;
             box-shadow: var(--shadow);
             text-align: center;
             transition: all 0.3s;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            backdrop-filter: blur(5px);
         }
 
         .feature-card:hover {
@@ -372,6 +477,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: var(--shadow);
         }
 
         .feature-icon i {
@@ -382,7 +488,7 @@
         .feature-highlight {
             margin-top: 1.5rem;
             padding: 0.5rem;
-            background: var(--light);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
             border-radius: 10px;
             color: var(--primary);
             font-weight: 600;
@@ -391,8 +497,9 @@
         /* ===== HOW IT WORKS ===== */
         .how-it-works {
             padding: 5rem 0;
-            background: var(--light);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.02), rgba(124, 58, 237, 0.02));
             width: 100%;
+            position: relative;
         }
 
         .steps {
@@ -408,6 +515,12 @@
             min-width: 250px;
             text-align: center;
             position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(37, 99, 235, 0.1);
         }
 
         .step-number {
@@ -422,6 +535,7 @@
             font-size: 1.5rem;
             font-weight: bold;
             margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow);
         }
 
         .step-icon {
@@ -433,8 +547,9 @@
         /* ===== SUCCESS STORIES ===== */
         .testimonials {
             padding: 5rem 0;
-            background: var(--white);
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.98));
             width: 100%;
+            position: relative;
         }
 
         .testimonials-grid {
@@ -445,11 +560,18 @@
         }
 
         .testimonial-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             padding: 2rem;
             border-radius: 20px;
             box-shadow: var(--shadow);
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
         .testimonial-header {
@@ -460,10 +582,12 @@
         }
 
         .testimonial-image {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             overflow: hidden;
+            border: 3px solid var(--primary-light);
+            box-shadow: var(--shadow);
         }
 
         .testimonial-image img {
@@ -502,7 +626,7 @@
         /* ===== FAQ ===== */
         .faq {
             padding: 5rem 0;
-            background: var(--light);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.02), rgba(124, 58, 237, 0.02));
             width: 100%;
         }
 
@@ -512,11 +636,12 @@
         }
 
         .faq-item {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
             margin-bottom: 1rem;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(37, 99, 235, 0.1);
             overflow: hidden;
+            backdrop-filter: blur(5px);
         }
 
         .faq-question {
@@ -525,7 +650,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.98);
         }
 
         .faq-question h3 {
@@ -557,6 +682,20 @@
             padding: 5rem 0;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: var(--bg-dots);
+            opacity: 0.1;
+            pointer-events: none;
         }
 
         .cta-content {
@@ -564,6 +703,8 @@
             color: var(--white);
             max-width: 600px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .cta-content h2 {
@@ -586,6 +727,7 @@
             background: rgba(255,255,255,0.1);
             padding: 0.5rem 1.5rem;
             border-radius: 50px;
+            backdrop-filter: blur(5px);
         }
 
         .cta-features i {
@@ -594,10 +736,22 @@
 
         /* ===== FOOTER ===== */
         .footer {
-            background: var(--dark);
+            background: linear-gradient(135deg, #0f172a, #1e293b);
             color: var(--white);
             padding: 4rem 0 2rem;
             width: 100%;
+            position: relative;
+            border-top: 1px solid rgba(37, 99, 235, 0.3);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
         }
 
         .footer-grid {
@@ -620,6 +774,8 @@
         .footer-col p {
             color: var(--gray-light);
             margin-bottom: 1.5rem;
+            font-size: 0.9rem; /* Reduced text size in footer */
+            line-height: 1.5;
         }
 
         .footer-col ul {
@@ -634,6 +790,7 @@
             color: var(--gray-light);
             text-decoration: none;
             transition: color 0.3s;
+            font-size: 0.9rem; /* Reduced text size in footer */
         }
 
         .footer-col ul li a:hover {
@@ -643,6 +800,7 @@
         .footer-col ul li i {
             width: 25px;
             color: var(--primary);
+            font-size: 0.9rem; /* Reduced icon size */
         }
 
         .social-links {
@@ -652,8 +810,8 @@
         }
 
         .social-links a {
-            width: 40px;
-            height: 40px;
+            width: 36px; /* Slightly smaller icons */
+            height: 36px;
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
             display: flex;
@@ -662,6 +820,7 @@
             color: var(--white);
             transition: all 0.3s;
             text-decoration: none;
+            font-size: 0.9rem; /* Smaller icon size */
         }
 
         .social-links a:hover {
@@ -674,11 +833,16 @@
             padding-top: 2rem;
             border-top: 1px solid rgba(255,255,255,0.1);
             color: var(--gray-light);
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* Reduced text size in footer bottom */
         }
 
         .footer-bottom i {
             color: var(--danger);
+            font-size: 0.85rem; /* Match surrounding text */
+        }
+
+        .footer-bottom p {
+            font-size: 0.85rem; /* Smaller copyright text */
         }
 
         /* ===== RESPONSIVE ===== */
@@ -693,10 +857,12 @@
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background: var(--white);
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
                 flex-direction: column;
                 padding: 2rem;
                 box-shadow: var(--shadow-lg);
+                border-bottom: 1px solid var(--primary-light);
             }
 
             .nav-menu.active {
@@ -710,7 +876,11 @@
             }
 
             .hero-stats {
-                gap: 1.5rem;
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 0.8rem 1.5rem;
             }
 
             .hero-cta {
@@ -725,6 +895,7 @@
                 flex-direction: column;
                 align-items: center;
                 gap: 1rem;
+                border-radius: 20px;
             }
 
             .steps {
@@ -767,6 +938,13 @@
 
             .feature-card {
                 padding: 1.5rem;
+            }
+
+            .footer-col p,
+            .footer-col ul li,
+            .footer-col ul li a,
+            .footer-bottom p {
+                font-size: 0.8rem; /* Even smaller on mobile */
             }
         }
     </style>
@@ -908,10 +1086,11 @@
                 <p>Real people, real earnings from our platform</p>
             </div>
             <div class="testimonials-grid">
+                <!-- Testimonial 1 -->
                 <div class="testimonial-card" data-aos="fade-right">
                     <div class="testimonial-header">
                         <div class="testimonial-image">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Wanjiku">
+                            <img src="frontend/images/testimonials/WhatsApp Image 2026-01-01 at 17.05.04.jpeg" alt="Sarah Wanjiku">
                         </div>
                         <div class="testimonial-name">
                             <h4>Sarah Wanjiku</h4>
@@ -927,10 +1106,12 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Testimonial 2 -->
                 <div class="testimonial-card" data-aos="fade-up">
                     <div class="testimonial-header">
                         <div class="testimonial-image">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Omondi">
+                            <img src="frontend/images/testimonials/WhatsApp_Image_2025-07-04_at_09.40.42__1_-removebg-preview.png" alt="John Omondi">
                         </div>
                         <div class="testimonial-name">
                             <h4>John Omondi</h4>
@@ -946,10 +1127,12 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Testimonial 3 -->
                 <div class="testimonial-card" data-aos="fade-left">
                     <div class="testimonial-header">
                         <div class="testimonial-image">
-                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Mary Akinyi">
+                            <img src="frontend/images/testimonials/WhatsApp Image 2026-01-08 at 12.09.32.jpeg" alt="Mary Akinyi">
                         </div>
                         <div class="testimonial-name">
                             <h4>Mary Akinyi</h4>
