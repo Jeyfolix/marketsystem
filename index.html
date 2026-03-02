@@ -1,10 +1,1039 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="refresh" content="0; url=./frontend/">
-    <title>Redirecting to marketSystem</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>marketSystem - Kenya's #1 Affiliate Marketing Platform</title>
+    <meta name="description" content="Join Kenya's fastest growing affiliate marketing platform. Earn 50% commission on every referral. Start your journey to financial freedom today!">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="frontend/css/style.css">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #48bb78;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --dark: #1a202c;
+            --light: #f7fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h2 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo span {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .nav-menu a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .btn-outline {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            color: var(--primary);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary {
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-large {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea10, #764ba210);
+            display: flex;
+            align-items: center;
+            padding: 80px 2rem 0;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #4a5568;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            color: #4a5568;
+        }
+
+        .trust-badges i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 2rem;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: #4a5568;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .feature-highlight {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: #f0f4f8;
+            border-radius: 10px;
+            color: var(--primary);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 2rem;
+            background: #f7fafc;
+        }
+
+        .steps-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .step-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .step-arrow {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .step-detail {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .step-detail span {
+            background: #f0f4f8;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Calculator */
+        .calculator-section {
+            padding: 80px 2rem;
+            background: white;
+        }
+
+        .calculator-card {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 3rem;
+            background: linear-gradient(135deg, #667eea10, #764ba210);
+            border-radius: 30px;
+            text-align: center;
+        }
+
+        .calculator-card h2 {
+            margin-bottom: 1rem;
+        }
+
+        .calc-input {
+            margin: 2rem 0;
+        }
+
+        .calc-input input {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .calc-result {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .result-item.highlight {
+            color: var(--primary);
+            font-weight: bold;
+            border-bottom: none;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 2rem;
+            background: #f7fafc;
+        }
+
+        .testimonials-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+        }
+
+        .testimonial-image img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .testimonial-content {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .testimonial-content i {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            color: #718096;
+        }
+
+        /* FAQ */
+        .faq-section {
+            padding: 80px 2rem;
+            background: white;
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: #f7fafc;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            display: none;
+            color: #4a5568;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .cta-card {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .cta-features i {
+            margin-right: 0.5rem;
+        }
+
+        .small-text {
+            margin-top: 1rem;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-col h3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col h3 span {
+            color: var(--primary);
+        }
+
+        .footer-col p {
+            color: #a0aec0;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #2d3748;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col ul li a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: white;
+        }
+
+        .footer-col ul li i {
+            width: 25px;
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid #2d3748;
+            color: #a0aec0;
+        }
+
+        .footer-bottom i {
+            color: var(--danger);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .steps-container {
+                flex-direction: column;
+            }
+
+            .step-arrow {
+                transform: rotate(90deg);
+            }
+
+            .trust-badges {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecting to <a href="./frontend/">marketSystem</a>...</p>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>market<span>System</span></h2>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#testimonials">Success Stories</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="nav-buttons">
+                    <a href="frontend/index.html" class="btn-outline">Login</a>
+                    <a href="frontend/register.html" class="btn-primary">Join Now</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content" data-aos="fade-up">
+            <span class="badge">🏆 Kenya's #1 Affiliate Platform</span>
+            <h1>Turn Your Network Into <span class="gradient-text">Income</span></h1>
+            <p class="hero-subtitle">Join thousands of Kenyans earning daily by simply referring friends. No experience needed!</p>
+            <div class="hero-stats">
+                <div class="stat-item"><span class="stat-number">10K+</span><span>Active Members</span></div>
+                <div class="stat-item"><span class="stat-number">KES 2M+</span><span>Paid Out</span></div>
+                <div class="stat-item"><span class="stat-number">4.8★</span><span>User Rating</span></div>
+            </div>
+            <div class="hero-cta">
+                <a href="frontend/register.html" class="btn-primary btn-large"><i class="fas fa-rocket"></i> Start Earning Now</a>
+                <a href="#how-it-works" class="btn-outline btn-large"><i class="fas fa-play"></i> Learn More</a>
+            </div>
+            <div class="trust-badges">
+                <span><i class="fas fa-shield-alt"></i> Secure Payments</span>
+                <span><i class="fas fa-clock"></i> Instant Commissions</span>
+                <span><i class="fas fa-headset"></i> 24/7 Support</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Why Choose marketSystem?</h2>
+                <p>Everything you need to succeed in affiliate marketing</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon"><i class="fas fa-percent"></i></div>
+                    <h3>50% Commission</h3>
+                    <p>Earn up to 50% commission on every referral. The more you refer, the more you earn!</p>
+                    <div class="feature-highlight"><strong>KES 150 per referral</strong></div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Instant Payouts</h3>
+                    <p>Get paid instantly via M-PESA when your referrals join. No waiting periods!</p>
+                    <div class="feature-highlight"><strong>24/7 Withdrawals</strong></div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>Unlimited Referrals</h3>
+                    <p>No limits on referrals. The more people you refer, the more money you make!</p>
+                    <div class="feature-highlight"><strong>No Cap</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>How It Works</h2>
+                <p>Start earning in 3 simple steps</p>
+            </div>
+            <div class="steps-container">
+                <div class="step-card" data-aos="fade-right">
+                    <div class="step-number">1</div>
+                    <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+                    <h3>Register Account</h3>
+                    <p>Create your account in seconds. Get your unique referral link instantly.</p>
+                    <div class="step-detail"><span>✓ Phone Number</span><span>✓ M-PESA</span></div>
+                </div>
+                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="step-card" data-aos="fade-up">
+                    <div class="step-number">2</div>
+                    <div class="step-icon"><i class="fas fa-share-alt"></i></div>
+                    <h3>Share Your Link</h3>
+                    <p>Share your unique referral link on WhatsApp, Facebook, or SMS.</p>
+                    <div class="step-detail"><span>✓ WhatsApp</span><span>✓ Facebook</span><span>✓ SMS</span></div>
+                </div>
+                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="step-card" data-aos="fade-left">
+                    <div class="step-number">3</div>
+                    <div class="step-icon"><i class="fas fa-coins"></i></div>
+                    <h3>Earn Money</h3>
+                    <p>Get paid instantly when your referrals join. Withdraw anytime!</p>
+                    <div class="step-detail"><span>✓ Instant</span><span>✓ M-PESA</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator -->
+    <section class="calculator-section">
+        <div class="container">
+            <div class="calculator-card" data-aos="zoom-in">
+                <h2>Calculate Your Potential Earnings</h2>
+                <p>See how much you can earn with marketSystem</p>
+                <div class="calculator">
+                    <div class="calc-input">
+                        <label>Number of referrals per month:</label>
+                        <input type="range" id="referralRange" min="0" max="100" value="10">
+                        <span id="referralCount">10</span> friends
+                    </div>
+                    <div class="calc-result">
+                        <div class="result-item"><span>Monthly Earnings:</span> <strong id="monthlyEarnings">KES 1,500</strong></div>
+                        <div class="result-item"><span>Yearly Earnings:</span> <strong id="yearlyEarnings">KES 18,000</strong></div>
+                        <div class="result-item highlight"><span>Potential Bonus:</span> <strong id="bonusEarnings">KES 500</strong></div>
+                    </div>
+                </div>
+                <a href="frontend/register.html" class="btn-primary btn-large">Start Earning Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Success Stories</h2>
+                <p>Real people, real earnings</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card" data-aos="fade-right">
+                    <div class="testimonial-image"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah"></div>
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"I started with marketSystem and now I earn over KES 15,000 monthly. Best decision ever!"</p>
+                        <h4>Sarah Wanjiku</h4>
+                        <div class="testimonial-meta">
+                            <span>Earned: KES 45,000</span>
+                            <span>★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card" data-aos="fade-up">
+                    <div class="testimonial-image"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John"></div>
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"I just share my link on WhatsApp and the money comes instantly. It's that simple!"</p>
+                        <h4>John Omondi</h4>
+                        <div class="testimonial-meta">
+                            <span>Earned: KES 28,500</span>
+                            <span>★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item" data-aos="fade-right">
+                    <div class="faq-question">
+                        <h3>Is marketSystem legit?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! We've paid over KES 2M to our members. We're registered and verified in Kenya.</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-left">
+                    <div class="faq-question">
+                        <h3>How do I get paid?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Payments are sent directly to your M-PESA immediately when your referral registers. No waiting!</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-right">
+                    <div class="faq-question">
+                        <h3>How much can I earn?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>There's no limit! Each referral earns you KES 150. If you refer 10 people, you earn KES 1,500. Refer 100 people, earn KES 15,000!</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-left">
+                    <div class="faq-question">
+                        <h3>Is there a registration fee?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, a one-time registration fee of KES 300 gives you lifetime access and your unique referral link.</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-right">
+                    <div class="faq-question">
+                        <h3>Can I withdraw anytime?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! Withdraw your earnings 24/7. Minimum withdrawal is KES 100 and it's sent instantly to your M-PESA.</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-left">
+                    <div class="faq-question">
+                        <h3>Do I need experience?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Not at all! We provide all the tools and support you need. If you can share a link, you can earn money.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card" data-aos="zoom-in">
+                <h2>Ready to Start Earning?</h2>
+                <p>Join thousands of Kenyans already earning with marketSystem</p>
+                <div class="cta-features">
+                    <span><i class="fas fa-check-circle"></i> KES 300 Only</span>
+                    <span><i class="fas fa-check-circle"></i> Instant Access</span>
+                    <span><i class="fas fa-check-circle"></i> Start Earning Today</span>
+                </div>
+                <a href="frontend/register.html" class="btn-primary btn-large"><i class="fas fa-rocket"></i> Join marketSystem Now</a>
+                <p class="small-text">30-Day Money-Back Guarantee</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>market<span>System</span></h3>
+                    <p>Kenya's most trusted affiliate marketing platform. Start earning today!</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#testimonials">Success Stories</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> 0712 345 678</li>
+                        <li><i class="fas fa-envelope"></i> support@marketsystem.co.ke</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 marketSystem. All rights reserved. | Made with <i class="fas fa-heart"></i> in Kenya</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+
+        // Calculator
+        const referralRange = document.getElementById('referralRange');
+        const referralCount = document.getElementById('referralCount');
+        const monthlyEarnings = document.getElementById('monthlyEarnings');
+        const yearlyEarnings = document.getElementById('yearlyEarnings');
+        const bonusEarnings = document.getElementById('bonusEarnings');
+
+        referralRange.addEventListener('input', function() {
+            const count = parseInt(this.value);
+            referralCount.textContent = count;
+            
+            const monthly = count * 150;
+            const yearly = monthly * 12;
+            const bonus = count >= 50 ? 500 : (count >= 20 ? 200 : 0);
+            
+            monthlyEarnings.textContent = `KES ${monthly.toLocaleString()}`;
+            yearlyEarnings.textContent = `KES ${yearly.toLocaleString()}`;
+            bonusEarnings.textContent = `KES ${bonus}`;
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
 </body>
 </html>
