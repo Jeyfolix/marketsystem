@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarketSystem - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-store"></i>
+                <span>MarketSystem</span>
+            </div>
+            <div class="nav-user">
+                <span id="userName"></span>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </nav>
+        
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </li>
+                    <li>
+                        <i class="fas fa-shopping-cart"></i>
+                        Products
+                    </li>
+                    <li>
+                        <i class="fas fa-users"></i>
+                        Customers
+                    </li>
+                    <li>
+                        <i class="fas fa-chart-bar"></i>
+                        Reports
+                    </li>
+                    <li>
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </li>
+                </ul>
+            </aside>
+            
+            <main class="main-content">
+                <div class="welcome-card">
+                    <h1>Welcome to MarketSystem!</h1>
+                    <p>You have successfully logged in. This is your dashboard.</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-shopping-bag"></i>
+                        <div class="stat-info">
+                            <h3>Total Products</h3>
+                            <p>150</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-info">
+                            <h3>Total Customers</h3>
+                            <p>45</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="stat-info">
+                            <h3>Today's Sales</h3>
+                            <p>$2,450</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-info">
+                            <h3>Last Login</h3>
+                            <p id="lastLogin">Just now</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="userInfo" class="user-info-card"></div>
+            </main>
+        </div>
+    </div>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

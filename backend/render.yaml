@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: affiliatepro-api
+    runtime: php
+    region: frankfurt
+    plan: free
+    rootDir: backend
+    buildCommand: composer install
+    startCommand: php -S 0.0.0.0:$PORT
+    envVars:
+      - key: DB_HOST
+        value: gateway01.eu-central-1.prod.aws.tidbcloud.com
+      - key: DB_PORT
+        value: 4000
+      - key: DB_NAME
+        value: affiliatepro
+      - key: DB_USER
+        sync: false  # Will be set in Render dashboard
+      - key: DB_PASSWORD
+        sync: false  # Will be set in Render dashboard
+      - key: DB_SSL
+        value: true
+      - key: APP_ENV
+        value: production
