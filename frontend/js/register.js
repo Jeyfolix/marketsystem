@@ -4,22 +4,28 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
     : 'https://marketsystem-api.onrender.com/api';
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Register page loaded');
+    
     // Check for referral code in URL
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get('ref');
     
     if (refCode) {
+        console.log('Referral code found:', refCode);
         document.getElementById('referral_code').value = refCode;
         showReferralInfo(refCode);
     }
 
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
+        console.log('Register form found');
         registerForm.addEventListener('submit', handleRegister);
+    } else {
+        console.error('Register form not found!');
     }
 });
 
-async function showReferralCode(refCode) {
+async function showReferralInfo(refCode) {
     try {
         const response = await fetch(`${API_BASE_URL}/get_referrer.php?code=${refCode}`);
         const data = await response.json();
@@ -36,7 +42,9 @@ async function showReferralCode(refCode) {
 
 async function handleRegister(e) {
     e.preventDefault();
+    console.log('Register handler called');
     
+    // Get form values
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
@@ -45,6 +53,8 @@ async function handleRegister(e) {
     const referral_code = document.getElementById('referral_code').value;
     const password = document.getElementById('password').value;
     const confirm_password = document.getElementById('confirm_password').value;
+    
+    console.log('Form data:', { name, email, phone, username, country, referral_code });
     
     // Validation
     if (password !== confirm_password) {
@@ -67,6 +77,23 @@ async function handleRegister(e) {
         return;
     }
     
+    // Prepare data for API
+    const requestData = {
+        name: name,
+        username: username,
+        email: email,
+        phone: phone,
+        country: country,
+        password: password
+    };
+    
+    // Add referral code if provided
+    if (referral_code && referral_code.trim() !== '') {
+        requestData.referral_code = referral_code.trim();
+    }
+    
+    console.log('Sending to API:', requestData);
+    
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
@@ -78,18 +105,12 @@ async function handleRegister(e) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
-                name, 
-                email,
-                phone,
-                username, 
-                country,
-                referral_code: referral_code || null,
-                password 
-            })
+            body: JSON.stringify(requestData)
         });
         
+        console.log('Response status:', response.status);
         const data = await response.json();
+        console.log('Response data:', data);
         
         if (data.success) {
             showMessage('Registration successful! Your referral code: ' + data.referral_code, 'success');
@@ -123,11 +144,15 @@ function validatePhone(phone) {
 
 function showMessage(message, type) {
     const messageDiv = document.getElementById('message');
-    messageDiv.textContent = message;
-    messageDiv.className = `message ${type}`;
-    messageDiv.style.display = 'block';
-    
-    setTimeout(() => {
-        messageDiv.style.display = 'none';
-    }, 5000);
+    if (messageDiv) {
+        messageDiv.textContent = message;
+        messageDiv.className = `message ${type}`;
+        messageDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 5000);
+    } else {
+        alert(message);
+    }
 }
