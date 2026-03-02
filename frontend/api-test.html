@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Direct Test</title>
+</head>
+<body>
+    <h2>marketSystem API Direct Test</h2>
+    
+    <button onclick="testLogin()">Test Login API</button>
+    <button onclick="testOptions()">Test OPTIONS Preflight</button>
+    
+    <h3>Result:</h3>
+    <pre id="result" style="background:#f4f4f4; padding:10px; border:1px solid #ccc;"></pre>
+
+    <script>
+    async function testLogin() {
+        const result = document.getElementById('result');
+        result.textContent = 'Testing login...';
+        
+        try {
+            const response = await fetch('https://marketsystem-api.onrender.com/api/login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: 'admin',
+                    password: 'password123'
+                })
+            });
+            
+            const data = await response.json();
+            result.textContent = JSON.stringify({
+                status: response.status,
+                headers: {
+                    'content-type': response.headers.get('content-type'),
+                },
+                data: data
+            }, null, 2);
+        } catch (error) {
+            result.textContent = `Error: ${error.message}`;
+        }
+    }
+    
+    async function testOptions() {
+        const result = document.getElementById('result');
+        result.textContent = 'Testing OPTIONS preflight...';
+        
+        try {
+            const response = await fetch('https://marketsystem-api.onrender.com/api/login.php', {
+                method: 'OPTIONS',
+                headers: {
+                    'Origin': 'https://jeyfolix.github.io',
+                    'Access-Control-Request-Method': 'POST',
+                    'Access-Control-Request-Headers': 'content-type'
+                }
+            });
+            
+            result.textContent = JSON.stringify({
+                status: response.status,
+                headers: {
+                    'access-control-allow-origin': response.headers.get('access-control-allow-origin'),
+                    'access-control-allow-methods': response.headers.get('access-control-allow-methods'),
+                    'access-control-allow-headers': response.headers.get('access-control-allow-headers')
+                }
+            }, null, 2);
+        } catch (error) {
+            result.textContent = `Error: ${error.message}`;
+        }
+    }
+    </script>
+</body>
+</html>
