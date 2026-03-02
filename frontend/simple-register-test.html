@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Register Test</title>
+</head>
+<body>
+    <h2>Simple Registration Test</h2>
+    
+    <div id="result" style="margin-top:20px; padding:10px; border:1px solid #ccc;"></div>
+    
+    <script>
+    async function testRegister() {
+        const result = document.getElementById('result');
+        result.innerHTML = 'Testing registration...';
+        
+        // Simple test data
+        const testData = {
+            name: 'Simple Test',
+            username: 'simple_' + Date.now(),
+            email: 'simple_' + Date.now() + '@test.com',
+            phone: '+1234567890',
+            country: 'United States',
+            password: 'password123'
+        };
+        
+        result.innerHTML += '<br>Sending: ' + JSON.stringify(testData);
+        
+        try {
+            const response = await fetch('https://marketsystem-api.onrender.com/api/register.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(testData)
+            });
+            
+            const responseText = await response.text();
+            result.innerHTML += '<br><br>Status: ' + response.status;
+            result.innerHTML += '<br><br>Response: ' + responseText;
+            
+        } catch (error) {
+            result.innerHTML += '<br><br>ERROR: ' + error.message;
+        }
+    }
+    
+    // Run the test automatically
+    testRegister();
+    </script>
+</body>
+</html>
