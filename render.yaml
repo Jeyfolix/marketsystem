@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: affiliatepro-api
+    runtime: image
+    repo: https://github.com/YOUR_USERNAME/marketsystem
+    region: frankfurt
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: DB_HOST
+        value: gateway01.eu-central-1.prod.aws.tidbcloud.com
+      - key: DB_PORT
+        value: 4000
+      - key: DB_NAME
+        value: affiliatepro
+      - key: DB_USER
+        sync: false  # Set in Render dashboard
+      - key: DB_PASSWORD
+        sync: false  # Set in Render dashboard
+      - key: DB_SSL
+        value: true

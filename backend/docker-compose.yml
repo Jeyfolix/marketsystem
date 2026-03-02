@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=gateway01.eu-central-1.prod.aws.tidbcloud.com
+      - DB_PORT=4000
+      - DB_NAME=affiliatepro
+      - DB_USER=3pMRcvLxZEGwhfN.root
+      - DB_PASSWORD=tPb6oe5MYUtDMyJ6
+      - DB_SSL=true
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

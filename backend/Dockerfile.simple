@@ -1,0 +1,13 @@
+FROM php:8.2-apache
+
+# Install PDO MySQL extension (this doesn't need apt-get update)
+RUN docker-php-ext-install pdo_mysql
+
+# Enable Apache modules
+RUN a2enmod rewrite headers
+
+# Copy files
+COPY . /var/www/html/
+
+EXPOSE 80
+CMD ["apache2-foreground"]

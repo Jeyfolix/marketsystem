@@ -1,11 +1,8 @@
 {
     "name": "affiliatepro/backend",
-    "description": "AffiliatePro Backend API",
+    "description": "AffiliatePro API",
     "type": "project",
     "require": {
-        "php": ">=7.4",
-        "ext-pdo": "*",
-        "ext-pdo_mysql": "*",
-        "ext-json": "*"
+        "php": ">=7.4"
     }
 }
