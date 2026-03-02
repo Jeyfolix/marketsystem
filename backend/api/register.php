@@ -1,9 +1,34 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
+// Allow specific origin - GitHub Pages
+$allowed_origins = [
+    'https://jeyfolix.github.io',
+    'http://localhost',
+    'http://localhost:8080',
+    'http://localhost:8081'
+];
+
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+} else {
+    header("Access-Control-Allow-Origin: *");
+}
+
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Max-Age: 86400");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+header("Content-Type: application/json; charset=UTF-8");
+
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 include_once '../config/database.php';
 include_once '../includes/User.php';
@@ -11,9 +36,19 @@ include_once '../includes/User.php';
 $database = new Database();
 $db = $database->getConnection();
 $user = new User($db);
+
+// Get posted data
 $data = json_decode(file_get_contents("php://input"));
 
-if(!empty($data->name) && !empty($data->username) && !empty($data->email) && !empty($data->phone) && !empty($data->country) && !empty($data->password)) {
+// Validate required fields
+if(
+    !empty($data->name) && 
+    !empty($data->username) && 
+    !empty($data->email) && 
+    !empty($data->phone) && 
+    !empty($data->country) && 
+    !empty($data->password)
+) {
     
     $user->name = $data->name;
     $user->username = $data->username;
@@ -48,7 +83,7 @@ if(!empty($data->name) && !empty($data->username) && !empty($data->email) && !em
     }
 
     // Check if phone exists
-    if($user->checkPhone()) {
+    if(method_exists($user, 'checkPhone') && $user->checkPhone()) {
         http_response_code(400);
         echo json_encode(["success" => false, "message" => "Phone number already registered!"]);
         exit();
