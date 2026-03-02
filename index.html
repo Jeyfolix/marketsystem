@@ -46,7 +46,7 @@
             --white: #ffffff;
             --background: #f1f5f9;
             
-            /* Background Images - You can replace these URLs with your own */
+            /* Background Images */
             --bg-pattern: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><circle cx="50" cy="50" r="40" fill="%232563eb"/></svg>');
             --bg-dots: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="10" cy="10" r="2" fill="%237c3aed" opacity="0.2"/><circle cx="30" cy="30" r="2" fill="%232563eb" opacity="0.2"/><circle cx="50" cy="50" r="2" fill="%237c3aed" opacity="0.2"/><circle cx="70" cy="70" r="2" fill="%232563eb" opacity="0.2"/><circle cx="90" cy="90" r="2" fill="%237c3aed" opacity="0.2"/></svg>');
             
@@ -153,54 +153,18 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin: 0;
         }
 
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: color 0.3s;
-            font-size: 0.95rem;
+        /* User Dropdown Styles */
+        .user-dropdown {
             position: relative;
-        }
-
-        .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            transition: width 0.3s;
-        }
-
-        .nav-menu a:hover::after,
-        .nav-menu a.active::after {
-            width: 100%;
-        }
-
-        .nav-menu a:hover {
-            color: var(--primary);
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-left: 1rem;
+            display: inline-block;
         }
 
         .user-icon {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 50%;
             display: flex;
@@ -208,96 +172,88 @@
             justify-content: center;
             color: var(--white);
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
         }
 
         .user-icon:hover {
             transform: scale(1.1);
+            border-color: var(--white);
+            box-shadow: var(--shadow-lg);
         }
 
-        .user-dropdown {
-            position: relative;
-            display: inline-block;
+        .user-icon i {
+            font-size: 1.2rem;
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
             right: 0;
+            top: 55px;
             background: var(--white);
-            min-width: 200px;
+            min-width: 240px;
             box-shadow: var(--shadow-lg);
-            border-radius: 10px;
-            z-index: 1;
-            margin-top: 0.5rem;
-            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            z-index: 1000;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            overflow: hidden;
+            animation: slideDown 0.3s ease;
         }
 
-        .user-dropdown:hover .dropdown-content {
-            display: block;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .dropdown-content a {
             color: var(--dark);
-            padding: 12px 16px;
+            padding: 14px 18px;
             text-decoration: none;
-            display: block;
-            font-size: 0.9rem;
-            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.05);
         }
 
         .dropdown-content a:last-child {
             border-bottom: none;
         }
 
+        .dropdown-content a i {
+            width: 20px;
+            color: var(--primary);
+            font-size: 1rem;
+            text-align: center;
+        }
+
         .dropdown-content a:hover {
-            background: var(--light);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(124, 58, 237, 0.05));
             color: var(--primary);
+            padding-left: 22px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-            border: none;
-            cursor: pointer;
+        .dropdown-content a:hover i {
+            color: var(--secondary);
         }
 
-        .btn-outline {
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            background: transparent;
+        .dropdown-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+            margin: 8px 0;
         }
 
-        .btn-outline:hover {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-large {
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-        }
-
-        .menu-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--dark);
+        .user-dropdown:hover .dropdown-content {
+            display: block;
         }
 
         /* ===== HERO SECTION ===== */
@@ -774,7 +730,7 @@
         .footer-col p {
             color: var(--gray-light);
             margin-bottom: 1.5rem;
-            font-size: 0.9rem; /* Reduced text size in footer */
+            font-size: 0.9rem;
             line-height: 1.5;
         }
 
@@ -790,7 +746,7 @@
             color: var(--gray-light);
             text-decoration: none;
             transition: color 0.3s;
-            font-size: 0.9rem; /* Reduced text size in footer */
+            font-size: 0.9rem;
         }
 
         .footer-col ul li a:hover {
@@ -800,7 +756,7 @@
         .footer-col ul li i {
             width: 25px;
             color: var(--primary);
-            font-size: 0.9rem; /* Reduced icon size */
+            font-size: 0.9rem;
         }
 
         .social-links {
@@ -810,7 +766,7 @@
         }
 
         .social-links a {
-            width: 36px; /* Slightly smaller icons */
+            width: 36px;
             height: 36px;
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
@@ -820,7 +776,7 @@
             color: var(--white);
             transition: all 0.3s;
             text-decoration: none;
-            font-size: 0.9rem; /* Smaller icon size */
+            font-size: 0.9rem;
         }
 
         .social-links a:hover {
@@ -833,46 +789,26 @@
             padding-top: 2rem;
             border-top: 1px solid rgba(255,255,255,0.1);
             color: var(--gray-light);
-            font-size: 0.85rem; /* Reduced text size in footer bottom */
+            font-size: 0.85rem;
         }
 
         .footer-bottom i {
             color: var(--danger);
-            font-size: 0.85rem; /* Match surrounding text */
+            font-size: 0.85rem;
         }
 
         .footer-bottom p {
-            font-size: 0.85rem; /* Smaller copyright text */
+            font-size: 0.85rem;
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .nav-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(10px);
-                flex-direction: column;
-                padding: 2rem;
-                box-shadow: var(--shadow-lg);
-                border-bottom: 1px solid var(--primary-light);
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .user-menu {
-                margin-left: 0;
-                width: 100%;
-                justify-content: center;
+            .dropdown-content {
+                position: fixed;
+                top: 70px;
+                right: 15px;
+                width: 90%;
+                max-width: 300px;
             }
 
             .hero-stats {
@@ -944,7 +880,7 @@
             .footer-col ul li,
             .footer-col ul li a,
             .footer-bottom p {
-                font-size: 0.8rem; /* Even smaller on mobile */
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -956,31 +892,23 @@
             <div class="logo">
                 <h2>marketSystem</h2>
             </div>
-            <div class="menu-toggle" id="mobile-menu">
-                <i class="fas fa-bars"></i>
+            <div class="user-dropdown" id="userDropdown">
+                <div class="user-icon" id="userMenuIcon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="dropdown-content" id="dropdownMenu">
+                    <a href="#home"><i class="fas fa-home"></i> Home</a>
+                    <a href="#features"><i class="fas fa-star"></i> Features</a>
+                    <a href="#how-it-works"><i class="fas fa-play-circle"></i> How It Works</a>
+                    <a href="#testimonials"><i class="fas fa-comment"></i> Success Stories</a>
+                    <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="frontend/login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="frontend/register.html"><i class="fas fa-user-plus"></i> Register</a>
+                    <a href="#"><i class="fas fa-headset"></i> Help</a>
+                </div>
             </div>
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#testimonials">Success Stories</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="user-menu">
-                    <a href="frontend/login.html" class="btn-outline">Login</a>
-                    <a href="frontend/register.html" class="btn-primary">Register</a>
-                    <div class="user-dropdown">
-                        <div class="user-icon">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="dropdown-content">
-                            <a href="frontend/login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
-                            <a href="frontend/register.html"><i class="fas fa-user-plus"></i> Register</a>
-                            <a href="#"><i class="fas fa-question-circle"></i> Help</a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
         </div>
     </nav>
 
@@ -1093,8 +1021,8 @@
                             <img src="frontend/images/testimonials/WhatsApp Image 2026-01-01 at 17.05.04.jpeg" alt="Sarah Wanjiku">
                         </div>
                         <div class="testimonial-name">
-                            <h4>JEY FOLIX</h4>
-                            <span>Member since 2025</span>
+                            <h4>Sarah Wanjiku</h4>
+                            <span>Member since 2024</span>
                         </div>
                     </div>
                     <div class="testimonial-content">
@@ -1114,8 +1042,8 @@
                             <img src="frontend/images/testimonials/WhatsApp_Image_2025-07-04_at_09.40.42__1_-removebg-preview.png" alt="John Omondi">
                         </div>
                         <div class="testimonial-name">
-                            <h4>BRIAN MWENDA</h4>
-                            <span>Member since 2025</span>
+                            <h4>John Omondi</h4>
+                            <span>Member since 2024</span>
                         </div>
                     </div>
                     <div class="testimonial-content">
@@ -1135,8 +1063,8 @@
                             <img src="frontend/images/testimonials/WhatsApp Image 2026-01-08 at 12.09.32.jpeg" alt="Mary Akinyi">
                         </div>
                         <div class="testimonial-name">
-                            <h4>SYLVIA AKINYI</h4>
-                            <span>Member since 2026</span>
+                            <h4>Mary Akinyi</h4>
+                            <span>Member since 2024</span>
                         </div>
                     </div>
                     <div class="testimonial-content">
@@ -1276,18 +1204,26 @@
             offset: 50
         });
 
-        // Mobile menu
-        const menuToggle = document.getElementById('mobile-menu');
-        const navMenu = document.getElementById('nav-menu');
+        // User dropdown click handler (for mobile)
+        const userIcon = document.getElementById('userMenuIcon');
+        const dropdown = document.getElementById('dropdownMenu');
 
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+        userIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         });
 
-        // Close menu on link click
-        document.querySelectorAll('.nav-menu a').forEach(link => {
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userIcon.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Close dropdown when clicking a link
+        dropdown.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
+                dropdown.style.display = 'none';
             });
         });
 
