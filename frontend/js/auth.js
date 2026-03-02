@@ -1,7 +1,7 @@
 // API Base URL - Automatically switches between local and production
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'https://marketsystem-api.onrender.com/api'  // Local development
-    : 'https://your-render-app.onrender.com/api';  // Production - UPDATE THIS WITH YOUR RENDER URL
+    ? 'http://localhost/marketSystem/backend/api'  // Local development
+    : 'https://marketsystem-api.onrender.com/api';  // Production - YOUR RENDER URL
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
