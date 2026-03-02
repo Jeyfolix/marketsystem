@@ -2,36 +2,469 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarketSystem - Register</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>marketSystem - Create Account</title>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        .select-country {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #60a5fa;
+            --secondary: #7c3aed;
+            --secondary-dark: #6d28d9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --gray-light: #94a3b8;
+            --light: #f8fafc;
+            --white: #ffffff;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea20, #764ba220), 
+                        url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 0;
+        }
+
+        .container {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            background-color: white;
+            max-width: 550px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 35px;
+            border-radius: 30px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo i {
+            font-size: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .logo h2 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        h3 {
+            text-align: center;
+            color: var(--dark);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* Referral Info */
+        .referral-info {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .referral-info i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .referral-info strong {
+            color: var(--primary);
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group label i {
+            color: var(--primary);
+            width: 18px;
+        }
+
+        .form-group label span {
+            color: var(--danger);
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: var(--primary-light);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: var(--gray-light);
+        }
+
+        .select-country {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
             cursor: pointer;
         }
-        .select-country:focus {
-            outline: none;
-            border-color: #667eea;
+
+        /* Password Strength Indicator (optional) */
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
         }
-        .referral-info {
-            background: #f0f8ff;
-            border-left: 4px solid #667eea;
-            padding: 10px 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            color: #333;
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
         }
-        .referral-info i {
-            color: #667eea;
-            margin-right: 8px;
+
+        .password-strength-bar.weak {
+            width: 33.33%;
+            background: var(--danger);
+        }
+
+        .password-strength-bar.medium {
+            width: 66.66%;
+            background: #f59e0b;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: var(--success);
+        }
+
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary i {
+            font-size: 1.1rem;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Message */
+        .message {
+            margin: 20px 0;
+            padding: 14px 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.95rem;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+            border: 1px solid #a7f3d0;
+        }
+
+        /* Text Center */
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .text-center a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .text-center a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Form Divider */
+        .form-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            color: var(--gray);
+        }
+
+        .form-divider::before,
+        .form-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gray-light), transparent);
+        }
+
+        /* Social Login (optional - can be added later) */
+        .social-login {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .social-btn.facebook { background: #1877f2; }
+        .social-btn.google { background: #ea4335; }
+        .social-btn.twitter { background: #1da1f2; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 12px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo i {
+                font-size: 40px;
+            }
+
+            .logo h2 {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 14px;
+            }
+        }
+
+        /* Loading Spinner */
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tooltip for password requirements */
+        .password-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            color: var(--gray);
+            cursor: help;
+        }
+
+        .password-tooltip:hover::after {
+            content: 'Password must be at least 8 characters long and include numbers and letters';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: var(--white);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        /* Terms checkbox (optional) */
+        .terms {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .terms input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -40,7 +473,7 @@
         <div class="form-container">
             <div class="logo">
                 <i class="fas fa-store"></i>
-                <h2>MarketSystem</h2>
+                <h2>marketSystem</h2>
             </div>
             <h3>Create Your Account</h3>
             
@@ -54,7 +487,7 @@
                 <div class="form-group">
                     <label for="name">
                         <i class="fas fa-user-circle"></i>
-                        Full Name <span style="color: red;">*</span>
+                        Full Name <span>*</span>
                     </label>
                     <input type="text" id="name" name="name" placeholder="Enter your full name" required>
                 </div>
@@ -62,23 +495,23 @@
                 <div class="form-group">
                     <label for="email">
                         <i class="fas fa-envelope"></i>
-                        Email Address <span style="color: red;">*</span>
+                        Email Address <span>*</span>
                     </label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">
                         <i class="fas fa-phone"></i>
-                        Phone Number <span style="color: red;">*</span>
+                        Phone Number <span>*</span>
                     </label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    <input type="tel" id="phone" name="phone" placeholder="e.g., 0712 345 678" required>
                 </div>
 
                 <div class="form-group">
                     <label for="username">
                         <i class="fas fa-user"></i>
-                        Username <span style="color: red;">*</span>
+                        Username <span>*</span>
                     </label>
                     <input type="text" id="username" name="username" placeholder="Choose a username" required>
                 </div>
@@ -86,127 +519,218 @@
                 <div class="form-group">
                     <label for="country">
                         <i class="fas fa-globe"></i>
-                        Country <span style="color: red;">*</span>
+                        Country <span>*</span>
                     </label>
                     <select id="country" name="country" class="select-country" required>
-                        <option value="">Select your country</option>
-                        <option value="Afghanistan">Afghanistan</option>
-                        <option value="Albania">Albania</option>
-                        <option value="Algeria">Algeria</option>
-                        <option value="Argentina">Argentina</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Austria">Austria</option>
-                        <option value="Bangladesh">Bangladesh</option>
-                        <option value="Belgium">Belgium</option>
-                        <option value="Brazil">Brazil</option>
-                        <option value="Canada">Canada</option>
-                        <option value="China">China</option>
-                        <option value="Colombia">Colombia</option>
-                        <option value="Denmark">Denmark</option>
-                        <option value="Egypt">Egypt</option>
-                        <option value="Finland">Finland</option>
-                        <option value="France">France</option>
-                        <option value="Germany">Germany</option>
-                        <option value="Ghana">Ghana</option>
-                        <option value="Greece">Greece</option>
-                        <option value="Hong Kong">Hong Kong</option>
-                        <option value="Hungary">Hungary</option>
-                        <option value="Iceland">Iceland</option>
-                        <option value="India">India</option>
-                        <option value="Indonesia">Indonesia</option>
-                        <option value="Iran">Iran</option>
-                        <option value="Iraq">Iraq</option>
-                        <option value="Ireland">Ireland</option>
-                        <option value="Israel">Israel</option>
-                        <option value="Italy">Italy</option>
-                        <option value="Jamaica">Jamaica</option>
-                        <option value="Japan">Japan</option>
-                        <option value="Jordan">Jordan</option>
-                        <option value="Kenya">Kenya</option>
-                        <option value="Kuwait">Kuwait</option>
-                        <option value="Lebanon">Lebanon</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="Mexico">Mexico</option>
-                        <option value="Morocco">Morocco</option>
-                        <option value="Netherlands">Netherlands</option>
-                        <option value="New Zealand">New Zealand</option>
-                        <option value="Nigeria">Nigeria</option>
-                        <option value="Norway">Norway</option>
-                        <option value="Pakistan">Pakistan</option>
-                        <option value="Palestine">Palestine</option>
-                        <option value="Philippines">Philippines</option>
-                        <option value="Poland">Poland</option>
-                        <option value="Portugal">Portugal</option>
-                        <option value="Qatar">Qatar</option>
-                        <option value="Romania">Romania</option>
-                        <option value="Russia">Russia</option>
-                        <option value="Rwanda">Rwanda</option>
-                        <option value="Saudi Arabia">Saudi Arabia</option>
-                        <option value="Senegal">Senegal</option>
-                        <option value="Serbia">Serbia</option>
-                        <option value="Singapore">Singapore</option>
-                        <option value="Somalia">Somalia</option>
-                        <option value="South Africa">South Africa</option>
-                        <option value="South Korea">South Korea</option>
-                        <option value="Spain">Spain</option>
-                        <option value="Sudan">Sudan</option>
-                        <option value="Sweden">Sweden</option>
-                        <option value="Switzerland">Switzerland</option>
-                        <option value="Syria">Syria</option>
-                        <option value="Taiwan">Taiwan</option>
-                        <option value="Tanzania">Tanzania</option>
-                        <option value="Thailand">Thailand</option>
-                        <option value="Tunisia">Tunisia</option>
-                        <option value="Turkey">Turkey</option>
-                        <option value="Uganda">Uganda</option>
-                        <option value="Ukraine">Ukraine</option>
-                        <option value="United Arab Emirates">United Arab Emirates</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="United States">United States</option>
-                        <option value="Uruguay">Uruguay</option>
-                        <option value="Venezuela">Venezuela</option>
-                        <option value="Vietnam">Vietnam</option>
-                        <option value="Yemen">Yemen</option>
-                        <option value="Zambia">Zambia</option>
-                        <option value="Zimbabwe">Zimbabwe</option>
+                        <option value="">-- Select your country --</option>
+                        <option value="Kenya">🇰🇪 Kenya</option>
+                        <option value="Uganda">🇺🇬 Uganda</option>
+                        <option value="Tanzania">🇹🇿 Tanzania</option>
+                        <option value="Rwanda">🇷🇼 Rwanda</option>
+                        <option value="South Africa">🇿🇦 South Africa</option>
+                        <option value="Nigeria">🇳🇬 Nigeria</option>
+                        <option value="Ghana">🇬🇭 Ghana</option>
+                        <option value="United States">🇺🇸 United States</option>
+                        <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                        <option value="Canada">🇨🇦 Canada</option>
+                        <option value="Australia">🇦🇺 Australia</option>
+                        <option value="Germany">🇩🇪 Germany</option>
+                        <option value="France">🇫🇷 France</option>
+                        <option value="India">🇮🇳 India</option>
+                        <option value="China">🇨🇳 China</option>
+                        <option value="Japan">🇯🇵 Japan</option>
+                        <option value="Brazil">🇧🇷 Brazil</option>
+                        <option value="Mexico">🇲🇽 Mexico</option>
+                        <option value="Spain">🇪🇸 Spain</option>
+                        <option value="Italy">🇮🇹 Italy</option>
+                        <option value="Netherlands">🇳🇱 Netherlands</option>
+                        <option value="Sweden">🇸🇪 Sweden</option>
+                        <option value="Norway">🇳🇴 Norway</option>
+                        <option value="Denmark">🇩🇰 Denmark</option>
+                        <option value="Finland">🇫🇮 Finland</option>
+                        <option value="Switzerland">🇨🇭 Switzerland</option>
+                        <option value="Belgium">🇧🇪 Belgium</option>
+                        <option value="Austria">🇦🇹 Austria</option>
+                        <option value="Ireland">🇮🇪 Ireland</option>
+                        <option value="Portugal">🇵🇹 Portugal</option>
+                        <option value="Greece">🇬🇷 Greece</option>
+                        <option value="Poland">🇵🇱 Poland</option>
+                        <option value="Czech Republic">🇨🇿 Czech Republic</option>
+                        <option value="Hungary">🇭🇺 Hungary</option>
+                        <option value="Turkey">🇹🇷 Turkey</option>
+                        <option value="UAE">🇦🇪 UAE</option>
+                        <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+                        <option value="Egypt">🇪🇬 Egypt</option>
+                        <option value="Morocco">🇲🇦 Morocco</option>
+                        <option value="Algeria">🇩🇿 Algeria</option>
+                        <option value="Tunisia">🇹🇳 Tunisia</option>
+                        <option value="Sudan">🇸🇩 Sudan</option>
+                        <option value="Ethiopia">🇪🇹 Ethiopia</option>
+                        <option value="Somalia">🇸🇴 Somalia</option>
+                        <option value="DR Congo">🇨🇩 DR Congo</option>
+                        <option value="Angola">🇦🇴 Angola</option>
+                        <option value="Mozambique">🇲🇿 Mozambique</option>
+                        <option value="Zambia">🇿🇲 Zambia</option>
+                        <option value="Zimbabwe">🇿🇼 Zimbabwe</option>
+                        <option value="Botswana">🇧🇼 Botswana</option>
+                        <option value="Namibia">🇳🇦 Namibia</option>
+                        <option value="Malawi">🇲🇼 Malawi</option>
+                        <option value="Mauritius">🇲🇺 Mauritius</option>
+                        <option value="Seychelles">🇸🇨 Seychelles</option>
+                        <option value="Comoros">🇰🇲 Comoros</option>
+                        <option value="Madagascar">🇲🇬 Madagascar</option>
+                        <option value="South Sudan">🇸🇸 South Sudan</option>
+                        <option value="Eritrea">🇪🇷 Eritrea</option>
+                        <option value="Djibouti">🇩🇯 Djibouti</option>
+                        <option value="Burundi">🇧🇮 Burundi</option>
+                        <option value="Lesotho">🇱🇸 Lesotho</option>
+                        <option value="Eswatini">🇸🇿 Eswatini</option>
+                        <option value="Cape Verde">🇨🇻 Cape Verde</option>
+                        <option value="Sao Tome">🇸🇹 Sao Tome</option>
+                        <option value="Equatorial Guinea">🇬🇶 Equatorial Guinea</option>
+                        <option value="Gabon">🇬🇦 Gabon</option>
+                        <option value="Cameroon">🇨🇲 Cameroon</option>
+                        <option value="Central African Republic">🇨🇫 Central African Republic</option>
+                        <option value="Chad">🇹🇩 Chad</option>
+                        <option value="Niger">🇳🇪 Niger</option>
+                        <option value="Mali">🇲🇱 Mali</option>
+                        <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+                        <option value="Mauritania">🇲🇷 Mauritania</option>
+                        <option value="Senegal">🇸🇳 Senegal</option>
+                        <option value="Gambia">🇬🇲 Gambia</option>
+                        <option value="Guinea-Bissau">🇬🇼 Guinea-Bissau</option>
+                        <option value="Guinea">🇬🇳 Guinea</option>
+                        <option value="Sierra Leone">🇸🇱 Sierra Leone</option>
+                        <option value="Liberia">🇱🇷 Liberia</option>
+                        <option value="Ivory Coast">🇨🇮 Ivory Coast</option>
+                        <option value="Benin">🇧🇯 Benin</option>
+                        <option value="Togo">🇹🇬 Togo</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="referral_code">
                         <i class="fas fa-gift"></i>
-                        Referral Code (Optional)
+                        Referral Code
+                        <span class="password-tooltip">
+                            <i class="fas fa-info-circle"></i>
+                        </span>
                     </label>
-                    <input type="text" id="referral_code" name="referral_code" placeholder="Enter referral code if you have one">
+                    <input type="text" id="referral_code" name="referral_code" placeholder="Enter referral code (optional)">
                 </div>
 
                 <div class="form-group">
                     <label for="password">
                         <i class="fas fa-lock"></i>
-                        Password <span style="color: red;">*</span>
+                        Password <span>*</span>
                     </label>
-                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="passwordStrength"></div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="confirm_password">
                         <i class="fas fa-lock"></i>
-                        Confirm Password <span style="color: red;">*</span>
+                        Confirm Password <span>*</span>
                     </label>
                     <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="registerBtn">
                     <i class="fas fa-user-plus"></i>
-                    Register
+                    Create Account
                 </button>
             </form>
+
             <div id="message" class="message"></div>
+
+            <div class="form-divider">
+                <span>or</span>
+            </div>
+
+            <div class="social-login">
+                <div class="social-btn facebook"><i class="fab fa-facebook-f"></i></div>
+                <div class="social-btn google"><i class="fab fa-google"></i></div>
+                <div class="social-btn twitter"><i class="fab fa-twitter"></i></div>
+            </div>
+
             <p class="text-center">
-                Already have an account? <a href="index.html">Login here</a>
+                Already have an account? <a href="index.html">Sign in here</a>
             </p>
         </div>
     </div>
+
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('passwordStrength');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+            
+            strengthBar.className = 'password-strength-bar';
+            if (strength === 'weak') {
+                strengthBar.classList.add('weak');
+            } else if (strength === 'medium') {
+                strengthBar.classList.add('medium');
+            } else if (strength === 'strong') {
+                strengthBar.classList.add('strong');
+            }
+        });
+
+        function calculatePasswordStrength(password) {
+            if (password.length < 6) return 'weak';
+            if (password.length < 8) return 'medium';
+            
+            const hasNumbers = /\d/.test(password);
+            const hasLetters = /[a-zA-Z]/.test(password);
+            
+            if (hasNumbers && hasLetters && password.length >= 8) return 'strong';
+            if (hasNumbers || hasLetters) return 'medium';
+            
+            return 'weak';
+        }
+
+        // Check for referral code in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        
+        if (refCode) {
+            document.getElementById('referral_code').value = refCode;
+            // You can also show a message
+            const referralInfo = document.getElementById('referralInfo');
+            document.getElementById('referrerName').textContent = 'Referral Code Applied';
+            referralInfo.style.display = 'flex';
+        }
+
+        // Form submission loading state
+        const form = document.getElementById('registerForm');
+        const registerBtn = document.getElementById('registerBtn');
+
+        form.addEventListener('submit', function(e) {
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            registerBtn.disabled = true;
+        });
+
+        // Real-time password match validation (optional)
+        const confirmPassword = document.getElementById('confirm_password');
+        
+        confirmPassword.addEventListener('input', function() {
+            if (this.value !== passwordInput.value) {
+                this.style.borderColor = 'var(--danger)';
+            } else {
+                this.style.borderColor = 'var(--success)';
+            }
+        });
+    </script>
     <script src="js/register.js"></script>
 </body>
 </html>
