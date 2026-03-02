@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h2>MarketSystem API Test</h2>
+    
+    <div>
+        <button onclick="testLogin()">Test Login</button>
+        <button onclick="testRegister()">Test Register</button>
+    </div>
+    
+    <div style="margin-top:20px;">
+        <strong>Result:</strong>
+        <pre id="result" style="background:#f0f0f0; padding:10px; min-height:100px;"></pre>
+    </div>
+
+    <script>
+    const API_URL = 'https://marketsystem-api.onrender.com/api';
+    
+    async function testLogin() {
+        const result = document.getElementById('result');
+        result.textContent = 'Testing login...';
+        
+        try {
+            const response = await fetch(`${API_URL}/login.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: 'admin',
+                    password: 'password123'
+                })
+            });
+            
+            const data = await response.json();
+            result.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+            result.textContent = `ERROR: ${error.name}\nMessage: ${error.message}`;
+        }
+    }
+    
+    async function testRegister() {
+        const result = document.getElementById('result');
+        result.textContent = 'Testing registration...';
+        
+        try {
+            const response = await fetch(`${API_URL}/register.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: 'Test User',
+                    username: 'testuser_' + Date.now(),
+                    email: 'test@example.com',
+                    password: 'password123'
+                })
+            });
+            
+            const data = await response.json();
+            result.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+            result.textContent = `ERROR: ${error.name}\nMessage: ${error.message}`;
+        }
+    }
+    </script>
+</body>
+</html>
