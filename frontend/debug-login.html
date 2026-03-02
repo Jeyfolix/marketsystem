@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarketSystem - Debug Login</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        #debug-panel {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .debug-line {
+            margin: 2px 0;
+            border-bottom: 1px solid #333;
+            padding: 3px 0;
+        }
+        .debug-error { color: #ff6b6b; }
+        .debug-success { color: #51cf66; }
+        .debug-info { color: #74c0fc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="logo">
+                <i class="fas fa-store"></i>
+                <h2>MarketSystem (Debug Mode)</h2>
+            </div>
+            <h3>Login to Your Account</h3>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Username or Email
+                    </label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username or email" value="admin" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" value="password123" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+            </form>
+            <div id="message" class="message"></div>
+            
+            <!-- Debug Panel -->
+            <div id="debug-panel">
+                <div class="debug-line"><span class="debug-info">🔍 Debug mode active</span></div>
+                <div id="debug-content"></div>
+            </div>
+            
+            <p class="text-center">
+                Don't have an account? <a href="register.html">Register here</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+    // Debug logging function
+    const debugContent = document.getElementById('debug-content');
+    
+    function debug(type, message, data = null) {
+        const line = document.createElement('div');
+        line.className = 'debug-line';
+        
+        let icon = 'ℹ️';
+        let color = 'debug-info';
+        
+        if (type === 'error') {
+            icon = '❌';
+            color = 'debug-error';
+        } else if (type === 'success') {
+            icon = '✅';
+            color = 'debug-success';
+        } else if (type === 'warning') {
+            icon = '⚠️';
+            color = 'debug-warning';
+        }
+        
+        line.innerHTML = `<span class="${color}">${icon} ${message}</span>`;
+        if (data) {
+            line.innerHTML += `<br><span style="margin-left:20px; color:#aaa;">${JSON.stringify(data).substring(0, 100)}</span>`;
+        }
+        debugContent.appendChild(line);
+        debugContent.scrollTop = debugContent.scrollHeight;
+    }
+    
+    // API Base URL
+    const API_BASE_URL = 'https://marketsystem-api.onrender.com/api';
+    debug('info', 'API URL: ' + API_BASE_URL);
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        debug('info', 'DOM loaded');
+        
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            debug('success', 'Login form found');
+            loginForm.addEventListener('submit', handleLogin);
+        } else {
+            debug('error', 'Login form not found!');
+        }
+    });
+    
+    async function handleLogin(e) {
+        e.preventDefault();
+        debug('info', 'Login handler called');
+        
+        // Clear previous debug
+        debugContent.innerHTML = '';
+        debug('info', 'Starting login attempt...');
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        debug('info', 'Username: ' + username);
+        debug('info', 'Password length: ' + password.length);
+        
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+        submitBtn.disabled = true;
+        
+        const url = `${API_BASE_URL}/login.php`;
+        debug('info', 'Fetching URL: ' + url);
+        
+        try {
+            debug('info', 'Sending request...');
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+            
+            debug('success', 'Response received! Status: ' + response.status);
+            
+            const responseText = await response.text();
+            debug('info', 'Raw response length: ' + responseText.length + ' chars');
+            debug('info', 'Raw response preview: ' + responseText.substring(0, 100) + '...');
+            
+            let data;
+            try {
+                data = JSON.parse(responseText);
+                debug('success', 'JSON parsed successfully');
+                debug('info', 'Response data:', data);
+            } catch (e) {
+                debug('error', 'Failed to parse JSON: ' + e.message);
+                debug('error', 'Response was HTML? ' + (responseText.includes('<!DOCTYPE') ? 'Yes' : 'No'));
+                showMessage('Server returned invalid response', 'error');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            if (data.success) {
+                debug('success', 'Login successful!');
+                sessionStorage.setItem('user', JSON.stringify(data.user));
+                showMessage('Login successful! Redirecting...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } else {
+                debug('error', 'Login failed: ' + data.message);
+                showMessage(data.message || 'Login failed!', 'error');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            debug('error', 'Fetch error: ' + error.message);
+            debug('error', 'Error type: ' + error.name);
+            
+            // Check for specific error types
+            if (error.message.includes('Failed to fetch')) {
+                debug('error', '⚠️ This usually means CORS or network issue');
+                debug('info', 'Try these solutions:');
+                debug('info', '1. Check if API is online: https://marketsystem-api.onrender.com/api/test.php');
+                debug('info', '2. Try in incognito mode');
+                debug('info', '3. Check if browser extensions are blocking');
+            }
+            
+            showMessage('Connection error: ' + error.message, 'error');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+    
+    function showMessage(message, type) {
+        const messageDiv = document.getElementById('message');
+        if (messageDiv) {
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
+    
+    // Test API connection on page load
+    setTimeout(async () => {
+        debug('info', 'Testing API connection...');
+        try {
+            const response = await fetch(API_BASE_URL + '/test.php');
+            if (response.ok) {
+                debug('success', '✅ API test endpoint reachable');
+            } else {
+                debug('warning', '⚠️ API test endpoint returned: ' + response.status);
+            }
+        } catch (e) {
+            debug('error', '❌ Cannot reach API test endpoint: ' + e.message);
+        }
+    }, 1000);
+    </script>
+</body>
+</html>
