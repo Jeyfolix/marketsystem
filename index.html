@@ -3,89 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>marketSystem · earn with every friend</title>
-    <meta name="description" content="Kenya's fastest growing affiliate community. 50% commission, instant M-PESA payouts, zero cap.">
+    <title>marketSystem - Kenya's #1 Affiliate Marketing Platform</title>
+    <meta name="description" content="Join Kenya's fastest growing affiliate marketing platform. Earn 50% commission on every referral. Start your journey to financial freedom today!">
+    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
+        /* ===== RESET & VARIABLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #0a2540;
-            --primary-light: #1f3a5f;
-            --accent: #e07c3e;
-            --accent-light: #f39c5c;
-            --success: #2e7d32;
-            --bg-light: #f5f7fa;
-            --card-bg: #ffffff;
-            --text-dark: #1e293b;
-            --text-muted: #54657e;
-            --border-light: #e6ecf2;
-            --shadow-sm: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,20,50,0.05);
-            --shadow-md: 0 12px 30px rgba(0,0,0,0.04), 0 4px 10px rgba(0,20,50,0.08);
-            --shadow-lg: 0 25px 40px -12px rgba(0,35,70,0.2);
-            --gradient-cta: linear-gradient(145deg, var(--accent), #f09b4b);
-            --gradient-subtle: linear-gradient(145deg, #f9fcff, #edf2f9);
-            --footer-bg: #0f1a2c;
-        }
-
-        body {
-            font-family: "Inter", sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.5;
+        html, body {
+            max-width: 100%;
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        :root {
+            /* Professional Marketing Palette */
+            --primary: #0a2540;      /* Deep navy - trustworthy */
+            --primary-dark: #051a2b;
+            --primary-light: #1f3a5f;
+            --accent: #e67e22;        /* Warm orange - CTA */
+            --accent-light: #f39c5c;
+            --accent-dark: #d35400;
+            --success: #27ae60;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-600: #6c757d;
+            --gray-800: #343a40;
+            --dark: #212529;
+            --white: #ffffff;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 5px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+            
+            /* Container */
+            --container-width: 1200px;
         }
 
-        /* navigation – retains user icon + login/register */
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--white);
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--primary);
+        }
+
+        h1 { font-size: clamp(2.5rem, 5vw, 3.8rem); }
+        h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 1rem; }
+        h3 { font-size: 1.4rem; }
+        p { color: var(--gray-600); font-size: 1.1rem; line-height: 1.7; }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            display: inline-block;
+            padding: 0.9rem 2.2rem;
+            background: var(--accent);
+            color: var(--white);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            padding: 0.9rem 2.2rem;
+            background: transparent;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 50px;
+            border: 2px solid var(--primary-light);
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-light);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .btn-large {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* ===== NAVIGATION ===== */
         .navbar {
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(10,37,64,0.07);
-            padding: 0.7rem 0;
-            position: sticky;
+            position: fixed;
             top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
             z-index: 1000;
+            padding: 0.8rem 0;
         }
 
         .nav-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1280px;
+            max-width: var(--container-width);
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .logo a {
-            font-size: 1.9rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            text-decoration: none;
-            background: linear-gradient(135deg, #0a2540, #2b4b74);
+        .logo h2 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin: 0;
         }
 
-        .nav-right {
+        /* Auth Buttons */
+        .nav-actions {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .auth-buttons {
@@ -93,40 +180,41 @@
             gap: 0.8rem;
         }
 
-        .btn-outline {
+        .btn-login {
             padding: 0.5rem 1.3rem;
-            border-radius: 40px;
             background: transparent;
-            border: 1.5px solid var(--primary-light);
             color: var(--primary);
             font-weight: 600;
-            font-size: 0.9rem;
             text-decoration: none;
-            transition: 0.2s;
+            border-radius: 50px;
+            border: 1.5px solid var(--primary-light);
+            transition: all 0.3s;
+            font-size: 0.95rem;
         }
 
-        .btn-outline:hover {
-            background: rgba(10,37,64,0.04);
-            border-color: var(--primary);
+        .btn-login:hover {
+            background: var(--primary-light);
+            color: var(--white);
         }
 
-        .btn-primary {
-            padding: 0.5rem 1.6rem;
-            border-radius: 40px;
-            background: var(--gradient-cta);
-            border: none;
-            color: white;
+        .btn-register {
+            padding: 0.5rem 1.3rem;
+            background: var(--accent);
+            color: var(--white);
             font-weight: 600;
-            font-size: 0.9rem;
             text-decoration: none;
-            box-shadow: 0 6px 14px rgba(224,124,62,0.25);
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            box-shadow: 0 3px 10px rgba(230, 126, 34, 0.3);
         }
 
-        .btn-primary:hover {
-            background: #d66f32;
+        .btn-register:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
         }
 
-        /* user icon (exactly as original style) */
+        /* User Dropdown (preserved) */
         .user-dropdown {
             position: relative;
             display: inline-block;
@@ -135,14 +223,14 @@
         .user-icon {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, var(--primary), #2b4b74);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--white);
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s;
             box-shadow: var(--shadow-sm);
             border: 2px solid transparent;
         }
@@ -157,253 +245,624 @@
             position: absolute;
             right: 0;
             top: 55px;
-            background: white;
+            background: var(--white);
             min-width: 240px;
             box-shadow: var(--shadow-lg);
-            border-radius: 20px;
+            border-radius: 15px;
             z-index: 1000;
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--gray-200);
             overflow: hidden;
         }
 
         .dropdown-content a {
-            color: var(--text-dark);
-            padding: 12px 18px;
+            color: var(--gray-800);
+            padding: 14px 18px;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 12px;
             font-size: 0.95rem;
-            border-bottom: 1px solid rgba(10,37,64,0.05);
+            transition: all 0.3s;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        .dropdown-content a i { width: 20px; color: var(--accent); }
-        .dropdown-content a:hover { background: #f8fafd; }
-        .user-dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
 
-        /* HERO with animated illustration (css steps animation) */
+        .dropdown-content a i {
+            width: 20px;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+            padding-left: 25px;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--gray-200);
+            margin: 8px 0;
+        }
+
+        .user-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* ===== HERO SECTION ===== */
         .hero {
-            padding: 4rem 0 5rem;
-            background: var(--gradient-subtle);
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .hero-grid {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f9ff 0%, #ffffff 100%);
             display: flex;
             align-items: center;
-            gap: 4rem;
-            flex-wrap: wrap;
-        }
-
-        .hero-content { flex: 1 1 450px; }
-        .hero-content h1 {
-            font-size: 3.2rem;
-            font-weight: 800;
-            line-height: 1.2;
-            color: var(--primary);
-            margin-bottom: 1.2rem;
-        }
-        .hero-highlight { color: var(--accent); border-bottom: 3px solid rgba(224,124,62,0.3); }
-        .hero-subhead { font-size: 1.2rem; color: var(--text-muted); max-width: 500px; margin-bottom: 2rem; }
-
-        .hero-cta-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin: 2rem 0 2.5rem;
-        }
-
-        .btn-large { padding: 0.9rem 2.8rem; font-size: 1.1rem; }
-
-        /* animated steps (like an explainer video / motion) */
-        .hero-animation {
-            flex: 1 1 400px;
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(4px);
-            border-radius: 48px;
-            padding: 2rem 1.8rem;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid white;
-        }
-
-        .animation-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .anim-item {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            animation: slideIn 0.5s ease-out;
-        }
-        .anim-icon {
-            width: 56px;
-            height: 56px;
-            background: var(--accent);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 8px 0 #b45f2e;
-            transition: 0.1s ease;
-        }
-        .anim-item:nth-child(2) .anim-icon { background: var(--primary); box-shadow: 0 8px 0 #0e2a47; }
-        .anim-item:nth-child(3) .anim-icon { background: #2e7d32; box-shadow: 0 8px 0 #1f5c22; }
-        .anim-text h4 { font-size: 1.3rem; margin-bottom: 0.2rem; }
-        .anim-text p { color: var(--text-muted); }
-
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateX(20px); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-
-        /* video section */
-        .video-section {
-            padding: 4rem 0;
-            background: white;
-        }
-        .video-wrapper {
-            max-width: 800px;
-            margin: 0 auto;
-            border-radius: 40px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            aspect-ratio: 16 / 9;
-            background: #d9e2ef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .video-placeholder {
+            padding: 6rem 0 4rem;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80%;
             height: 100%;
-            background: linear-gradient(145deg, #cbd5e1, #b1c3d9);
+            background: radial-gradient(circle at top right, rgba(10, 37, 64, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.6rem 1.8rem;
+            background: rgba(10, 37, 64, 0.05);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(10, 37, 64, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-stats {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            background: var(--white);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-sm);
+            margin-top: 2rem;
+            border: 1px solid var(--gray-200);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .trust-badges span {
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+
+        .trust-badges i {
+            color: var(--success);
+            margin-right: 0.5rem;
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features {
+            padding: 5rem 0;
+            background: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--gray-200);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-light);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: rgba(230, 126, 34, 0.1);
+            border-radius: 50%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary);
-            font-size: 1.5rem;
-            gap: 1rem;
         }
-        .video-placeholder i { font-size: 5rem; opacity: 0.7; }
 
-        /* real stories with actual images (using placeholder but real-looking) */
+        .feature-icon i {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .feature-highlight {
+            margin-top: 1.5rem;
+            padding: 0.6rem;
+            background: rgba(39, 174, 96, 0.1);
+            border-radius: 50px;
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .how-it-works {
+            padding: 5rem 0;
+            background: var(--gray-100);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* ===== TESTIMONIALS ===== */
         .testimonials {
             padding: 5rem 0;
-            background: var(--gradient-subtle);
+            background: var(--white);
         }
-        .section-head { text-align: center; max-width: 700px; margin: 0 auto 3.5rem; }
-        .section-head h2 { font-size: 2.4rem; color: var(--primary); }
-        .testimonial-grid {
+
+        .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            margin-top: 2rem;
         }
-        .testi-card {
-            background: var(--card-bg);
-            border-radius: 28px;
+
+        .testimonial-card {
+            background: var(--white);
             padding: 2rem;
+            border-radius: 20px;
             box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s;
         }
-        .testi-header {
+
+        .testimonial-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-light);
+        }
+
+        .testimonial-header {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-        /* real images – using FontAwesome as avatar bg, but realistic */
-        .testi-avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 64px;
-            background-size: cover;
-            background-position: center;
-            border: 3px solid white;
+
+        .testimonial-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--white);
             box-shadow: var(--shadow-sm);
         }
-        .testi-name h4 { font-size: 1.2rem; }
-        .testi-name span { color: var(--text-muted); font-size: 0.85rem; }
-        .testi-content { margin: 1rem 0; }
-        .testi-earned { font-weight: 600; color: var(--accent); background: rgba(224,124,62,0.08); padding: 0.2rem 1rem; border-radius: 30px; font-size: 0.85rem; display: inline-block; }
 
-        /* features with steps-like icons */
-        .features {
+        .testimonial-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-name h4 {
+            margin-bottom: 0.25rem;
+            color: var(--primary);
+        }
+
+        .testimonial-name span {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-600);
+        }
+
+        .stars {
+            color: #f1c40f;
+        }
+
+        /* ===== FAQ ===== */
+        .faq {
             padding: 5rem 0;
+            background: var(--gray-100);
         }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 2rem;
-        }
-        .feature-card {
-            background: var(--card-bg);
-            border-radius: 32px;
-            padding: 2.5rem 2rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
-        }
-        .feature-icon i { font-size: 2.5rem; color: var(--accent); }
 
+        .faq-grid {
+            max-width: 800px;
+            margin: 2rem auto 0;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .faq-question i {
+            color: var(--accent);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            display: none;
+            color: var(--gray-600);
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            color: var(--white);
+        }
+
+        .cta-content p {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .cta-features span {
+            background: rgba(255,255,255,0.1);
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            color: var(--white);
+        }
+
+        .cta-features i {
+            margin-right: 0.5rem;
+            color: var(--accent);
+        }
+
+        /* ===== FOOTER ===== */
         .footer {
-            background: var(--footer-bg);
-            color: #adb7c6;
+            background: var(--primary-dark);
+            color: var(--white);
             padding: 4rem 0 2rem;
         }
+
         .footer-grid {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 3rem;
             margin-bottom: 3rem;
         }
-        .footer-logo { color: white; font-size: 1.8rem; font-weight: 700; }
-        .social-links a {
-            background: rgba(255,255,255,0.06);
-            width: 40px; height: 40px; border-radius: 40px;
-            display: inline-flex; align-items: center; justify-content: center;
-            color: #cad1db; text-decoration: none;
-        }
-        .social-links a:hover { background: var(--accent); color: white; }
-        .footer-col h4 { color: white; margin-bottom: 1.5rem; }
-        .footer-col ul { list-style: none; }
-        .footer-col ul a { color: #9aa8bb; text-decoration: none; }
-        .footer-bottom { text-align: center; border-top: 1px solid #1f3147; padding-top: 2rem; }
 
-        @media (max-width: 900px) {
-            .hero-grid { flex-direction: column; }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
+        .footer-col h3 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
         }
-        @media (max-width: 600px) {
-            .nav-container { flex-wrap: wrap; gap: 1rem; }
-            .auth-buttons .btn-outline, .auth-buttons .btn-primary { padding: 0.4rem 1rem; }
-            .footer-grid { grid-template-columns: 1fr; }
+
+        .footer-col h3 span {
+            color: var(--accent);
+        }
+
+        .footer-col p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col ul li a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--white);
+        }
+
+        .footer-col ul li i {
+            width: 25px;
+            color: var(--accent);
+            font-size: 0.95rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom i {
+            color: var(--accent);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .dropdown-content {
+                position: fixed;
+                top: 130px;
+                right: 15px;
+                width: 90%;
+                max-width: 300px;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .stat-item {
+                padding: 0.8rem 1.2rem;
+            }
+
+            .trust-badges {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+                border-radius: 20px;
+                padding: 1.5rem;
+            }
+
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .step {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .hero-cta .btn-primary,
+            .hero-cta .btn-outline {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- navigation: user icon + login/register both present (exactly as requested) -->
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo"><a href="#">marketSystem</a></div>
-            <div class="nav-right">
+            <div class="logo">
+                <h2>marketSystem</h2>
+            </div>
+            <div class="nav-actions">
                 <div class="auth-buttons">
-                    <a href="frontend/index.html" class="btn-outline"><i class="fas fa-sign-in-alt"></i> Login</a>
-                    <a href="frontend/register.html" class="btn-primary">Register</a>
+                    <a href="frontend/index.html" class="btn-login">Login</a>
+                    <a href="frontend/register.html" class="btn-register">Register</a>
                 </div>
-                <div class="user-dropdown">
-                    <div class="user-icon"><i class="fas fa-user"></i></div>
-                    <div class="dropdown-content">
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="user-icon" id="userMenuIcon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="dropdown-content" id="dropdownMenu">
                         <a href="#home"><i class="fas fa-home"></i> Home</a>
                         <a href="#features"><i class="fas fa-star"></i> Features</a>
                         <a href="#how-it-works"><i class="fas fa-play-circle"></i> How It Works</a>
                         <a href="#testimonials"><i class="fas fa-comment"></i> Success Stories</a>
                         <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
                         <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-                        <div style="height:1px; background:rgba(0,0,0,0.05); margin:8px 0;"></div>
+                        <div class="dropdown-divider"></div>
                         <a href="frontend/index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
                         <a href="frontend/register.html"><i class="fas fa-user-plus"></i> Register</a>
                         <a href="#"><i class="fas fa-headset"></i> Help</a>
@@ -413,172 +872,342 @@
         </div>
     </nav>
 
-    <!-- Hero with animated steps (like moving illustration) -->
-    <section class="hero">
-        <div class="container hero-grid">
-            <div class="hero-content" data-aos="fade-right">
-                <h1>Turn your network into <span class="hero-highlight">income</span></h1>
-                <p class="hero-subhead">Kenya's #1 affiliate community. Share, earn instantly, no limits.</p>
-                <div class="hero-cta-group">
-                    <a href="frontend/register.html" class="btn-primary btn-large">Start earning →</a>
-                    <a href="#how-it-works" class="btn-outline" style="border-color:var(--accent); color:var(--accent);">Watch video</a>
-                </div>
-                <div style="display:flex; gap:2rem; flex-wrap:wrap;">
-                    <span><strong>10k+</strong> members</span>
-                    <span><strong>KES 2.1M</strong> paid</span>
-                </div>
-            </div>
-            <div class="hero-animation" data-aos="fade-left">
-                <div class="animation-steps">
-                    <div class="anim-item"><div class="anim-icon"><i class="fas fa-user-plus"></i></div><div class="anim-text"><h4>1. Register</h4><p>KES 300 one‑time, get link</p></div></div>
-                    <div class="anim-item"><div class="anim-icon"><i class="fas fa-share-alt"></i></div><div class="anim-text"><h4>2. Share</h4><p>WhatsApp, TikTok, SMS</p></div></div>
-                    <div class="anim-item"><div class="anim-icon"><i class="fas fa-mobile-alt"></i></div><div class="anim-text"><h4>3. Earn KES 150</h4><p>Instant M‑PESA</p></div></div>
-                </div>
-                <p style="margin-top:2rem; background:white; border-radius:60px; padding:0.8rem; text-align:center; font-size:0.9rem;"><i class="fas fa-arrow-right" style="color:var(--accent);"></i> New members get KES 50 bonus</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video Section (engaging / tutorial) -->
-    <section id="how-it-works" class="video-section">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
         <div class="container">
-            <div class="section-head">
-                <h2>See how easy it is</h2>
-                <p>Watch this 1‑minute guide to start earning</p>
-            </div>
-            <div class="video-wrapper">
-                <div class="video-placeholder">
-                    <i class="fas fa-play-circle"></i>
-                    <span>How to earn with marketSystem (video)</span>
-                    <small style="font-size:0.9rem;">▶️ click to play — explainer</small>
-                </div>
-                <!-- in a real implementation, embed <video> or YouTube iframe -->
-            </div>
-        </div>
-    </section>
-
-    <!-- REAL STORIES with actual user images (using unsplash-like urls but retaining original names) -->
-    <section id="testimonials" class="testimonials">
-        <div class="container">
-            <div class="section-head">
-                <h2>Real stories, real earnings</h2>
-                <p>Members from across Kenya share their journey</p>
-            </div>
-            <div class="testimonial-grid">
-                <div class="testi-card">
-                    <div class="testi-header">
-                        <div class="testi-avatar" style="background-image: url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
-                        <div class="testi-name"><h4>Jey Folix</h4><span>Nairobi · member 2025</span></div>
+            <div class="hero-content" data-aos="fade-up">
+                <span class="badge">🏆 Kenya's #1 Affiliate Platform</span>
+                <h1>Turn Your Network Into <span class="gradient-text">Income</span></h1>
+                <p class="hero-subtitle">Join thousands of Kenyans earning daily by simply referring friends. No experience needed!</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Active Members</span>
                     </div>
-                    <div class="testi-content">“I started during lunch breaks, now I earn more than my salary. M‑PESA payments are instant.”</div>
-                    <span class="testi-earned">earned KES 45,000</span>
-                </div>
-                <div class="testi-card">
-                    <div class="testi-header">
-                        <div class="testi-avatar" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
-                        <div class="testi-name"><h4>Brian Mwenda</h4><span>Kiambu · 2025</span></div>
+                    <div class="stat-item">
+                        <span class="stat-number">KES 2M+</span>
+                        <span class="stat-label">Paid Out</span>
                     </div>
-                    <div class="testi-content">“I just share on WhatsApp groups, the commissions never stop. Best decision.”</div>
-                    <span class="testi-earned">earned KES 28,500</span>
-                </div>
-                <div class="testi-card">
-                    <div class="testi-header">
-                        <div class="testi-avatar" style="background-image: url('https://randomuser.me/api/portraits/women/68.jpg');"></div>
-                        <div class="testi-name"><h4>Sylvia Akinyi</h4><span>Kisumu · 2026</span></div>
+                    <div class="stat-item">
+                        <span class="stat-number">4.8★</span>
+                        <span class="stat-label">User Rating</span>
                     </div>
-                    <div class="testi-content">“Reached 50 referrals in two months. Platform is smooth and supportive.”</div>
-                    <span class="testi-earned">earned KES 7,500</span>
+                </div>
+                <div class="hero-cta">
+                    <a href="frontend/register.html" class="btn-primary btn-large">Start Earning Now</a>
+                    <a href="#how-it-works" class="btn-outline btn-large">Learn More</a>
+                </div>
+                <div class="trust-badges">
+                    <span><i class="fas fa-shield-alt"></i> Secure Payments</span>
+                    <span><i class="fas fa-clock"></i> Instant Commissions</span>
+                    <span><i class="fas fa-headset"></i> 24/7 Support</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features / steps again but with visual icons -->
+    <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
-            <div class="section-head">
-                <h2>Everything you need to succeed</h2>
-                <p>Simple, fast and transparent</p>
+            <div class="section-header" data-aos="fade-up">
+                <h2>Why Choose marketSystem?</h2>
+                <p>Discover the advantages that make us Kenya's leading affiliate platform</p>
             </div>
             <div class="features-grid">
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-percent"></i></div><h3>50% commission</h3><p>KES 150 per friend</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Instant payout</h3><p>M‑PESA instantly</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><h3>Unlimited referrals</h3><p>no caps, no limits</p></div>
+                <div class="feature-card" data-aos="fade-up">
+                    <div class="feature-icon"><i class="fas fa-percent"></i></div>
+                    <h3>50% Commission</h3>
+                    <p>Earn up to 50% commission on every referral. The more you refer, the more you earn!</p>
+                    <div class="feature-highlight">KES 150 per referral</div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Instant Payouts</h3>
+                    <p>Get paid instantly via M-PESA when your referrals join. No waiting periods!</p>
+                    <div class="feature-highlight">24/7 Withdrawals</div>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>Unlimited Referrals</h3>
+                    <p>No limits on referrals. The more people you refer, the more money you make!</p>
+                    <div class="feature-highlight">No Cap</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ and footer same professional style -->
-    <section id="faq" class="faq" style="padding:5rem 0; background:white;">
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
         <div class="container">
-            <div class="section-head"><h2>Quick answers</h2></div>
-            <div style="max-width:800px; margin:0 auto;">
-                <div class="faq-item" style="border-bottom:1px solid var(--border-light); padding:1rem 0;">
-                    <div class="faq-question" style="display:flex; justify-content:space-between; cursor:pointer;">Is marketSystem legit? <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer" style="display:none; padding:0.5rem 0;">Absolutely. Registered Kenyan platform, over 2M paid out.</div>
+            <div class="section-header" data-aos="fade-up">
+                <h2>How It Works</h2>
+                <p>Start earning in three simple steps</p>
+            </div>
+            <div class="steps">
+                <div class="step" data-aos="fade-right">
+                    <div class="step-number">1</div>
+                    <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+                    <h3>Register Account</h3>
+                    <p>Create your account in seconds. Get your unique referral link instantly.</p>
                 </div>
-                <div class="faq-item" style="border-bottom:1px solid var(--border-light); padding:1rem 0;">
-                    <div class="faq-question" style="display:flex; justify-content:space-between; cursor:pointer;">How much can I earn? <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer" style="display:none; padding:0.5rem 0;">KES 150 per referral, no upper limit.</div>
+                <div class="step" data-aos="fade-up">
+                    <div class="step-number">2</div>
+                    <div class="step-icon"><i class="fas fa-share-alt"></i></div>
+                    <h3>Share Your Link</h3>
+                    <p>Share your unique referral link on WhatsApp, Facebook, or SMS.</p>
                 </div>
-                <div class="faq-item" style="border-bottom:1px solid var(--border-light); padding:1rem 0;">
-                    <div class="faq-question" style="display:flex; justify-content:space-between; cursor:pointer;">Is there a fee? <i class="fas fa-chevron-down"></i></div>
-                    <div class="faq-answer" style="display:none; padding:0.5rem 0;">One‑time KES 300 – recover with 2 referrals.</div>
+                <div class="step" data-aos="fade-left">
+                    <div class="step-number">3</div>
+                    <div class="step-icon"><i class="fas fa-coins"></i></div>
+                    <h3>Earn Money</h3>
+                    <p>Get paid instantly when your referrals join. Withdraw anytime!</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <script>
-        // simple FAQ toggle
-        document.querySelectorAll('.faq-question').forEach(q => {
-            q.addEventListener('click', function() {
-                let answer = this.nextElementSibling;
-                if (answer.style.display === 'block') {
-                    answer.style.display = 'none';
-                    this.querySelector('i').classList.remove('fa-chevron-up');
-                    this.querySelector('i').classList.add('fa-chevron-down');
-                } else {
-                    answer.style.display = 'block';
-                    this.querySelector('i').classList.remove('fa-chevron-down');
-                    this.querySelector('i').classList.add('fa-chevron-up');
-                }
-            });
-        });
+    <!-- Success Stories -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Success Stories</h2>
+                <p>Real people, real earnings from our platform</p>
+            </div>
+            <div class="testimonials-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card" data-aos="fade-right">
+                    <div class="testimonial-header">
+                        <div class="testimonial-image">
+                            <img src="frontend/images/testimonials/WhatsApp Image 2026-01-01 at 17.05.04.jpeg" alt="Sarah Wanjiku">
+                        </div>
+                        <div class="testimonial-name">
+                            <h4>JEY FOLIX</h4>
+                            <span>Member since 2025</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"I started with just KES 300 and now I earn over KES 15,000 monthly. Best decision I ever made!"</p>
+                        <div class="testimonial-meta">
+                            <span>Earned: KES 45,000</span>
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card" data-aos="fade-up">
+                    <div class="testimonial-header">
+                        <div class="testimonial-image">
+                            <img src="frontend/images/testimonials/WhatsApp_Image_2025-07-04_at_09.40.42__1_-removebg-preview.png" alt="John Omondi">
+                        </div>
+                        <div class="testimonial-name">
+                            <h4>BRIAN MWENDA</h4>
+                            <span>Member since 2025</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"I just share my link on WhatsApp and the money comes instantly. It's that simple!"</p>
+                        <div class="testimonial-meta">
+                            <span>Earned: KES 28,500</span>
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card" data-aos="fade-left">
+                    <div class="testimonial-header">
+                        <div class="testimonial-image">
+                            <img src="frontend/images/testimonials/WhatsApp Image 2026-01-08 at 12.09.32.jpeg" alt="Mary Akinyi">
+                        </div>
+                        <div class="testimonial-name">
+                            <h4>SYLVIA AKINYI</h4>
+                            <span>Member since 2026</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"The platform is so easy to use. I've already referred 50 people and counting!"</p>
+                        <div class="testimonial-meta">
+                            <span>Earned: KES 7,500</span>
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // dropdown for user icon (mobile/desktop)
-        const userIcon = document.querySelector('.user-icon');
-        const dropdown = document.querySelector('.dropdown-content');
-        if (userIcon) {
-            userIcon.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            });
-            document.addEventListener('click', (e) => {
-                if (!userIcon.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
-        }
+    <!-- FAQ -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about marketSystem</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>Is marketSystem legit?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! We've paid over KES 2M to our members. We're registered and verified in Kenya. All payments are processed instantly via M-PESA.</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question">
+                        <h3>How do I get paid?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Payments are sent directly to your M-PESA immediately when your referral registers. No waiting periods, no hidden fees!</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-question">
+                        <h3>How much can I earn?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>There's no limit! Each referral earns you KES 150. If you refer 10 people, you earn KES 1,500. Refer 100 people, earn KES 15,000! The sky's the limit.</p>
+                    </div>
+                </div>
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-question">
+                        <h3>Is there a registration fee?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, a one-time registration fee of KES 300 gives you lifetime access and your unique referral link. You'll earn this back with just 2 referrals!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // AOS
-        AOS.init({ duration: 600, once: true });
-    </script>
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content" data-aos="zoom-in">
+                <h2>Ready to Start Earning?</h2>
+                <p>Join thousands of Kenyans already earning with marketSystem</p>
+                <div class="cta-features">
+                    <span><i class="fas fa-check-circle"></i> KES 300 Only</span>
+                    <span><i class="fas fa-check-circle"></i> Instant Access</span>
+                    <span><i class="fas fa-check-circle"></i> Start Today</span>
+                </div>
+                <a href="frontend/register.html" class="btn-primary btn-large">Join marketSystem Now</a>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">30-Day Money-Back Guarantee</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer id="contact" class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-col"><span class="footer-logo">marketSystem</span><p>Kenya's most trusted affiliate network.</p><div class="social-links"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div></div>
-                <div class="footer-col"><h4>Links</h4><ul><li><a href="#">Features</a></li><li><a href="#">How it works</a></li><li><a href="#">Testimonials</a></li></ul></div>
-                <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Terms</a></li><li><a href="#">Privacy</a></li></ul></div>
-                <div class="footer-col"><h4>Contact</h4><ul><li><i class="fas fa-phone"></i> 0712 345 678</li><li><i class="fas fa-envelope"></i> support@marketsystem.co.ke</li></ul></div>
+                <div class="footer-col">
+                    <h3>market<span>System</span></h3>
+                    <p>Kenya's most trusted affiliate marketing platform. Start earning today!</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#testimonials">Success Stories</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> 0712 345 678</li>
+                        <li><i class="fas fa-envelope"></i> support@marketsystem.co.ke</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</li>
+                        <li><i class="fas fa-clock"></i> Mon-Sun: 24/7</li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-bottom">© 2025 marketSystem. All rights reserved.</div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 marketSystem. All rights reserved. | Made with <i class="fas fa-heart"></i> in Kenya</p>
+            </div>
         </div>
     </footer>
 
-    <!-- AOS script -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 50
+        });
+
+        // User dropdown click handler (for mobile)
+        const userIcon = document.getElementById('userMenuIcon');
+        const dropdown = document.getElementById('dropdownMenu');
+
+        userIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userIcon.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Close dropdown when clicking a link
+        dropdown.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                dropdown.style.display = 'none';
+            });
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
