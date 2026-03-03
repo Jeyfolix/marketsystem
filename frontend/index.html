@@ -338,7 +338,7 @@
             50% { transform: translateY(-5px); }
         }
 
-        /* Message */
+        /* Message - Styled to work with auth.js */
         .message {
             margin: 25px 0;
             padding: 15px 25px;
@@ -413,24 +413,6 @@
 
         .text-center a:hover::before {
             transform: scaleX(1);
-        }
-
-        /* Forgot password link (optional - can be added) */
-        .forgot-password {
-            text-align: right;
-            margin-top: -15px;
-            margin-bottom: 20px;
-        }
-
-        .forgot-password a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .forgot-password a:hover {
-            color: var(--gold);
         }
 
         /* Responsive */
@@ -515,7 +497,7 @@
             }
         }
 
-        /* Loading Spinner */
+        /* Loading Spinner - For auth.js loading states */
         .fa-spinner {
             animation: spin 1s linear infinite;
         }
@@ -546,6 +528,9 @@
             background: linear-gradient(135deg, #C850C0, #FFCC70);
         }
     </style>
+    
+    <!-- Keep original CSS link for any additional styles -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
@@ -573,11 +558,6 @@
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 </div>
                 
-                <!-- Optional: Add forgot password link -->
-                <div class="forgot-password">
-                    <a href="#">Forgot Password?</a>
-                </div>
-                
                 <button type="submit" class="btn btn-primary" id="loginBtn">
                     <i class="fas fa-sign-in-alt"></i>
                     Login
@@ -591,52 +571,8 @@
             </p>
         </div>
     </div>
-
-    <script>
-        // Form submission loading state
-        const form = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevent actual submission for demo
-                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-                loginBtn.disabled = true;
-                
-                // Simulate login process (remove this in production)
-                setTimeout(() => {
-                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-                    loginBtn.disabled = false;
-                    
-                    // Show demo message
-                    const message = document.getElementById('message');
-                    message.style.display = 'block';
-                    message.className = 'message success';
-                    message.textContent = 'Demo: Login successful! (This is a demo)';
-                    
-                    // Clear after 3 seconds
-                    setTimeout(() => {
-                        message.style.display = 'none';
-                    }, 3000);
-                }, 2000);
-            });
-        }
-
-        // Simple validation (optional)
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-
-        if (usernameInput && passwordInput) {
-            [usernameInput, passwordInput].forEach(input => {
-                input.addEventListener('input', function() {
-                    const message = document.getElementById('message');
-                    if (message.style.display === 'block' && message.classList.contains('error')) {
-                        message.style.display = 'none';
-                    }
-                });
-            });
-        }
-    </script>
+    
+    <!-- Keep original auth.js - NO CHANGES TO FUNCTIONALITY -->
     <script src="js/auth.js"></script>
 </body>
 </html>
