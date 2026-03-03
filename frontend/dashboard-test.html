@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .info { color: blue; }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .status-box {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .status-good {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .status-bad {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Dashboard API Test Page</h1>
+        <p>This page tests the connection to your dashboard API and helps identify issues.</p>
+
+        <div class="section">
+            <h3>1. Session Storage Check</h3>
+            <button onclick="checkSession()">Check Session Storage</button>
+            <pre id="sessionResult">Click button to check...</pre>
+        </div>
+
+        <div class="section">
+            <h3>2. API Connection Test</h3>
+            <button onclick="testAPIConnection()">Test API Connection</button>
+            <pre id="apiResult">Click button to test...</pre>
+        </div>
+
+        <div class="section">
+            <h3>3. Dashboard Data Fetch</h3>
+            <button onclick="fetchDashboardData()">Fetch Dashboard Data</button>
+            <pre id="dashboardResult">Click button to fetch...</pre>
+        </div>
+
+        <div class="section">
+            <h3>4. CORS Headers Check</h3>
+            <button onclick="checkCORS()">Check CORS Headers</button>
+            <pre id="corsResult">Click button to check...</pre>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://marketsystem-api.onrender.com/api/dashboard.php';
+        
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            element.innerHTML += `[${timestamp}] ${message}\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        function clearLog(elementId) {
+            document.getElementById(elementId).innerHTML = '';
+        }
+
+        function checkSession() {
+            clearLog('sessionResult');
+            const sessionData = sessionStorage.getItem('user');
+            
+            if (sessionData) {
+                try {
+                    const user = JSON.parse(sessionData);
+                    log('sessionResult', '✅ Session storage contains user data!');
+                    log('sessionResult', `User ID: ${user.id}`);
+                    log('sessionResult', `Username: ${user.username}`);
+                    log('sessionResult', `Name: ${user.name}`);
+                    log('sessionResult', `Email: ${user.email}`);
+                    log('sessionResult', `Full data: ${JSON.stringify(user, null, 2)}`);
+                } catch (e) {
+                    log('sessionResult', '❌ Session data is not valid JSON');
+                    log('sessionResult', `Raw data: ${sessionData}`);
+                }
+            } else {
+                log('sessionResult', '❌ No user data in session storage!');
+                log('sessionResult', 'You need to login first.');
+                log('sessionResult', '👉 Go to: <a href="index.html" target="_blank">Login Page</a>');
+            }
+        }
+
+        async function testAPIConnection() {
+            clearLog('apiResult');
+            log('apiResult', 'Testing API connection...');
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: 1 })
+                });
+                
+                log('apiResult', `✅ API reachable! Status: ${response.status} ${response.statusText}`);
+                
+                // Show headers
+                log('apiResult', '\nHeaders:');
+                for (let pair of response.headers.entries()) {
+                    if (pair[0].includes('access-control')) {
+                        log('apiResult', `  ${pair[0]}: ${pair[1]}`);
+                    }
+                }
+                
+                const data = await response.json();
+                log('apiResult', `\nResponse: ${JSON.stringify(data, null, 2)}`);
+                
+            } catch (error) {
+                log('apiResult', `❌ Connection failed: ${error.message}`);
+                log('apiResult', '\nPossible issues:');
+                log('apiResult', '1. API is down or unreachable');
+                log('apiResult', '2. CORS policy blocking the request');
+                log('apiResult', '3. Network connectivity issue');
+                log('apiResult', '4. Ad blocker or browser extension interfering');
+            }
+        }
+
+        async function fetchDashboardData() {
+            clearLog('dashboardResult');
+            
+            // Check session first
+            const sessionData = sessionStorage.getItem('user');
+            if (!sessionData) {
+                log('dashboardResult', '❌ No user logged in! Please login first.');
+                return;
+            }
+            
+            try {
+                const user = JSON.parse(sessionData);
+                log('dashboardResult', `Fetching data for user ID: ${user.id}`);
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: user.id })
+                });
+                
+                log('dashboardResult', `Status: ${response.status}`);
+                
+                const data = await response.json();
+                log('dashboardResult', `Response: ${JSON.stringify(data, null, 2)}`);
+                
+                if (data.success) {
+                    log('dashboardResult', '\n✅ Dashboard data loaded successfully!');
+                    log('dashboardResult', `Total Referrals: ${data.stats.total_referrals}`);
+                    log('dashboardResult', `Total Earnings: KES ${data.stats.total_earnings}`);
+                    log('dashboardResult', `Available Balance: KES ${data.stats.available_balance}`);
+                    log('dashboardResult', `Your Rank: ${data.stats.rank}`);
+                } else {
+                    log('dashboardResult', `\n❌ API Error: ${data.message}`);
+                }
+                
+            } catch (error) {
+                log('dashboardResult', `❌ Error: ${error.message}`);
+            }
+        }
+
+        async function checkCORS() {
+            clearLog('corsResult');
+            log('corsResult', 'Checking CORS configuration...');
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'content-type'
+                    }
+                });
+                
+                log('corsResult', `✅ CORS preflight successful! Status: ${response.status}`);
+                log('corsResult', '\nCORS Headers received:');
+                
+                let corsEnabled = false;
+                for (let pair of response.headers.entries()) {
+                    if (pair[0].includes('access-control')) {
+                        log('corsResult', `  ${pair[0]}: ${pair[1]}`);
+                        corsEnabled = true;
+                    }
+                }
+                
+                if (!corsEnabled) {
+                    log('corsResult', '  ⚠️ No CORS headers found!');
+                    log('corsResult', '\nThis usually means:');
+                    log('corsResult', '1. Server not configured for CORS');
+                    log('corsResult', '2. OPTIONS method not handled');
+                }
+                
+                // Test with actual request
+                log('corsResult', '\nTesting actual POST request...');
+                const postResponse = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: 1 })
+                });
+                
+                log('corsResult', `POST Status: ${postResponse.status}`);
+                
+            } catch (error) {
+                log('corsResult', `❌ CORS check failed: ${error.message}`);
+                log('corsResult', '\nThis is likely a CORS configuration issue.');
+                log('corsResult', 'Make sure your backend API has these headers:');
+                log('corsResult', '  Access-Control-Allow-Origin: *');
+                log('corsResult', '  Access-Control-Allow-Methods: POST, OPTIONS');
+                log('corsResult', '  Access-Control-Allow-Headers: Content-Type');
+            }
+        }
+
+        // Auto-run session check on page load
+        window.addEventListener('load', checkSession);
+    </script>
+</body>
+</html>
