@@ -843,55 +843,118 @@
 <body>
     <!-- Navigation -->
 <nav class="navbar" style="background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 70px;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 100%; display: flex; justify-content: space-between; align-items: center;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 15px; height: 100%; display: flex; justify-content: space-between; align-items: center;">
         <div class="logo">
-            <h2 style="margin: 0; font-size: 24px; color: #4158D0; font-weight: 700;">MarketSystem</h2>
+            <h2 style="margin: 0; font-size: 20px; color: #4158D0; font-weight: 700; white-space: nowrap;">MarketSystem</h2>
         </div>
         
         <!-- Desktop Navigation -->
-        <div style="display: flex; align-items: center; gap: 30px;">
-            <div style="display: flex; gap: 25px; margin-right: 20px;">
-                <a href="#home" style="color: #333; text-decoration: none; font-weight: 500;">Home</a>
-                <a href="#features" style="color: #333; text-decoration: none; font-weight: 500;">Features</a>
-                <a href="#how-it-works" style="color: #333; text-decoration: none; font-weight: 500;">How It Works</a>
-                <a href="#testimonials" style="color: #333; text-decoration: none; font-weight: 500;">Success Stories</a>
-                <a href="#faq" style="color: #333; text-decoration: none; font-weight: 500;">FAQ</a>
+        <div style="display: flex; align-items: center; gap: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;">
+            <div style="display: flex; gap: 15px; margin-right: 15px; white-space: nowrap;">
+                <a href="#home" style="color: #333; text-decoration: none; font-weight: 500; font-size: 14px;">Home</a>
+                <a href="#features" style="color: #333; text-decoration: none; font-weight: 500; font-size: 14px;">Features</a>
+                <a href="#how-it-works" style="color: #333; text-decoration: none; font-weight: 500; font-size: 14px;">How It Works</a>
+                <a href="#testimonials" style="color: #333; text-decoration: none; font-weight: 500; font-size: 14px;">Success Stories</a>
+                <a href="#faq" style="color: #333; text-decoration: none; font-weight: 500; font-size: 14px;">FAQ</a>
             </div>
             
-            <div style="display: flex; gap: 15px; align-items: center;">
+            <div style="display: flex; gap: 10px; align-items: center; white-space: nowrap;">
                 <!-- Colorful Login Button -->
-                <a href="frontend/index.html" style="padding: 8px 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; font-weight: 600; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(102,126,234,0.3);">Login</a>
+                <a href="frontend/index.html" style="padding: 6px 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; font-weight: 600; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(102,126,234,0.3); font-size: 13px;">Login</a>
                 
                 <!-- Colorful Register Button -->
-                <a href="frontend/register.html" style="padding: 8px 20px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; text-decoration: none; font-weight: 600; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255,215,0,0.3);">Register</a>
+                <a href="frontend/register.html" style="padding: 6px 15px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; text-decoration: none; font-weight: 600; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255,215,0,0.3); font-size: 13px;">Register</a>
                 
                 <!-- User Icon with Dropdown -->
                 <div class="user-dropdown" style="position: relative; display: inline-block;">
-                    <div class="user-icon" id="userMenuIcon" style="width: 38px; height: 38px; background: linear-gradient(135deg, #4158D0, #C850C0); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 10px rgba(65,88,208,0.3);">
-                        <i class="fas fa-user" style="color: white; font-size: 16px;"></i>
+                    <div class="user-icon" id="userMenuIcon" style="width: 34px; height: 34px; background: linear-gradient(135deg, #4158D0, #C850C0); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 10px rgba(65,88,208,0.3); flex-shrink: 0;">
+                        <i class="fas fa-user" style="color: white; font-size: 14px;"></i>
                     </div>
                     
                     <!-- Dropdown Menu -->
-                    <div id="dropdownMenu" style="display: none; position: absolute; top: 50px; right: 0; background: white; min-width: 220px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 8px 0; z-index: 1000;">
-                        <a href="#home" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-home" style="margin-right: 10px; color: #4158D0;"></i> Home</a>
-                        <a href="#features" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-star" style="margin-right: 10px; color: #FFD700;"></i> Features</a>
-                        <a href="#how-it-works" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-play-circle" style="margin-right: 10px; color: #C850C0;"></i> How It Works</a>
-                        <a href="#testimonials" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-comment" style="margin-right: 10px; color: #FF6B6B;"></i> Success Stories</a>
-                        <a href="#faq" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-question-circle" style="margin-right: 10px; color: #4CAF50;"></i> FAQ</a>
+                    <div id="dropdownMenu" style="display: none; position: absolute; top: 45px; right: 0; background: white; min-width: 200px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 8px 0; z-index: 1000;">
+                        <a href="#home" style="display: block; padding: 10px 15px; color: #333; text-decoration: none; font-size: 13px;"><i class="fas fa-home" style="margin-right: 8px; color: #4158D0;"></i> Home</a>
+                        <a href="#features" style="display: block; padding: 10px 15px; color: #333; text-decoration: none; font-size: 13px;"><i class="fas fa-star" style="margin-right: 8px; color: #FFD700;"></i> Features</a>
+                        <a href="#how-it-works" style="display: block; padding: 10px 15px; color: #333; text-decoration: none; font-size: 13px;"><i class="fas fa-play-circle" style="margin-right: 8px; color: #C850C0;"></i> How It Works</a>
+                        <a href="#testimonials" style="display: block; padding: 10px 15px; color: #333; text-decoration: none; font-size: 13px;"><i class="fas fa-comment" style="margin-right: 8px; color: #FF6B6B;"></i> Success Stories</a>
+                        <a href="#faq" style="display: block; padding: 10px 15px; color: #333; text-decoration: none; font-size: 13px;"><i class="fas fa-question-circle" style="margin-right: 8px; color: #4CAF50;"></i> FAQ</a>
                         <div style="height: 1px; background: #eee; margin: 5px 0;"></div>
-                        <a href="frontend/index.html" style="display: block; padding: 10px 20px; color: #4158D0; text-decoration: none; transition: all 0.2s; font-size: 14px; font-weight: 600;"><i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Login</a>
-                        <a href="frontend/register.html" style="display: block; padding: 10px 20px; color: #FFA500; text-decoration: none; transition: all 0.2s; font-size: 14px; font-weight: 600;"><i class="fas fa-user-plus" style="margin-right: 10px;"></i> Register</a>
+                        <a href="frontend/index.html" style="display: block; padding: 10px 15px; color: #4158D0; text-decoration: none; font-size: 13px; font-weight: 600;"><i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> Login</a>
+                        <a href="frontend/register.html" style="display: block; padding: 10px 15px; color: #FFA500; text-decoration: none; font-size: 13px; font-weight: 600;"><i class="fas fa-user-plus" style="margin-right: 8px;"></i> Register</a>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Mobile Menu Button -->
+        <!-- Mobile Menu Button (Hidden by default) -->
         <div style="display: none;" class="mobile-menu-btn">
             <i class="fas fa-bars" style="font-size: 24px; color: #4158D0; cursor: pointer;"></i>
         </div>
     </div>
 </nav>
+
+<!-- Add this style tag to hide scrollbar and enable horizontal scrolling -->
+<style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .navbar div[style*="overflow-x: auto"]::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .navbar div[style*="overflow-x: auto"] {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+<!-- Add Font Awesome if not already present -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Simple dropdown script -->
+<script>
+    // Simple direct approach - no DOMContentLoaded needed if script is at the end of body
+    (function() {
+        // Get elements
+        var userIcon = document.getElementById('userMenuIcon');
+        var dropdown = document.getElementById('dropdownMenu');
+        
+        // Check if elements exist
+        if (userIcon && dropdown) {
+            console.log('Dropdown script initialized');
+            
+            // Add click event to user icon
+            userIcon.onclick = function(event) {
+                event.stopPropagation();
+                console.log('Icon clicked');
+                
+                // Toggle dropdown
+                if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                    dropdown.style.display = 'block';
+                    console.log('Dropdown opened');
+                } else {
+                    dropdown.style.display = 'none';
+                    console.log('Dropdown closed');
+                }
+            };
+            
+            // Close dropdown when clicking anywhere else
+            document.onclick = function() {
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                    console.log('Dropdown closed by outside click');
+                }
+            };
+            
+            // Prevent closing when clicking inside dropdown
+            dropdown.onclick = function(event) {
+                event.stopPropagation();
+                console.log('Clicked inside dropdown');
+            };
+        } else {
+            console.log('Elements not found:', {userIcon: !!userIcon, dropdown: !!dropdown});
+        }
+    })();
+</script>
 
 <!-- Add this CSS for responsive design and dropdown -->
 <style>
