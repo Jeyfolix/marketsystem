@@ -1478,69 +1478,86 @@
 </style>
 
 <!-- FAQ Section -->
-<section id="faq" class="faq" style="padding: 100px 0; background: linear-gradient(135deg, #4158D0, #C850C0); position: relative; overflow: hidden;">
+<!-- FAQ Section -->
+<section id="faq" class="faq" style="padding: 100px 0; background: linear-gradient(135deg, #4158D0, #C850C0); position: relative; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;">
     <!-- Background decoration -->
-    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; pointer-events: none;">
         <div style="position: absolute; width: 400px; height: 400px; background: white; border-radius: 50%; top: -200px; right: -100px;"></div>
         <div style="position: absolute; width: 300px; height: 300px; background: white; border-radius: 50%; bottom: -150px; left: -50px;"></div>
     </div>
     
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; min-width: min(100%, 300px);">
         <!-- Section Header -->
         <div style="text-align: center; margin-bottom: 60px;" data-aos="fade-up">
-            <span style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase;">Got Questions?</span>
-            <h2 style="font-size: clamp(32px, 5vw, 42px); font-weight: 800; margin: 0 0 15px; color: white; text-shadow: 2px 2px 20px rgba(0,0,0,0.2);">Frequently Asked Questions</h2>
-            <p style="font-size: clamp(16px, 2vw, 18px); color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto; line-height: 1.6;">Everything you need to know about marketSystem</p>
+            <span style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; white-space: nowrap;">Got Questions?</span>
+            <h2 style="font-size: clamp(32px, 5vw, 42px); font-weight: 800; margin: 0 0 15px; color: white; text-shadow: 2px 2px 20px rgba(0,0,0,0.2); white-space: normal;">Frequently Asked Questions</h2>
+            <p style="font-size: clamp(16px, 2vw, 18px); color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto; line-height: 1.6; white-space: normal;">Everything you need to know about marketSystem</p>
         </div>
         
-        <!-- FAQ Grid -->
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px;">
+        <!-- FAQ Grid - Now horizontally scrollable on mobile -->
+        <div style="display: flex; flex-direction: row; flex-wrap: nowrap; gap: 25px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; padding: 10px 0 30px;">
             <!-- FAQ Item 1 -->
-            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s;" data-aos="fade-up">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <div style="width: 50px; height: 50px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; min-width: 300px; max-width: 450px; flex: 0 0 auto;" data-aos="fade-up">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-shrink: 0;">
+                    <div style="width: 50px; height: 50px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fas fa-shield-alt" style="font-size: 24px; color: #333;"></i>
                     </div>
-                    <h3 style="font-size: 20px; font-weight: 700; color: white; margin: 0;">Is marketSystem legit?</h3>
+                    <h3 style="font-size: 20px; font-weight: 700; color: white; margin: 0; white-space: normal;">Is marketSystem legit?</h3>
                 </div>
-                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.7; margin: 0;">Absolutely! We've paid over KES 2M to our members. We're registered and verified in Kenya. All payments are processed instantly via M-PESA.</p>
+                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.7; margin: 0; white-space: normal;">Absolutely! We've paid over KES 2M to our members. We're registered and verified in Kenya. All payments are processed instantly via M-PESA.</p>
             </div>
             
             <!-- FAQ Item 2 -->
-            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s;" data-aos="fade-up" data-aos-delay="100">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <div style="width: 50px; height: 50px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; min-width: 300px; max-width: 450px; flex: 0 0 auto;" data-aos="fade-up" data-aos-delay="100">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-shrink: 0;">
+                    <div style="width: 50px; height: 50px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fas fa-money-bill-wave" style="font-size: 24px; color: #333;"></i>
                     </div>
-                    <h3 style="font-size: 20px; font-weight: 700; color: white; margin: 0;">How do I get paid?</h3>
+                    <h3 style="font-size: 20px; font-weight: 700; color: white; margin: 0; white-space: normal;">How do I get paid?</h3>
                 </div>
-                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.7; margin: 0;">Payments are sent directly to your M-PESA immediately when your referral registers. No waiting periods, no hidden fees!</p>
+                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.7; margin: 0; white-space: normal;">Payments are sent directly to your M-PESA immediately when your referral registers. No waiting periods, no hidden fees!</p>
             </div>
             
             <!-- FAQ Item 3 -->
-            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s;" data-aos="fade-up" data-aos-delay="200">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <div style="width: 50px; height: 50px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; min-width: 300px; max-width: 450px; flex: 0 0 auto;" data-aos="fade-up" data-aos-delay="200">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-shrink: 0;">
+                    <div style="width: 50px; height: 50px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fas fa-chart-line" style="font-size: 24px; color: #333;"></i>
                     </div>
-                    <h3 style="font-size: 20px; font-weight: 700; color: white; margin: 0;">How much can I earn?</h3>
+                    <h3 style="font-size: 20px; font-weight: 700; color: white; margin: 0; white-space: normal;">How much can I earn?</h3>
                 </div>
-                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.7; margin: 0;">There's no limit! Each referral earns you KES 150. If you refer 10 people, you earn KES 1,500. Refer 100 people, earn KES 15,000! The sky's the limit.</p>
+                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.7; margin: 0; white-space: normal;">There's no limit! Each referral earns you KES 150. If you refer 10 people, you earn KES 1,500. Refer 100 people, earn KES 15,000! The sky's the limit.</p>
             </div>
             
             <!-- FAQ Item 4 -->
-            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s;" data-aos="fade-up" data-aos-delay="300">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <div style="width: 50px; height: 50px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; min-width: 300px; max-width: 450px; flex: 0 0 auto;" data-aos="fade-up" data-aos-delay="300">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; flex-shrink: 0;">
+                    <div style="width: 50px; height: 50px; background: #FFD700; border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fas fa-wallet" style="font-size: 24px; color: #333;"></i>
                     </div>
-                    <h3 style="font-size: 20px; font-weight: 700; color: white; margin: 0;">Is there a registration fee?</h3>
+                    <h3 style="font-size: 20px; font-weight: 700; color: white; margin: 0; white-space: normal;">Is there a registration fee?</h3>
                 </div>
-                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.7; margin: 0;">Yes, a one-time registration fee of KES 300 gives you lifetime access and your unique referral link. You'll earn this back with just 2 referrals!</p>
+                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.7; margin: 0; white-space: normal;">Yes, a one-time registration fee of KES 300 gives you lifetime access and your unique referral link. You'll earn this back with just 2 referrals!</p>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Add to existing style block -->
+<style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .faq::-webkit-scrollbar,
+    .faq div[style*="overflow-x: auto"]::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .faq,
+    .faq div[style*="overflow-x: auto"] {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
 
 <!-- CTA Section -->
 <section class="cta" style="padding: 100px 0; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); position: relative; overflow: hidden;">
