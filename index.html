@@ -841,39 +841,127 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <h2>marketSystem</h2>
+<nav class="navbar" style="background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 70px;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 100%; display: flex; justify-content: space-between; align-items: center;">
+        <div class="logo">
+            <h2 style="margin: 0; font-size: 24px; color: #4158D0; font-weight: 700;">MarketSystem</h2>
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <div style="display: flex; align-items: center; gap: 30px;">
+            <div style="display: flex; gap: 25px; margin-right: 20px;">
+                <a href="#home" style="color: #333; text-decoration: none; font-weight: 500;">Home</a>
+                <a href="#features" style="color: #333; text-decoration: none; font-weight: 500;">Features</a>
+                <a href="#how-it-works" style="color: #333; text-decoration: none; font-weight: 500;">How It Works</a>
+                <a href="#testimonials" style="color: #333; text-decoration: none; font-weight: 500;">Success Stories</a>
+                <a href="#faq" style="color: #333; text-decoration: none; font-weight: 500;">FAQ</a>
             </div>
-            <div class="nav-actions">
-                <div class="auth-buttons">
-                    <a href="frontend/index.html" class="btn-login">Login</a>
-                    <a href="frontend/register.html" class="btn-register">Register</a>
-                </div>
-                <div class="user-dropdown" id="userDropdown">
-                    <div class="user-icon" id="userMenuIcon">
-                        <i class="fas fa-user"></i>
+            
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <!-- Colorful Login Button -->
+                <a href="frontend/index.html" style="padding: 8px 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; font-weight: 600; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(102,126,234,0.3);">Login</a>
+                
+                <!-- Colorful Register Button -->
+                <a href="frontend/register.html" style="padding: 8px 20px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; text-decoration: none; font-weight: 600; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255,215,0,0.3);">Register</a>
+                
+                <!-- User Icon with Dropdown -->
+                <div class="user-dropdown" style="position: relative; display: inline-block;">
+                    <div class="user-icon" id="userMenuIcon" style="width: 38px; height: 38px; background: linear-gradient(135deg, #4158D0, #C850C0); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 10px rgba(65,88,208,0.3);">
+                        <i class="fas fa-user" style="color: white; font-size: 16px;"></i>
                     </div>
-                    <div class="dropdown-content" id="dropdownMenu">
-                        <a href="#home"><i class="fas fa-home"></i> Home</a>
-                        <a href="#features"><i class="fas fa-star"></i> Features</a>
-                        <a href="#how-it-works"><i class="fas fa-play-circle"></i> How It Works</a>
-                        <a href="#testimonials"><i class="fas fa-comment"></i> Success Stories</a>
-                        <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
-                        <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="frontend/index.html"><i class="fas fa-sign-in-alt"></i> Login</a>
-                        <a href="frontend/register.html"><i class="fas fa-user-plus"></i> Register</a>
-                        <a href="#"><i class="fas fa-headset"></i> Help</a>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="dropdownMenu" style="display: none; position: absolute; top: 50px; right: 0; background: white; min-width: 220px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 8px 0; z-index: 1000;">
+                        <a href="#home" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-home" style="margin-right: 10px; color: #4158D0;"></i> Home</a>
+                        <a href="#features" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-star" style="margin-right: 10px; color: #FFD700;"></i> Features</a>
+                        <a href="#how-it-works" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-play-circle" style="margin-right: 10px; color: #C850C0;"></i> How It Works</a>
+                        <a href="#testimonials" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-comment" style="margin-right: 10px; color: #FF6B6B;"></i> Success Stories</a>
+                        <a href="#faq" style="display: block; padding: 10px 20px; color: #333; text-decoration: none; transition: all 0.2s; font-size: 14px;"><i class="fas fa-question-circle" style="margin-right: 10px; color: #4CAF50;"></i> FAQ</a>
+                        <div style="height: 1px; background: #eee; margin: 5px 0;"></div>
+                        <a href="frontend/index.html" style="display: block; padding: 10px 20px; color: #4158D0; text-decoration: none; transition: all 0.2s; font-size: 14px; font-weight: 600;"><i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i> Login</a>
+                        <a href="frontend/register.html" style="display: block; padding: 10px 20px; color: #FFA500; text-decoration: none; transition: all 0.2s; font-size: 14px; font-weight: 600;"><i class="fas fa-user-plus" style="margin-right: 10px;"></i> Register</a>
                     </div>
                 </div>
             </div>
         </div>
-    </nav>
+        
+        <!-- Mobile Menu Button -->
+        <div style="display: none;" class="mobile-menu-btn">
+            <i class="fas fa-bars" style="font-size: 24px; color: #4158D0; cursor: pointer;"></i>
+        </div>
+    </div>
+</nav>
 
-   <!-- Hero Section -->
-<section id="home" class="hero" style="background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%); padding: 80px 0; min-height: 600px; display: flex; align-items: center; position: relative; overflow: hidden;">
+<!-- Add this CSS for responsive design and dropdown -->
+<style>
+    /* Responsive Navigation */
+    @media screen and (max-width: 768px) {
+        .navbar > div > div:first-of-type {
+            display: none !important;
+        }
+        
+        .mobile-menu-btn {
+            display: block !important;
+        }
+        
+        .navbar > div > div:last-of-type {
+            display: none !important;
+        }
+        
+        /* Mobile menu active state */
+        .mobile-menu-active {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex !important;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .mobile-menu-active a {
+            padding: 10px 0;
+        }
+        
+        .mobile-menu-active div:last-of-type {
+            display: flex !important;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .mobile-menu-active div:last-of-type a {
+            text-align: center;
+        }
+    }
+    
+    /* Dropdown hover effects */
+    .user-dropdown:hover .user-icon {
+        transform: scale(1.05);
+    }
+    
+    #dropdownMenu a:hover {
+        background-color: #f8f9fa;
+        padding-left: 25px !important;
+    }
+    
+    /* Button hover effects */
+    a[href="frontend/index.html"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102,126,234,0.4) !important;
+    }
+    
+    a[href="frontend/register.html"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255,215,0,0.4) !important;
+    }
+</style>
+
+<!-- Previous Hero Section (unchanged) -->
+<section id="home" class="hero" style="background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%); padding: 100px 0 80px; min-height: 600px; display: flex; align-items: center; position: relative; overflow: hidden; margin-top: 70px;">
     <!-- Animated background elements -->
     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1;">
         <div style="position: absolute; width: 300px; height: 300px; background: white; border-radius: 50%; top: -150px; right: -150px;"></div>
@@ -882,51 +970,93 @@
     
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%; position: relative;">
         <div style="max-width: 800px; margin: 0 auto; text-align: center;" data-aos="fade-up">
-            <h1 style="color: white; font-size: 56px; font-weight: 800; line-height: 1.2; margin: 0 0 25px; text-shadow: 2px 2px 20px rgba(0,0,0,0.2);">
+            <h1 style="color: white; font-size: clamp(32px, 8vw, 56px); font-weight: 800; line-height: 1.2; margin: 0 0 25px; text-shadow: 2px 2px 20px rgba(0,0,0,0.2);">
                 Turn Your Network Into 
                 <span style="background: linear-gradient(45deg, #FFD700, #FFA500, #FF6B6B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">Income</span>
             </h1>
             
-            <p style="color: rgba(255,255,255,0.95); font-size: 22px; line-height: 1.6; margin: 0 0 45px; font-weight: 300; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <p style="color: rgba(255,255,255,0.95); font-size: clamp(16px, 4vw, 22px); line-height: 1.6; margin: 0 0 45px; font-weight: 300; max-width: 600px; margin-left: auto; margin-right: auto; padding: 0 15px;">
                 Join thousands of Kenyans earning daily by simply referring friends. No experience needed!
             </p>
             
-            <div style="display: flex; justify-content: center; gap: 70px; margin: 0 0 45px; background: rgba(255,255,255,0.1); padding: 25px 40px; border-radius: 60px; backdrop-filter: blur(10px; -webkit-backdrop-filter: blur(10px)); max-width: 700px; margin-left: auto; margin-right: auto;">
-                <div>
-                    <div style="color: white; font-size: 42px; font-weight: 800; margin-bottom: 5px; line-height: 1;">10K+</div>
-                    <div style="color: rgba(255,255,255,0.9); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Active Members</div>
+            <!-- Responsive Stats Panel -->
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: clamp(20px, 4vw, 70px); margin: 0 0 45px; background: rgba(255,255,255,0.1); padding: clamp(15px, 3vw, 25px) clamp(20px, 4vw, 40px); border-radius: 60px; backdrop-filter: blur(10px); max-width: 700px; margin-left: auto; margin-right: auto;">
+                <div style="text-align: center; min-width: 100px;">
+                    <div style="color: white; font-size: clamp(28px, 5vw, 42px); font-weight: 800; margin-bottom: 5px; line-height: 1;">10K+</div>
+                    <div style="color: rgba(255,255,255,0.9); font-size: clamp(12px, 2vw, 14px); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Active Members</div>
                 </div>
-                <div style="width: 2px; height: 50px; background: rgba(255,255,255,0.3); align-self: center;"></div>
-                <div>
-                    <div style="color: white; font-size: 42px; font-weight: 800; margin-bottom: 5px; line-height: 1;">KES 2M+</div>
-                    <div style="color: rgba(255,255,255,0.9); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Paid Out</div>
+                <div style="width: 2px; height: 50px; background: rgba(255,255,255,0.3); align-self: center; display: none; @media (min-width: 768px) { display: block; }"></div>
+                <div style="text-align: center; min-width: 100px;">
+                    <div style="color: white; font-size: clamp(28px, 5vw, 42px); font-weight: 800; margin-bottom: 5px; line-height: 1;">KES 2M+</div>
+                    <div style="color: rgba(255,255,255,0.9); font-size: clamp(12px, 2vw, 14px); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Paid Out</div>
                 </div>
-                <div style="width: 2px; height: 50px; background: rgba(255,255,255,0.3); align-self: center;"></div>
-                <div>
-                    <div style="color: white; font-size: 42px; font-weight: 800; margin-bottom: 5px; line-height: 1;">4.8★</div>
-                    <div style="color: rgba(255,255,255,0.9); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">User Rating</div>
+                <div style="width: 2px; height: 50px; background: rgba(255,255,255,0.3); align-self: center; display: none; @media (min-width: 768px) { display: block; }"></div>
+                <div style="text-align: center; min-width: 100px;">
+                    <div style="color: white; font-size: clamp(28px, 5vw, 42px); font-weight: 800; margin-bottom: 5px; line-height: 1;">4.8★</div>
+                    <div style="color: rgba(255,255,255,0.9); font-size: clamp(12px, 2vw, 14px); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">User Rating</div>
                 </div>
             </div>
             
-            <div style="margin: 0 0 40px; display: flex; justify-content: center; gap: 20px;">
-                <a href="frontend/register.html" style="display: inline-block; background: white; color: #4158D0; padding: 18px 50px; border-radius: 60px; font-size: 20px; font-weight: 700; text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3); transform: translateY(0);">Start Earning Now →</a>
-                <a href="#how-it-works" style="display: inline-block; background: rgba(255,255,255,0.15); color: white; padding: 18px 40px; border-radius: 60px; font-size: 20px; font-weight: 600; text-decoration: none; border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s; cursor: pointer; backdrop-filter: blur(5px);">Watch Demo</a>
+            <!-- Responsive CTA Buttons -->
+            <div style="margin: 0 0 40px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 15px;">
+                <a href="frontend/register.html" style="display: inline-block; background: white; color: #4158D0; padding: clamp(14px, 3vw, 18px) clamp(30px, 5vw, 50px); border-radius: 60px; font-size: clamp(16px, 3vw, 20px); font-weight: 700; text-decoration: none; transition: all 0.3s; border: none; cursor: pointer; box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3); white-space: nowrap;">Start Earning Now →</a>
+                <a href="#how-it-works" style="display: inline-block; background: rgba(255,255,255,0.15); color: white; padding: clamp(14px, 3vw, 18px) clamp(25px, 4vw, 40px); border-radius: 60px; font-size: clamp(16px, 3vw, 20px); font-weight: 600; text-decoration: none; border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s; cursor: pointer; backdrop-filter: blur(5px); white-space: nowrap;">Watch Demo</a>
             </div>
             
-            <div style="display: flex; justify-content: center; gap: 50px;">
-                <span style="color: rgba(255,255,255,0.95); font-size: 16px; display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-shield-alt" style="color: #FFD700; font-size: 20px;"></i> Secure Payments
+            <!-- Responsive Trust Badges -->
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: clamp(15px, 3vw, 50px);">
+                <span style="color: rgba(255,255,255,0.95); font-size: clamp(14px, 2.5vw, 16px); display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-shield-alt" style="color: #FFD700; font-size: clamp(16px, 2.5vw, 20px);"></i> Secure Payments
                 </span>
-                <span style="color: rgba(255,255,255,0.95); font-size: 16px; display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-clock" style="color: #FFD700; font-size: 20px;"></i> Instant Commissions
+                <span style="color: rgba(255,255,255,0.95); font-size: clamp(14px, 2.5vw, 16px); display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-clock" style="color: #FFD700; font-size: clamp(16px, 2.5vw, 20px);"></i> Instant Commissions
                 </span>
-                <span style="color: rgba(255,255,255,0.95); font-size: 16px; display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-headset" style="color: #FFD700; font-size: 20px;"></i> 24/7 Support
+                <span style="color: rgba(255,255,255,0.95); font-size: clamp(14px, 2.5vw, 16px); display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-headset" style="color: #FFD700; font-size: clamp(16px, 2.5vw, 20px);"></i> 24/7 Support
                 </span>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Updated JavaScript for mobile menu and dropdown -->
+<script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const desktopNav = document.querySelector('.navbar > div > div:first-of-type');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                if (desktopNav) {
+                    desktopNav.classList.toggle('mobile-menu-active');
+                }
+            });
+        }
+        
+        // Dropdown functionality
+        const userIcon = document.getElementById('userMenuIcon');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        
+        if (userIcon && dropdownMenu) {
+            userIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+                    dropdownMenu.style.display = 'block';
+                } else {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!userIcon.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
 
     <!-- Features Section -->
     <section id="features" class="features">
