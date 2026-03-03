@@ -1221,10 +1221,8 @@
             offset: 50
         });
 
-        // API Base URL
-        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://localhost/marketSystem/backend/api'
-            : 'https://marketsystem-api.onrender.com/api';
+        // API Base URL - FIXED: Using relative path for local development
+        const API_BASE_URL = '/marketSystem/backend/api';
 
         // Get user data from session
         const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
@@ -1244,16 +1242,20 @@
                     body: JSON.stringify({ user_id: userData.id })
                 });
 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
 
                 if (data.success) {
                     updateDashboardUI(data);
                 } else {
-                    showError('Failed to load dashboard data');
+                    showError(data.message || 'Failed to load dashboard data');
                 }
             } catch (error) {
                 console.error('Error loading dashboard:', error);
-                showError('Connection error. Please refresh the page.');
+                showError('Connection error. Please check if the backend server is running.');
             }
         }
 
@@ -1307,7 +1309,7 @@
                 </div>
                 <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-                    <div class="stat-value" style="color: ${stats.rank_color};">${stats.rank}</div>
+                    <div class="stat-value" style="color: ${stats.rank_color || '#f59e0b'};">${stats.rank || 'Bronze'}</div>
                     <div class="stat-label">Your Rank</div>
                 </div>
             `;
@@ -1315,7 +1317,7 @@
             // Update recent referrals
             const activityList = document.getElementById('recentActivity');
             
-            if (referrals.length === 0) {
+            if (!referrals || referrals.length === 0) {
                 activityList.innerHTML = `
                     <div class="activity-item">
                         <div class="activity-avatar"><i class="fas fa-user-plus"></i></div>
@@ -1461,7 +1463,6 @@
             }
             
             if (confirm(`Withdraw KES ${amount} to your M-PESA?`)) {
-                // Here you would call an API to process withdrawal
                 alert('Withdrawal request submitted! You will receive payment within 24 hours.');
             }
         }
