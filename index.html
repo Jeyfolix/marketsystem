@@ -1123,56 +1123,72 @@
 </script>
 
     <!-- Features Section -->
-<section id="features" class="features" style="padding: 100px 0; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); position: relative; overflow: hidden;">
+<section id="features" class="features" style="padding: 100px 0; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); position: relative; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;">
     <!-- Background decoration matching hero section -->
-    <div style="position: absolute; top: 0; right: 0; width: 300px; height: 300px; background: linear-gradient(135deg, #4158D0, #C850C0); opacity: 0.03; border-radius: 50%; transform: translate(150px, -150px);"></div>
-    <div style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background: linear-gradient(135deg, #FFD700, #FFA500); opacity: 0.03; border-radius: 50%; transform: translate(-150px, 150px);"></div>
+    <div style="position: absolute; top: 0; right: 0; width: 300px; height: 300px; background: linear-gradient(135deg, #4158D0, #C850C0); opacity: 0.03; border-radius: 50%; transform: translate(150px, -150px); pointer-events: none;"></div>
+    <div style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background: linear-gradient(135deg, #FFD700, #FFA500); opacity: 0.03; border-radius: 50%; transform: translate(-150px, 150px); pointer-events: none;"></div>
     
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; min-width: min(100%, 300px);">
         <!-- Section Header -->
         <div style="text-align: center; margin-bottom: 60px;" data-aos="fade-up">
-            <span style="display: inline-block; background: linear-gradient(135deg, #4158D0, #C850C0); color: white; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase;">Why Choose Us</span>
-            <h2 style="font-size: clamp(32px, 5vw, 42px); font-weight: 800; margin: 0 0 15px; background: linear-gradient(135deg, #4158D0, #C850C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Why Choose MarketSystem?</h2>
-            <p style="font-size: clamp(16px, 2vw, 18px); color: #666; max-width: 600px; margin: 0 auto; line-height: 1.6;">Discover the advantages that make us Kenya's leading affiliate platform</p>
+            <span style="display: inline-block; background: linear-gradient(135deg, #4158D0, #C850C0); color: white; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; white-space: nowrap;">Why Choose Us</span>
+            <h2 style="font-size: clamp(32px, 5vw, 42px); font-weight: 800; margin: 0 0 15px; background: linear-gradient(135deg, #4158D0, #C850C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; white-space: normal;">Why Choose MarketSystem?</h2>
+            <p style="font-size: clamp(16px, 2vw, 18px); color: #666; max-width: 600px; margin: 0 auto; line-height: 1.6; white-space: normal;">Discover the advantages that make us Kenya's leading affiliate platform</p>
         </div>
         
-        <!-- Features Grid -->
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 20px;">
+        <!-- Features Grid - Now horizontally scrollable on mobile -->
+        <div style="display: flex; flex-direction: row; flex-wrap: nowrap; gap: 30px; margin-top: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; padding: 10px 0 20px;">
             <!-- Feature Card 1 -->
-            <div style="background: white; border-radius: 30px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.05); transition: all 0.3s; border: 1px solid rgba(65,88,208,0.1); position: relative; overflow: hidden;" data-aos="fade-up">
+            <div style="background: white; border-radius: 30px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.05); transition: all 0.3s; border: 1px solid rgba(65,88,208,0.1); position: relative; overflow: hidden; min-width: 280px; max-width: 350px; flex: 0 0 auto;" data-aos="fade-up">
                 <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #4158D0, #C850C0);"></div>
-                <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #4158D0, #C850C0); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; box-shadow: 0 15px 25px rgba(65,88,208,0.2);">
+                <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #4158D0, #C850C0); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; box-shadow: 0 15px 25px rgba(65,88,208,0.2); flex-shrink: 0;">
                     <i class="fas fa-percent" style="font-size: 40px; color: white;"></i>
                 </div>
-                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: #333;">50% Commission</h3>
-                <p style="font-size: 16px; color: #666; line-height: 1.6; margin: 0 0 20px;">Earn up to 50% commission on every referral. The more you refer, the more you earn!</p>
-                <div style="display: inline-block; background: linear-gradient(135deg, #4158D0, #C850C0); color: white; padding: 8px 25px; border-radius: 50px; font-size: 16px; font-weight: 600;">KES 150 per referral</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: #333; white-space: normal;">50% Commission</h3>
+                <p style="font-size: 16px; color: #666; line-height: 1.6; margin: 0 0 20px; white-space: normal;">Earn up to 50% commission on every referral. The more you refer, the more you earn!</p>
+                <div style="display: inline-block; background: linear-gradient(135deg, #4158D0, #C850C0); color: white; padding: 8px 25px; border-radius: 50px; font-size: 16px; font-weight: 600; white-space: nowrap;">KES 150 per referral</div>
             </div>
             
             <!-- Feature Card 2 -->
-            <div style="background: white; border-radius: 30px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.05); transition: all 0.3s; border: 1px solid rgba(200,80,192,0.1); position: relative; overflow: hidden;" data-aos="fade-up" data-aos-delay="100">
+            <div style="background: white; border-radius: 30px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.05); transition: all 0.3s; border: 1px solid rgba(200,80,192,0.1); position: relative; overflow: hidden; min-width: 280px; max-width: 350px; flex: 0 0 auto;" data-aos="fade-up" data-aos-delay="100">
                 <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #C850C0, #FFB347);"></div>
-                <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #C850C0, #FFB347); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; box-shadow: 0 15px 25px rgba(200,80,192,0.2);">
+                <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #C850C0, #FFB347); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; box-shadow: 0 15px 25px rgba(200,80,192,0.2); flex-shrink: 0;">
                     <i class="fas fa-bolt" style="font-size: 40px; color: white;"></i>
                 </div>
-                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: #333;">Instant Payouts</h3>
-                <p style="font-size: 16px; color: #666; line-height: 1.6; margin: 0 0 20px;">Get paid instantly via M-PESA when your referrals join. No waiting periods!</p>
-                <div style="display: inline-block; background: linear-gradient(135deg, #C850C0, #FFB347); color: white; padding: 8px 25px; border-radius: 50px; font-size: 16px; font-weight: 600;">24/7 Withdrawals</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: #333; white-space: normal;">Instant Payouts</h3>
+                <p style="font-size: 16px; color: #666; line-height: 1.6; margin: 0 0 20px; white-space: normal;">Get paid instantly via M-PESA when your referrals join. No waiting periods!</p>
+                <div style="display: inline-block; background: linear-gradient(135deg, #C850C0, #FFB347); color: white; padding: 8px 25px; border-radius: 50px; font-size: 16px; font-weight: 600; white-space: nowrap;">24/7 Withdrawals</div>
             </div>
             
             <!-- Feature Card 3 -->
-            <div style="background: white; border-radius: 30px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.05); transition: all 0.3s; border: 1px solid rgba(255,200,80,0.1); position: relative; overflow: hidden;" data-aos="fade-up" data-aos-delay="200">
+            <div style="background: white; border-radius: 30px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.05); transition: all 0.3s; border: 1px solid rgba(255,200,80,0.1); position: relative; overflow: hidden; min-width: 280px; max-width: 350px; flex: 0 0 auto;" data-aos="fade-up" data-aos-delay="200">
                 <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #FFB347, #FFD700);"></div>
-                <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #FFB347, #FFD700); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; box-shadow: 0 15px 25px rgba(255,180,70,0.2);">
+                <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #FFB347, #FFD700); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; box-shadow: 0 15px 25px rgba(255,180,70,0.2); flex-shrink: 0;">
                     <i class="fas fa-users" style="font-size: 40px; color: white;"></i>
                 </div>
-                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: #333;">Unlimited Referrals</h3>
-                <p style="font-size: 16px; color: #666; line-height: 1.6; margin: 0 0 20px;">No limits on referrals. The more people you refer, the more money you make!</p>
-                <div style="display: inline-block; background: linear-gradient(135deg, #FFB347, #FFD700); color: #333; padding: 8px 25px; border-radius: 50px; font-size: 16px; font-weight: 600;">No Cap</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: #333; white-space: normal;">Unlimited Referrals</h3>
+                <p style="font-size: 16px; color: #666; line-height: 1.6; margin: 0 0 20px; white-space: normal;">No limits on referrals. The more people you refer, the more money you make!</p>
+                <div style="display: inline-block; background: linear-gradient(135deg, #FFB347, #FFD700); color: #333; padding: 8px 25px; border-radius: 50px; font-size: 16px; font-weight: 600; white-space: nowrap;">No Cap</div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Add this to the existing style block or create a new one -->
+<style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .features::-webkit-scrollbar,
+    .features div[style*="overflow-x: auto"]::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .features,
+    .features div[style*="overflow-x: auto"] {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
 
 <!-- How It Works Section -->
 <section id="how-it-works" class="how-it-works" style="padding: 100px 0; background: linear-gradient(135deg, #4158D0, #C850C0); position: relative; overflow: hidden;">
