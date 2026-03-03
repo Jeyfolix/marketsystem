@@ -247,7 +247,7 @@
             font-size: 1.1rem;
             font-family: 'Inter', sans-serif;
             background: rgba(255, 255, 255, 0.1);
-            color: white;
+            color: white; /* This makes the input text visible */
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             backdrop-filter: blur(5px);
@@ -256,6 +256,13 @@
         .form-group input::placeholder {
             color: rgba(255, 255, 255, 0.6);
             font-size: 1rem;
+        }
+
+        /* This ensures the actual typed text is bright white */
+        .form-group input:focus,
+        .form-group input:not(:placeholder-shown) {
+            color: white;
+            font-weight: 500;
         }
 
         .form-group input:hover {
@@ -271,6 +278,7 @@
             background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.2), 0 10px 20px rgba(0,0,0,0.2);
             transform: translateY(-2px);
+            color: white; /* Ensure text stays white on focus */
         }
 
         /* Button */
