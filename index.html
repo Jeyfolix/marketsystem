@@ -1191,74 +1191,87 @@
 </style>
 
 <!-- How It Works Section -->
-<section id="how-it-works" class="how-it-works" style="padding: 100px 0; background: linear-gradient(135deg, #4158D0, #C850C0); position: relative; overflow: hidden;">
+<section id="how-it-works" class="how-it-works" style="padding: 100px 0; background: linear-gradient(135deg, #4158D0, #C850C0); position: relative; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;">
     <!-- Background decoration -->
-    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; pointer-events: none;">
         <div style="position: absolute; width: 400px; height: 400px; background: white; border-radius: 50%; top: -200px; right: -100px;"></div>
         <div style="position: absolute; width: 300px; height: 300px; background: white; border-radius: 50%; bottom: -150px; left: -50px;"></div>
     </div>
     
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; min-width: min(100%, 300px);">
         <!-- Section Header -->
         <div style="text-align: center; margin-bottom: 60px;" data-aos="fade-up">
-            <span style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase;">Simple Process</span>
-            <h2 style="font-size: clamp(32px, 5vw, 42px); font-weight: 800; margin: 0 0 15px; color: white; text-shadow: 2px 2px 20px rgba(0,0,0,0.2);">How It Works</h2>
-            <p style="font-size: clamp(16px, 2vw, 18px); color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto; line-height: 1.6;">Start earning in three simple steps</p>
+            <span style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 8px 25px; border-radius: 50px; font-size: 14px; font-weight: 600; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; white-space: nowrap;">Simple Process</span>
+            <h2 style="font-size: clamp(32px, 5vw, 42px); font-weight: 800; margin: 0 0 15px; color: white; text-shadow: 2px 2px 20px rgba(0,0,0,0.2); white-space: normal;">How It Works</h2>
+            <p style="font-size: clamp(16px, 2vw, 18px); color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto; line-height: 1.6; white-space: normal;">Start earning in three simple steps</p>
         </div>
         
-        <!-- Steps Grid -->
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; position: relative;">
-            <!-- Connecting Line (visible on desktop) -->
-            <div style="position: absolute; top: 70px; left: 15%; right: 15%; height: 3px; background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.8), rgba(255,255,255,0.2)); display: none; @media (min-width: 992px) { display: block; }"></div>
+        <!-- Steps Grid - Now horizontally scrollable on mobile -->
+        <div style="display: flex; flex-direction: row; flex-wrap: nowrap; gap: 40px; position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; padding: 10px 0 30px;">
+            <!-- Connecting Line (visible on desktop) - Made absolute within relative container -->
+            <div style="position: absolute; top: 70px; left: 10%; right: 10%; height: 3px; background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.8), rgba(255,255,255,0.2)); display: none; pointer-events: none; z-index: 1; @media (min-width: 992px) { display: block; }"></div>
             
             <!-- Step 1 -->
-            <div style="text-align: center; position: relative;" data-aos="fade-right">
-                <div style="width: 140px; height: 140px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; position: relative; backdrop-filter: blur(5px); border: 3px solid rgba(255,255,255,0.3);">
-                    <div style="position: absolute; top: -10px; right: -10px; width: 40px; height: 40px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 800; font-size: 20px; border: 3px solid white;">1</div>
-                    <div class="step-icon" style="width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <div style="text-align: center; position: relative; min-width: 280px; max-width: 350px; flex: 0 0 auto;" data-aos="fade-right">
+                <div style="width: 140px; height: 140px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; position: relative; backdrop-filter: blur(5px); border: 3px solid rgba(255,255,255,0.3); flex-shrink: 0;">
+                    <div style="position: absolute; top: -10px; right: -10px; width: 40px; height: 40px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 800; font-size: 20px; border: 3px solid white; flex-shrink: 0;">1</div>
+                    <div class="step-icon" style="width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fas fa-user-plus" style="font-size: 50px; background: linear-gradient(135deg, #4158D0, #C850C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                     </div>
                 </div>
-                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: white;">Register Account</h3>
-                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.6; max-width: 250px; margin: 0 auto;">Create your account in seconds. Get your unique referral link instantly.</p>
+                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: white; white-space: normal;">Register Account</h3>
+                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.6; max-width: 250px; margin: 0 auto; white-space: normal;">Create your account in seconds. Get your unique referral link instantly.</p>
             </div>
             
             <!-- Step 2 -->
-            <div style="text-align: center; position: relative;" data-aos="fade-up">
-                <div style="width: 140px; height: 140px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; position: relative; backdrop-filter: blur(5px); border: 3px solid rgba(255,255,255,0.3);">
-                    <div style="position: absolute; top: -10px; right: -10px; width: 40px; height: 40px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 800; font-size: 20px; border: 3px solid white;">2</div>
-                    <div class="step-icon" style="width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <div style="text-align: center; position: relative; min-width: 280px; max-width: 350px; flex: 0 0 auto;" data-aos="fade-up">
+                <div style="width: 140px; height: 140px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; position: relative; backdrop-filter: blur(5px); border: 3px solid rgba(255,255,255,0.3); flex-shrink: 0;">
+                    <div style="position: absolute; top: -10px; right: -10px; width: 40px; height: 40px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 800; font-size: 20px; border: 3px solid white; flex-shrink: 0;">2</div>
+                    <div class="step-icon" style="width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fas fa-share-alt" style="font-size: 50px; background: linear-gradient(135deg, #4158D0, #C850C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                     </div>
                 </div>
-                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: white;">Share Your Link</h3>
-                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.6; max-width: 250px; margin: 0 auto;">Share your unique referral link on WhatsApp, Facebook, or SMS.</p>
+                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: white; white-space: normal;">Share Your Link</h3>
+                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.6; max-width: 250px; margin: 0 auto; white-space: normal;">Share your unique referral link on WhatsApp, Facebook, or SMS.</p>
             </div>
             
             <!-- Step 3 -->
-            <div style="text-align: center; position: relative;" data-aos="fade-left">
-                <div style="width: 140px; height: 140px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; position: relative; backdrop-filter: blur(5px); border: 3px solid rgba(255,255,255,0.3);">
-                    <div style="position: absolute; top: -10px; right: -10px; width: 40px; height: 40px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 800; font-size: 20px; border: 3px solid white;">3</div>
-                    <div class="step-icon" style="width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <div style="text-align: center; position: relative; min-width: 280px; max-width: 350px; flex: 0 0 auto;" data-aos="fade-left">
+                <div style="width: 140px; height: 140px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; position: relative; backdrop-filter: blur(5px); border: 3px solid rgba(255,255,255,0.3); flex-shrink: 0;">
+                    <div style="position: absolute; top: -10px; right: -10px; width: 40px; height: 40px; background: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 800; font-size: 20px; border: 3px solid white; flex-shrink: 0;">3</div>
+                    <div class="step-icon" style="width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <i class="fas fa-coins" style="font-size: 50px; background: linear-gradient(135deg, #4158D0, #C850C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                     </div>
                 </div>
-                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: white;">Earn Money</h3>
-                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.6; max-width: 250px; margin: 0 auto;">Get paid instantly when your referrals join. Withdraw anytime!</p>
+                <h3 style="font-size: 24px; font-weight: 700; margin: 0 0 15px; color: white; white-space: normal;">Earn Money</h3>
+                <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.6; max-width: 250px; margin: 0 auto; white-space: normal;">Get paid instantly when your referrals join. Withdraw anytime!</p>
             </div>
         </div>
         
         <!-- Bottom CTA -->
         <div style="text-align: center; margin-top: 60px;" data-aos="fade-up">
-            <a href="frontend/register.html" style="display: inline-flex; align-items: center; gap: 10px; background: #FFD700; color: #333; padding: 18px 50px; border-radius: 60px; font-size: 18px; font-weight: 700; text-decoration: none; transition: all 0.3s; box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3);">
+            <a href="frontend/register.html" style="display: inline-flex; align-items: center; gap: 10px; background: #FFD700; color: #333; padding: 18px 50px; border-radius: 60px; font-size: 18px; font-weight: 700; text-decoration: none; transition: all 0.3s; box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3); white-space: nowrap;">
                 <i class="fas fa-rocket"></i> Start Earning Now <i class="fas fa-arrow-right"></i>
             </a>
         </div>
     </div>
 </section>
 
-<!-- Add hover effects and responsive styles -->
+<!-- Updated responsive styles with scrollbar hiding -->
 <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .how-it-works::-webkit-scrollbar,
+    .how-it-works div[style*="overflow-x: auto"]::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .how-it-works,
+    .how-it-works div[style*="overflow-x: auto"] {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
     /* Feature Card Hover Effects */
     .features-grid > div:hover {
         transform: translateY(-10px);
@@ -1275,7 +1288,7 @@
         border-color: #FFD700 !important;
     }
     
-    /* Responsive Design */
+    /* Responsive Design - Keep original but ensure horizontal scroll works */
     @media screen and (max-width: 992px) {
         .features-grid, 
         .steps {
