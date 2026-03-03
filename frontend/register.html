@@ -2,36 +2,859 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarketSystem - Register</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>marketSystem - Create Account</title>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        .select-country {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #60a5fa;
+            --secondary: #7c3aed;
+            --secondary-dark: #6d28d9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --gray-light: #94a3b8;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --gold: #FFD700;
+            --gold-light: #FFED4A;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow-y: auto;
+            background: url('https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=2024&auto=format&fit=crop') center/cover fixed no-repeat;
+        }
+
+        /* Overlay with animated gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(37, 99, 235, 0.85) 0%, 
+                rgba(124, 58, 237, 0.85) 50%,
+                rgba(219, 39, 119, 0.85) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 2px, transparent 2px),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 3px, transparent 3px),
+                radial-gradient(circle at 40% 80%, rgba(255,255,255,0.1) 2px, transparent 2px),
+                radial-gradient(circle at 90% 20%, rgba(255,255,255,0.1) 4px, transparent 4px),
+                radial-gradient(circle at 10% 60%, rgba(255,255,255,0.1) 2px, transparent 2px);
+            background-size: 200px 200px;
+            animation: floatParticles 20s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes floatParticles {
+            from { background-position: 0 0; }
+            to { background-position: 200px 200px; }
+        }
+
+        .container {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            background-color: white;
-            cursor: pointer;
+            max-width: 700px;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            margin: auto;
         }
-        .select-country:focus {
-            outline: none;
-            border-color: #667eea;
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
+        .form-container {
+            background: transparent;
+            backdrop-filter: blur(20px);
+            padding: 50px 45px;
+            border-radius: 50px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            max-height: none;
+            overflow-y: visible;
+            position: relative;
+        }
+
+        /* Decorative corner elements */
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 100px;
+            height: 100px;
+            border-top: 4px solid var(--gold);
+            border-left: 4px solid var(--gold);
+            border-radius: 50px 0 0 0;
+            opacity: 0.5;
+        }
+
+        .form-container::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 100px;
+            height: 100px;
+            border-bottom: 4px solid var(--gold);
+            border-right: 4px solid var(--gold);
+            border-radius: 0 0 50px 0;
+            opacity: 0.5;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo i {
+            font-size: 90px;
+            background: linear-gradient(135deg, #4158D0, #C850C0, #FFCC70);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3));
+            animation: pulse 3s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo h2 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #4158D0, #C850C0, #FFCC70);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            text-shadow: 2px 2px 30px rgba(0,0,0,0.3);
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 35px;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #4158D0, #C850C0, #FFCC70, transparent);
+            border-radius: 2px;
+        }
+
+        /* Referral Info */
         .referral-info {
-            background: #f0f8ff;
-            border-left: 4px solid #667eea;
-            padding: 10px 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            color: #333;
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 6px solid var(--gold);
+            padding: 18px 25px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.5s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         .referral-info i {
-            color: #667eea;
-            margin-right: 8px;
+            color: var(--gold);
+            font-size: 2rem;
+            filter: drop-shadow(0 5px 10px rgba(255,215,0,0.3));
+        }
+
+        .referral-info span {
+            color: white;
+        }
+
+        .referral-info strong {
+            color: var(--gold);
+            font-size: 1.2rem;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 30px;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .form-group label i {
+            color: var(--gold);
+            width: 25px;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.3));
+        }
+
+        .form-group label span {
+            color: var(--gold);
+            margin-left: 4px;
+            font-size: 1.2rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 20px 22px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-family: 'Inter', sans-serif;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .form-group input::placeholder,
+        .form-group select::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        .form-group select option {
+            background: #4158D0;
+            color: white;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.2), 0 10px 20px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+        }
+
+        .select-country {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFD700' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 22px center;
+            background-size: 24px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        select option {
+            font-size: 1.1rem;
+            padding: 15px;
+            background: linear-gradient(135deg, #4158D0, #C850C0);
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-top: 15px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease, background-color 0.3s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .password-strength-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .password-strength-bar.weak {
+            width: 33.33%;
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+
+        .password-strength-bar.medium {
+            width: 66.66%;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 22px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-family: 'Inter', sans-serif;
+            margin: 25px 0 20px;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4158D0, #C850C0, #FFCC70);
+            background-size: 200% 200%;
+            color: var(--white);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: gradientMove 5s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+        }
+
+        .btn-primary i {
+            font-size: 1.4rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            animation: none;
+        }
+
+        .btn-primary:disabled::before {
+            display: none;
+        }
+
+        /* Message */
+        .message {
+            margin: 25px 0;
+            padding: 20px 25px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            display: none;
+            animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            font-weight: 600;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ff9999;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .message.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #a7f3d0;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Text Center - Now in GOLD */
+        .text-center {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--gold);
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .text-center a {
+            color: var(--gold-light);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+            position: relative;
+            padding: 5px 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .text-center a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .text-center a:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Form Divider - Now in GOLD */
+        .form-divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 35px 0 25px;
+            color: var(--gold);
+            font-size: 1.1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-weight: 500;
+        }
+
+        .form-divider::before,
+        .form-divider::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        /* Social Login */
+        .social-login {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .social-btn:hover::before {
+            left: 100%;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-10px) scale(1.15);
+            box-shadow: 0 25px 35px rgba(0,0,0,0.4);
+        }
+
+        .social-btn.facebook { 
+            background: linear-gradient(135deg, #1877f2, #0d5ab9);
+        }
+        .social-btn.google { 
+            background: linear-gradient(135deg, #ea4335, #b71c1c);
+        }
+        .social-btn.twitter { 
+            background: linear-gradient(135deg, #1da1f2, #0c7abf);
+        }
+
+        /* Tooltip */
+        .password-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 10px;
+            color: var(--gold);
+            cursor: help;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .password-tooltip:hover {
+            transform: scale(1.2);
+        }
+
+        .password-tooltip:hover::after {
+            content: 'Password must be at least 8 characters long and include numbers and letters';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #4158D0, #C850C0);
+            color: var(--white);
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-size: 1rem;
+            white-space: nowrap;
+            z-index: 20;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Terms checkbox - Now in GOLD with no background */
+        .terms {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0 20px;
+            font-size: 1.2rem;
+            padding: 10px 5px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .terms input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            accent-color: var(--gold);
+            transform: scale(1);
+            transition: transform 0.2s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .terms input[type="checkbox"]:checked {
+            transform: scale(1.1);
+        }
+
+        .terms label {
+            font-size: 1.2rem;
+            color: var(--gold);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-weight: 500;
+        }
+
+        .terms a {
+            color: var(--gold-light);
+            text-decoration: none;
+            font-weight: 700;
+            position: relative;
+            padding: 0 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .terms a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .terms a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .form-container {
+                padding: 35px 25px;
+                border-radius: 40px;
+            }
+
+            .logo i {
+                font-size: 70px;
+            }
+
+            .logo h2 {
+                font-size: 2.5rem;
+            }
+
+            h3 {
+                font-size: 1.8rem;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 18px 20px;
+                font-size: 1.1rem;
+                border-radius: 20px;
+            }
+
+            .btn {
+                padding: 20px;
+                font-size: 1.2rem;
+            }
+
+            .social-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 25px 20px;
+            }
+
+            .logo i {
+                font-size: 60px;
+            }
+
+            .logo h2 {
+                font-size: 2.2rem;
+            }
+
+            h3 {
+                font-size: 1.6rem;
+                margin-bottom: 25px;
+                white-space: normal;
+            }
+
+            .form-group {
+                margin-bottom: 25px;
+            }
+
+            .form-group label {
+                font-size: 1.1rem;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 16px 18px;
+                border-radius: 16px;
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 18px;
+                font-size: 1.1rem;
+            }
+
+            .social-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .terms {
+                font-size: 1rem;
+                padding: 8px 5px;
+                flex-wrap: wrap;
+            }
+            
+            .terms label {
+                font-size: 1rem;
+            }
+
+            .password-tooltip:hover::after {
+                white-space: normal;
+                width: 200px;
+                left: -100px;
+            }
+        }
+
+        /* Loading Spinner */
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 7px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4158D0, #C850C0);
+            border-radius: 7px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #C850C0, #FFCC70);
         }
     </style>
 </head>
@@ -40,7 +863,7 @@
         <div class="form-container">
             <div class="logo">
                 <i class="fas fa-store"></i>
-                <h2>MarketSystem</h2>
+                <h2>marketSystem</h2>
             </div>
             <h3>Create Your Account</h3>
             
@@ -54,7 +877,7 @@
                 <div class="form-group">
                     <label for="name">
                         <i class="fas fa-user-circle"></i>
-                        Full Name <span style="color: red;">*</span>
+                        Full Name <span>*</span>
                     </label>
                     <input type="text" id="name" name="name" placeholder="Enter your full name" required>
                 </div>
@@ -62,23 +885,23 @@
                 <div class="form-group">
                     <label for="email">
                         <i class="fas fa-envelope"></i>
-                        Email Address <span style="color: red;">*</span>
+                        Email Address <span>*</span>
                     </label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">
                         <i class="fas fa-phone"></i>
-                        Phone Number <span style="color: red;">*</span>
+                        Phone Number <span>*</span>
                     </label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    <input type="tel" id="phone" name="phone" placeholder="e.g., 0712 345 678" required>
                 </div>
 
                 <div class="form-group">
                     <label for="username">
                         <i class="fas fa-user"></i>
-                        Username <span style="color: red;">*</span>
+                        Username <span>*</span>
                     </label>
                     <input type="text" id="username" name="username" placeholder="Choose a username" required>
                 </div>
@@ -86,127 +909,191 @@
                 <div class="form-group">
                     <label for="country">
                         <i class="fas fa-globe"></i>
-                        Country <span style="color: red;">*</span>
+                        Country <span>*</span>
                     </label>
                     <select id="country" name="country" class="select-country" required>
-                        <option value="">Select your country</option>
-                        <option value="Afghanistan">Afghanistan</option>
-                        <option value="Albania">Albania</option>
-                        <option value="Algeria">Algeria</option>
-                        <option value="Argentina">Argentina</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Austria">Austria</option>
-                        <option value="Bangladesh">Bangladesh</option>
-                        <option value="Belgium">Belgium</option>
-                        <option value="Brazil">Brazil</option>
-                        <option value="Canada">Canada</option>
-                        <option value="China">China</option>
-                        <option value="Colombia">Colombia</option>
-                        <option value="Denmark">Denmark</option>
-                        <option value="Egypt">Egypt</option>
-                        <option value="Finland">Finland</option>
-                        <option value="France">France</option>
-                        <option value="Germany">Germany</option>
-                        <option value="Ghana">Ghana</option>
-                        <option value="Greece">Greece</option>
-                        <option value="Hong Kong">Hong Kong</option>
-                        <option value="Hungary">Hungary</option>
-                        <option value="Iceland">Iceland</option>
-                        <option value="India">India</option>
-                        <option value="Indonesia">Indonesia</option>
-                        <option value="Iran">Iran</option>
-                        <option value="Iraq">Iraq</option>
-                        <option value="Ireland">Ireland</option>
-                        <option value="Israel">Israel</option>
-                        <option value="Italy">Italy</option>
-                        <option value="Jamaica">Jamaica</option>
-                        <option value="Japan">Japan</option>
-                        <option value="Jordan">Jordan</option>
-                        <option value="Kenya">Kenya</option>
-                        <option value="Kuwait">Kuwait</option>
-                        <option value="Lebanon">Lebanon</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="Mexico">Mexico</option>
-                        <option value="Morocco">Morocco</option>
-                        <option value="Netherlands">Netherlands</option>
-                        <option value="New Zealand">New Zealand</option>
-                        <option value="Nigeria">Nigeria</option>
-                        <option value="Norway">Norway</option>
-                        <option value="Pakistan">Pakistan</option>
-                        <option value="Palestine">Palestine</option>
-                        <option value="Philippines">Philippines</option>
-                        <option value="Poland">Poland</option>
-                        <option value="Portugal">Portugal</option>
-                        <option value="Qatar">Qatar</option>
-                        <option value="Romania">Romania</option>
-                        <option value="Russia">Russia</option>
-                        <option value="Rwanda">Rwanda</option>
-                        <option value="Saudi Arabia">Saudi Arabia</option>
-                        <option value="Senegal">Senegal</option>
-                        <option value="Serbia">Serbia</option>
-                        <option value="Singapore">Singapore</option>
-                        <option value="Somalia">Somalia</option>
-                        <option value="South Africa">South Africa</option>
-                        <option value="South Korea">South Korea</option>
-                        <option value="Spain">Spain</option>
-                        <option value="Sudan">Sudan</option>
-                        <option value="Sweden">Sweden</option>
-                        <option value="Switzerland">Switzerland</option>
-                        <option value="Syria">Syria</option>
-                        <option value="Taiwan">Taiwan</option>
-                        <option value="Tanzania">Tanzania</option>
-                        <option value="Thailand">Thailand</option>
-                        <option value="Tunisia">Tunisia</option>
-                        <option value="Turkey">Turkey</option>
-                        <option value="Uganda">Uganda</option>
-                        <option value="Ukraine">Ukraine</option>
-                        <option value="United Arab Emirates">United Arab Emirates</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="United States">United States</option>
-                        <option value="Uruguay">Uruguay</option>
-                        <option value="Venezuela">Venezuela</option>
-                        <option value="Vietnam">Vietnam</option>
-                        <option value="Yemen">Yemen</option>
-                        <option value="Zambia">Zambia</option>
-                        <option value="Zimbabwe">Zimbabwe</option>
+                        <option value="">-- Select your country --</option>
+                        <option value="Kenya">🇰🇪 Kenya</option>
+                        <option value="Uganda">🇺🇬 Uganda</option>
+                        <option value="Tanzania">🇹🇿 Tanzania</option>
+                        <option value="Rwanda">🇷🇼 Rwanda</option>
+                        <option value="South Africa">🇿🇦 South Africa</option>
+                        <option value="Nigeria">🇳🇬 Nigeria</option>
+                        <option value="Ghana">🇬🇭 Ghana</option>
+                        <option value="United States">🇺🇸 United States</option>
+                        <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                        <option value="Canada">🇨🇦 Canada</option>
+                        <option value="Australia">🇦🇺 Australia</option>
+                        <option value="Germany">🇩🇪 Germany</option>
+                        <option value="France">🇫🇷 France</option>
+                        <option value="India">🇮🇳 India</option>
+                        <option value="China">🇨🇳 China</option>
+                        <option value="Japan">🇯🇵 Japan</option>
+                        <option value="Brazil">🇧🇷 Brazil</option>
+                        <option value="Mexico">🇲🇽 Mexico</option>
+                        <option value="Spain">🇪🇸 Spain</option>
+                        <option value="Italy">🇮🇹 Italy</option>
+                        <option value="Netherlands">🇳🇱 Netherlands</option>
+                        <option value="Sweden">🇸🇪 Sweden</option>
+                        <option value="Norway">🇳🇴 Norway</option>
+                        <option value="Denmark">🇩🇰 Denmark</option>
+                        <option value="Finland">🇫🇮 Finland</option>
+                        <option value="Switzerland">🇨🇭 Switzerland</option>
+                        <option value="Belgium">🇧🇪 Belgium</option>
+                        <option value="Austria">🇦🇹 Austria</option>
+                        <option value="Ireland">🇮🇪 Ireland</option>
+                        <option value="Portugal">🇵🇹 Portugal</option>
+                        <option value="Greece">🇬🇷 Greece</option>
+                        <option value="Poland">🇵🇱 Poland</option>
+                        <option value="Czech Republic">🇨🇿 Czech Republic</option>
+                        <option value="Hungary">🇭🇺 Hungary</option>
+                        <option value="Turkey">🇹🇷 Turkey</option>
+                        <option value="UAE">🇦🇪 UAE</option>
+                        <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+                        <option value="Egypt">🇪🇬 Egypt</option>
+                        <option value="Morocco">🇲🇦 Morocco</option>
+                        <option value="Algeria">🇩🇿 Algeria</option>
+                        <option value="Tunisia">🇹🇳 Tunisia</option>
+                        <option value="Sudan">🇸🇩 Sudan</option>
+                        <option value="Ethiopia">🇪🇹 Ethiopia</option>
+                        <option value="Somalia">🇸🇴 Somalia</option>
+                        <option value="DR Congo">🇨🇩 DR Congo</option>
+                        <option value="Angola">🇦🇴 Angola</option>
+                        <option value="Mozambique">🇲🇿 Mozambique</option>
+                        <option value="Zambia">🇿🇲 Zambia</option>
+                        <option value="Zimbabwe">🇿🇼 Zimbabwe</option>
+                        <option value="Botswana">🇧🇼 Botswana</option>
+                        <option value="Namibia">🇳🇦 Namibia</option>
+                        <option value="Malawi">🇲🇼 Malawi</option>
+                        <option value="Mauritius">🇲🇺 Mauritius</option>
+                        <option value="Seychelles">🇸🇨 Seychelles</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="referral_code">
                         <i class="fas fa-gift"></i>
-                        Referral Code (Optional)
+                        Referral Code
+                        <span class="password-tooltip">
+                            <i class="fas fa-info-circle"></i>
+                        </span>
                     </label>
-                    <input type="text" id="referral_code" name="referral_code" placeholder="Enter referral code if you have one">
+                    <input type="text" id="referral_code" name="referral_code" placeholder="Enter referral code (optional)">
                 </div>
 
                 <div class="form-group">
                     <label for="password">
                         <i class="fas fa-lock"></i>
-                        Password <span style="color: red;">*</span>
+                        Password <span>*</span>
                     </label>
-                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="passwordStrength"></div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="confirm_password">
                         <i class="fas fa-lock"></i>
-                        Confirm Password <span style="color: red;">*</span>
+                        Confirm Password <span>*</span>
                     </label>
                     <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="registerBtn">
                     <i class="fas fa-user-plus"></i>
-                    Register
+                    Create Account
                 </button>
             </form>
+
             <div id="message" class="message"></div>
+
+            <div class="form-divider">
+                <span>or register with</span>
+            </div>
+
+            <div class="social-login">
+                <div class="social-btn facebook"><i class="fab fa-facebook-f"></i></div>
+                <div class="social-btn google"><i class="fab fa-google"></i></div>
+                <div class="social-btn twitter"><i class="fab fa-twitter"></i></div>
+            </div>
+
             <p class="text-center">
-                Already have an account? <a href="index.html">Login here</a>
+                Already have an account? <a href="index.html">Sign in here</a>
             </p>
         </div>
     </div>
+
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('passwordStrength');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+            
+            strengthBar.className = 'password-strength-bar';
+            if (strength === 'weak') {
+                strengthBar.classList.add('weak');
+            } else if (strength === 'medium') {
+                strengthBar.classList.add('medium');
+            } else if (strength === 'strong') {
+                strengthBar.classList.add('strong');
+            }
+        });
+
+        function calculatePasswordStrength(password) {
+            if (password.length < 6) return 'weak';
+            if (password.length < 8) return 'medium';
+            
+            const hasNumbers = /\d/.test(password);
+            const hasLetters = /[a-zA-Z]/.test(password);
+            
+            if (hasNumbers && hasLetters && password.length >= 8) return 'strong';
+            if (hasNumbers || hasLetters) return 'medium';
+            
+            return 'weak';
+        }
+
+        // Check for referral code in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        
+        if (refCode) {
+            document.getElementById('referral_code').value = refCode;
+            const referralInfo = document.getElementById('referralInfo');
+            document.getElementById('referrerName').textContent = 'Referral Code Applied';
+            referralInfo.style.display = 'flex';
+        }
+
+        // Form submission loading state
+        const form = document.getElementById('registerForm');
+        const registerBtn = document.getElementById('registerBtn');
+
+        form.addEventListener('submit', function(e) {
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            registerBtn.disabled = true;
+        });
+
+        // Real-time password match validation
+        const confirmPassword = document.getElementById('confirm_password');
+        
+        confirmPassword.addEventListener('input', function() {
+            if (this.value !== passwordInput.value) {
+                this.style.borderColor = '#ef4444';
+                this.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.15)';
+            } else {
+                this.style.borderColor = '#10b981';
+                this.style.boxShadow = '0 0 0 4px rgba(16, 185, 129, 0.15)';
+            }
+        });
+    </script>
     <script src="js/register.js"></script>
 </body>
 </html>
