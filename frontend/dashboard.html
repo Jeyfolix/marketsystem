@@ -254,13 +254,43 @@
             text-align: center;
             cursor: pointer;
             margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .referral-code-box:hover {
+            background: linear-gradient(135deg, rgba(37,99,235,0.15), rgba(124,58,237,0.15));
+            transform: scale(1.02);
+            border-color: var(--secondary);
         }
 
         .referral-code-text {
             font-size: 2.5rem;
             font-weight: 800;
-            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
+            font-family: monospace;
+        }
+
+        .referral-link-box {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 1px solid var(--primary-light);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .link-input-group {
@@ -271,23 +301,33 @@
 
         .link-input-group input {
             flex: 1;
-            padding: 12px;
+            padding: 15px;
             border: 2px solid var(--gray-light);
             border-radius: 10px;
+            font-size: 0.95rem;
+            background: white;
         }
 
         .copy-btn {
-            padding: 12px 25px;
-            background: var(--primary);
+            padding: 15px 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
             border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
         }
 
         .social-share {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .social-btn {
@@ -299,6 +339,12 @@
             justify-content: center;
             color: white;
             cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px) scale(1.1);
         }
 
         .social-btn.whatsapp { background: #25D366; }
@@ -480,6 +526,7 @@
         .activity-amount {
             color: var(--success);
             font-weight: 700;
+            margin-left: auto;
         }
 
         /* Responsive */
@@ -592,14 +639,14 @@
                     </div>
                     
                     <div class="referral-code-box" onclick="toggleReferralLink()">
-                        <div class="referral-code-text" id="referralCodeDisplay">REF000001</div>
+                        <div class="referral-code-text" id="referralCodeDisplay">REF060001</div>
                         <div><i class="fas fa-hand-pointer"></i> Tap to reveal sharing options</div>
                     </div>
                     
                     <div class="referral-link-box" id="referralLinkBox" style="display: none;">
                         <div class="link-input-group">
                             <input type="text" id="referralLink" readonly>
-                            <button class="copy-btn" onclick="copyReferralLink(event)"><i class="fas fa-copy"></i> Copy</button>
+                            <button class="copy-btn" onclick="copyReferralLink(event)"><i class="fas fa-copy"></i> Copy Link</button>
                         </div>
                         
                         <div class="social-share">
@@ -608,6 +655,9 @@
                             <a href="#" class="social-btn twitter" onclick="shareOnTwitter(event)"><i class="fab fa-twitter"></i></a>
                             <a href="#" class="social-btn telegram" onclick="shareOnTelegram(event)"><i class="fab fa-telegram-plane"></i></a>
                         </div>
+                        <p style="margin-top: 15px; color: var(--gray); font-size: 0.9rem;">
+                            <i class="fas fa-info-circle"></i> When someone registers with this link, your referral code will be auto-filled
+                        </p>
                     </div>
                 </div>
 

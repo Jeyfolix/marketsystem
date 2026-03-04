@@ -22,9 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load dashboard data
     loadDashboardData(userData.id);
-    
-    // Setup event listeners
-    setupEventListeners();
 });
 
 async function loadDashboardData(userId) {
@@ -64,75 +61,36 @@ function updateDashboardUI(data) {
     
     // Update profile image with user initials
     const initials = (user.name || user.username).charAt(0).toUpperCase();
-    document.getElementById('profileImage').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || user.username)}&background=2563eb&color=fff&size=128`;
+    document.getElementById('profileImage').textContent = initials;
     
     // Update welcome message
-    updateWelcomeMessage(user.name, stats.referrals_today);
-    
-    // Update referral code
-    updateReferralCode(user.referral_code);
-    
-    // Update stats
-    updateStats(stats);
-    
-    // Update recent referrals
-    updateRecentReferrals(referrals);
-    
-    // Update rank color
-    updateRankColor(stats.rank_color);
-}
-
-function updateWelcomeMessage(userName, referralsToday) {
     const hour = new Date().getHours();
     let greeting = 'Good evening';
     if (hour < 12) greeting = 'Good morning';
     else if (hour < 17) greeting = 'Good afternoon';
     
-    const firstName = userName.split(' ')[0];
+    const firstName = user.name.split(' ')[0];
     document.getElementById('welcomeMessage').textContent = `${greeting}, ${firstName}! 🚀`;
     
-    if (referralsToday > 0) {
-        document.getElementById('welcomeSubtext').textContent = `You have ${referralsToday} new referral${referralsToday > 1 ? 's' : ''} today! Keep up the great work!`;
-    } else {
-        document.getElementById('welcomeSubtext').textContent = 'Share your referral code and start earning today!';
-    }
-}
-
-function updateReferralCode(referralCode) {
+    // Update stats
+    document.getElementById('totalReferrals').textContent = stats.total_referrals;
+    document.getElementById('monthlyReferrals').textContent = `${stats.referrals_this_month} this month`;
+    document.getElementById('totalEarnings').textContent = `KES ${stats.total_earnings.toLocaleString()}`;
+    document.getElementById('monthlyEarnings').textContent = `KES ${stats.earnings_this_month.toLocaleString()} this month`;
+    document.getElementById('availableBalance').textContent = `KES ${stats.available_balance.toLocaleString()}`;
+    document.getElementById('rank').textContent = stats.rank;
+    
+    // Update referral code and generate link
+    const referralCode = user.referral_code;
     document.getElementById('referralCodeDisplay').textContent = referralCode;
     
-    // Generate full referral link
+    // Generate the referral link that auto-fills in registration
     const baseUrl = window.location.origin + '/marketSystem/frontend/register.html';
     const referralLink = `${baseUrl}?ref=${referralCode}`;
     document.getElementById('referralLink').value = referralLink;
-}
-
-function updateStats(stats) {
-    const statsGrid = document.getElementById('statsContainer');
-    statsGrid.innerHTML = `
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-users"></i></div>
-            <div class="stat-value">${stats.total_referrals}</div>
-            <div class="stat-label">Total Referrals</div>
-            <small>${stats.referrals_this_month} this month</small>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-coins"></i></div>
-            <div class="stat-value">KES ${stats.total_earnings.toLocaleString()}</div>
-            <div class="stat-label">Total Earnings</div>
-            <small>KES ${stats.earnings_this_month.toLocaleString()} this month</small>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-wallet"></i></div>
-            <div class="stat-value">KES ${stats.available_balance.toLocaleString()}</div>
-            <div class="stat-label">Available Balance</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-            <div class="stat-value" id="rankValue">${stats.rank}</div>
-            <div class="stat-label">Your Rank</div>
-        </div>
-    `;
+    
+    // Update recent referrals
+    updateRecentReferrals(referrals);
 }
 
 function updateRecentReferrals(referrals) {
@@ -142,9 +100,9 @@ function updateRecentReferrals(referrals) {
         activityList.innerHTML = `
             <div class="activity-item">
                 <div class="activity-avatar"><i class="fas fa-user-plus"></i></div>
-                <div class="activity-details">
-                    <div class="activity-user">No referrals yet</div>
-                    <div class="activity-time">Start sharing your code!</div>
+                <div>
+                    <div><strong>No referrals yet</strong></div>
+                    <small>Start sharing your code!</small>
                 </div>
             </div>
         `;
@@ -157,21 +115,14 @@ function updateRecentReferrals(referrals) {
             return `
                 <div class="activity-item">
                     <div class="activity-avatar">${initials}</div>
-                    <div class="activity-details">
-                        <div class="activity-user">${ref.name}</div>
-                        <div class="activity-time"><i class="far fa-clock"></i> ${timeAgo}</div>
+                    <div>
+                        <div><strong>${ref.name}</strong></div>
+                        <small>${timeAgo}</small>
                     </div>
                     <div class="activity-amount">+KES 150</div>
                 </div>
             `;
         }).join('');
-    }
-}
-
-function updateRankColor(color) {
-    const rankElement = document.getElementById('rankValue');
-    if (rankElement) {
-        rankElement.style.color = color;
     }
 }
 
@@ -199,93 +150,109 @@ function getTimeAgo(date) {
 function showError(message) {
     const statsGrid = document.getElementById('statsContainer');
     statsGrid.innerHTML = `
-        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 50px;">
+        <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
             <i class="fas fa-exclamation-circle" style="font-size: 48px; color: #ef4444;"></i>
             <p style="margin-top: 20px;">${message}</p>
-            <button class="copy-btn" onclick="location.reload()" style="margin-top: 20px;">Retry</button>
+            <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer;">Retry</button>
         </div>
     `;
 }
 
-function setupEventListeners() {
-    // Logout button
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        if (confirm('Are you sure you want to logout?')) {
-            sessionStorage.removeItem('user');
-            window.location.href = 'index.html';
-        }
-    });
-    
-    // Copy referral link
-    window.copyReferralLink = function(event) {
-        event.stopPropagation();
-        const linkInput = document.getElementById('referralLink');
-        linkInput.select();
-        document.execCommand('copy');
-        
-        const copyBtn = event.currentTarget;
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-        }, 2000);
-    };
-    
-    // Toggle referral link
-    window.toggleReferralLink = function() {
-        document.getElementById('referralLinkBox').classList.toggle('show');
-    };
-    
-    // Social share functions
-    window.shareOnWhatsApp = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const referralLink = document.getElementById('referralLink').value;
-        const text = `Join marketSystem and start earning! Use my referral link: ${referralLink}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    };
-    
-    window.shareOnFacebook = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const referralLink = document.getElementById('referralLink').value;
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`, '_blank');
-    };
-    
-    window.shareOnTwitter = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const referralLink = document.getElementById('referralLink').value;
-        const text = 'Join marketSystem and start earning!';
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(referralLink)}`, '_blank');
-    };
-    
-    window.shareOnTelegram = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const referralLink = document.getElementById('referralLink').value;
-        const text = `Join marketSystem and start earning! ${referralLink}`;
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(text)}`, '_blank');
-    };
-    
-    // Withdrawal
-    window.processWithdrawal = function() {
-        const amount = document.getElementById('withdrawAmount').value;
-        const balanceEl = document.querySelector('.stat-card:nth-child(3) .stat-value');
-        const balance = parseInt(balanceEl.textContent.replace('KES ', '').replace(',', ''));
-        
-        if (amount < 100) {
-            alert('Minimum withdrawal amount is KES 100');
-            return;
-        }
-        
-        if (amount > balance) {
-            alert('Insufficient balance');
-            return;
-        }
-        
-        if (confirm(`Withdraw KES ${amount} to your M-PESA?`)) {
-            alert('Withdrawal request submitted! You will receive payment within 24 hours.');
-        }
-    };
+// Toggle referral link visibility
+function toggleReferralLink() {
+    const linkBox = document.getElementById('referralLinkBox');
+    if (linkBox.style.display === 'none' || linkBox.style.display === '') {
+        linkBox.style.display = 'block';
+    } else {
+        linkBox.style.display = 'none';
+    }
 }
+
+// Copy referral link to clipboard
+function copyReferralLink(event) {
+    event.stopPropagation();
+    const linkInput = document.getElementById('referralLink');
+    linkInput.select();
+    document.execCommand('copy');
+    
+    const copyBtn = event.currentTarget;
+    const originalText = copyBtn.innerHTML;
+    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    setTimeout(() => {
+        copyBtn.innerHTML = originalText;
+    }, 2000);
+}
+
+// Social share functions - share the referral link
+function shareOnWhatsApp(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const referralLink = document.getElementById('referralLink').value;
+    const text = `Join marketSystem and start earning! Use my referral link: ${referralLink}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareOnFacebook(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const referralLink = document.getElementById('referralLink').value;
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`, '_blank');
+}
+
+function shareOnTwitter(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const referralLink = document.getElementById('referralLink').value;
+    const text = 'Join marketSystem and start earning!';
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(referralLink)}`, '_blank');
+}
+
+function shareOnTelegram(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const referralLink = document.getElementById('referralLink').value;
+    const text = `Join marketSystem and start earning! ${referralLink}`;
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(text)}`, '_blank');
+}
+
+// Withdrawal method selection
+function selectMethod(method) {
+    document.querySelectorAll('.method-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    event.currentTarget.classList.add('selected');
+}
+
+// Process withdrawal
+function processWithdrawal() {
+    const amount = document.getElementById('withdrawAmount').value;
+    const balanceEl = document.getElementById('availableBalance');
+    const balance = parseInt(balanceEl.textContent.replace('KES ', '').replace(',', ''));
+    
+    if (amount < 100) {
+        alert('Minimum withdrawal amount is KES 100');
+        return;
+    }
+    
+    if (amount > balance) {
+        alert('Insufficient balance');
+        return;
+    }
+    
+    if (confirm(`Withdraw KES ${amount} to your M-PESA?`)) {
+        alert('Withdrawal request submitted! You will receive payment within 24 hours.');
+    }
+}
+
+// View all referrals
+function viewAllReferrals() {
+    alert('View all referrals feature coming soon!');
+}
+
+// Logout
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    if (confirm('Are you sure you want to logout?')) {
+        sessionStorage.removeItem('user');
+        window.location.href = '../index.html';
+    }
+});
