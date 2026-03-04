@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard API Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        button { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        pre { background: #f0f0f0; padding: 10px; border-radius: 5px; overflow: auto; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Dashboard API Test</h2>
+        
+        <div>
+            <button onclick="testAPI()">Test Dashboard API</button>
+            <button onclick="checkSession()">Check Session Storage</button>
+            <button onclick="clearSession()">Clear Session (Logout)</button>
+        </div>
+        
+        <h3>Session Data:</h3>
+        <pre id="sessionData">No data</pre>
+        
+        <h3>API Response:</h3>
+        <pre id="apiResponse">Click test button</pre>
+    </div>
+
+    <script>
+        const API_URL = 'https://marketsystem-api.onrender.com/api/dashboard_data.php';
+        
+        function checkSession() {
+            const userData = sessionStorage.getItem('user');
+            document.getElementById('sessionData').innerHTML = userData 
+                ? JSON.stringify(JSON.parse(userData), null, 2)
+                : 'No user logged in';
+        }
+        
+        function clearSession() {
+            sessionStorage.removeItem('user');
+            checkSession();
+        }
+        
+        async function testAPI() {
+            const result = document.getElementById('apiResponse');
+            result.innerHTML = 'Testing...';
+            
+            // Try with user_id 1 first
+            let userId = 1;
+            
+            // Check if we have logged in user
+            const userData = sessionStorage.getItem('user');
+            if (userData) {
+                try {
+                    userId = JSON.parse(userData).id;
+                } catch(e) {}
+            }
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_id: userId})
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `Status: ${response.status}\n\n${JSON.stringify(data, null, 2)}`;
+                
+                if (data.success) {
+                    result.classList.add('success');
+                } else {
+                    result.classList.add('error');
+                }
+            } catch (error) {
+                result.innerHTML = `Error: ${error.message}`;
+                result.classList.add('error');
+            }
+        }
+        
+        // Check session on load
+        window.onload = checkSession;
+    </script>
+</body>
+</html>
