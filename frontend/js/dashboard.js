@@ -80,12 +80,12 @@ function updateDashboardUI(data) {
     document.getElementById('availableBalance').textContent = `KES ${stats.available_balance.toLocaleString()}`;
     document.getElementById('rank').textContent = stats.rank;
     
-    // Update referral code and generate link
+    // Update referral code and generate link - FIXED: lowercase repository name
     const referralCode = user.referral_code;
     document.getElementById('referralCodeDisplay').textContent = referralCode;
     
-    // Generate the referral link that auto-fills in registration
-    const baseUrl = window.location.origin + '/marketSystem/frontend/register.html';
+    // IMPORTANT: Use lowercase 'marketsystem' not 'marketSystem'
+    const baseUrl = 'https://jeyfolix.github.io/marketsystem/frontend/register.html';
     const referralLink = `${baseUrl}?ref=${referralCode}`;
     document.getElementById('referralLink').value = referralLink;
     
