@@ -694,3 +694,79 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 
 // Show dashboard by default
 document.addEventListener('DOMContentLoaded', showDashboard);
+
+// Fix payment form submission
+function setupPaymentForm() {
+    const form = document.getElementById('paymentForm');
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+        if (!userData || !userData.id) {
+            alert('Please login first');
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        const phone = document.getElementById('phone').value;
+        const mpesaCode = document.getElementById('mpesaCode').value;
+        const email = document.getElementById('email').value;
+        const verifyBtn = document.getElementById('verifyBtn');
+        
+        console.log('Submitting payment for user:', userData.id);
+        
+        verifyBtn.disabled = true;
+        verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/verify_payment.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userData.id,
+                    phone: phone,
+                    email: email,
+                    mpesa_code: mpesaCode
+                })
+            });
+            
+            console.log('Response status:', response.status);
+            const data = await response.json();
+            console.log('Response data:', data);
+            
+            const messageDiv = document.getElementById('paymentMessage');
+            
+            if (data.success) {
+                messageDiv.className = 'message success';
+                messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                form.reset();
+                
+                // Reload payment data after 2 seconds
+                setTimeout(() => {
+                    if (typeof loadPaymentData === 'function') {
+                        loadPaymentData();
+                    }
+                }, 2000);
+            } else {
+                messageDiv.className = 'message error';
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+            }
+            
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
+            
+        } catch (error) {
+            console.error('Payment error:', error);
+            const messageDiv = document.getElementById('paymentMessage');
+            messageDiv.className = 'message error';
+            messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Connection error. Please try again.';
+            
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
+        }
+    });
+}
