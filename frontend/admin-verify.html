@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Verify Payments</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: #2563eb;
+        }
+
+        .btn-logout {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .transactions {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: #f3f4f6;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .verify-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .verify-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: #059669;
+            display: block;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #dc2626;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-shield-alt"></i> Admin Payment Verification</h1>
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+
+        <div class="transactions">
+            <h2><i class="fas fa-clock"></i> Pending Verifications</h2>
+            <div id="message" class="message"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User ID</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>M-PESA Code</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionsList">
+                    <tr>
+                        <td colspan="7" style="text-align: center;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://marketsystem-api.onrender.com/api';
+        const adminId = 1; // Replace with actual admin ID
+
+        async function loadPendingTransactions() {
+            try {
+                const response = await fetch(`${API_URL}/admin_transactions.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayTransactions(data.transactions);
+                }
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+            }
+        }
+
+        function displayTransactions(transactions) {
+            const tbody = document.getElementById('transactionsList');
+            
+            if (transactions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No pending transactions</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = transactions.map(t => `
+                <tr>
+                    <td>${new Date(t.created_at).toLocaleString()}</td>
+                    <td>#${t.user_id || 'N/A'}</td>
+                    <td>${t.phone}</td>
+                    <td>${t.email}</td>
+                    <td><strong>${t.mpesa_code}</strong></td>
+                    <td>KES ${t.amount}</td>
+                    <td>
+                        <button class="verify-btn" onclick="verifyTransaction(${t.id})">
+                            <i class="fas fa-check"></i> Verify
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function verifyTransaction(transactionId) {
+            if (!confirm('Verify this payment? This will activate the user account.')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/admin_verify.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        transaction_id: transactionId,
+                        admin_id: adminId
+                    })
+                });
+
+                const data = await response.json();
+                const messageDiv = document.getElementById('message');
+
+                if (data.success) {
+                    messageDiv.className = 'message success';
+                    messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> Transaction verified successfully!';
+                    loadPendingTransactions();
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+                }
+
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function logout() {
+            if (confirm('Logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        loadPendingTransactions();
+    </script>
+</body>
+</html>

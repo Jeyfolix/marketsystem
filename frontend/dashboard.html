@@ -53,7 +53,7 @@
             padding: 20px;
         }
 
-        /* Navbar */
+        /* Navbar - unchanged */
         .navbar {
             background: white;
             padding: 1rem 2rem;
@@ -129,7 +129,7 @@
             margin: 0 auto;
         }
 
-        /* Sidebar */
+        /* Sidebar - unchanged */
         .sidebar {
             width: 280px;
             background: white;
@@ -174,7 +174,7 @@
             flex: 1;
         }
 
-        /* Welcome Banner */
+        /* Welcome Banner - unchanged */
         .welcome-banner {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 20px;
@@ -188,7 +188,7 @@
             margin-bottom: 10px;
         }
 
-        /* Stats Grid */
+        /* Stats Grid - unchanged */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -232,7 +232,236 @@
             font-weight: 500;
         }
 
-        /* Referral Section */
+        /* Payment Status Card - NEW */
+        .payment-status-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            transition: all 0.3s;
+        }
+
+        .payment-status-card.pending {
+            border-left-color: var(--warning);
+        }
+
+        .payment-status-card.verified {
+            border-left-color: var(--success);
+        }
+
+        .payment-status-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .payment-status {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-verified {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        /* Payment Section - NEW */
+        .payment-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h2 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .payment-header p {
+            color: var(--gray);
+        }
+
+        .mpesa-details {
+            background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(124,58,237,0.1));
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .mpesa-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+        }
+
+        .amount-badge {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+        }
+
+        .verify-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+            display: block;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+            display: block;
+        }
+
+        /* Transactions Table - NEW */
+        .transactions-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .transactions-table th {
+            background: var(--light);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .transactions-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .transactions-table tr:hover {
+            background: var(--light);
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-verified {
+            background: #d1fae5;
+            color: #059669;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Referral Section - unchanged */
         .referral-section {
             background: white;
             border-radius: 20px;
@@ -254,13 +483,6 @@
             text-align: center;
             cursor: pointer;
             margin-bottom: 20px;
-            transition: all 0.3s;
-        }
-
-        .referral-code-box:hover {
-            background: linear-gradient(135deg, rgba(37,99,235,0.15), rgba(124,58,237,0.15));
-            transform: scale(1.02);
-            border-color: var(--secondary);
         }
 
         .referral-code-text {
@@ -270,7 +492,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            font-family: monospace;
         }
 
         .referral-link-box {
@@ -279,18 +500,7 @@
             padding: 25px;
             margin-top: 20px;
             border: 1px solid var(--primary-light);
-            animation: slideDown 0.5s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            display: none;
         }
 
         .link-input-group {
@@ -305,23 +515,6 @@
             border: 2px solid var(--gray-light);
             border-radius: 10px;
             font-size: 0.95rem;
-            background: white;
-        }
-
-        .copy-btn {
-            padding: 15px 25px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
         }
 
         .social-share {
@@ -340,7 +533,6 @@
             color: white;
             cursor: pointer;
             transition: all 0.3s;
-            text-decoration: none;
         }
 
         .social-btn:hover {
@@ -352,7 +544,7 @@
         .social-btn.twitter { background: #1DA1F2; }
         .social-btn.telegram { background: #0088cc; }
 
-        /* Marketing Content */
+        /* Marketing Content - unchanged */
         .marketing-content {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -391,7 +583,7 @@
             color: var(--success);
         }
 
-        /* Withdrawal Section */
+        /* Withdrawal Section - unchanged */
         .withdrawal-section {
             background: white;
             border-radius: 20px;
@@ -486,7 +678,7 @@
             cursor: pointer;
         }
 
-        /* Recent Activity */
+        /* Recent Activity - unchanged */
         .recent-activity {
             background: white;
             border-radius: 20px;
@@ -529,20 +721,17 @@
             margin-left: auto;
         }
 
-        /* Responsive */
+        /* Responsive - unchanged */
         @media (max-width: 1024px) {
             .dashboard-container {
                 flex-direction: column;
             }
-            
             .sidebar {
                 width: 100%;
             }
-            
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
             .marketing-content {
                 grid-template-columns: 1fr;
             }
@@ -552,11 +741,9 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-            
             .withdrawal-methods {
                 grid-template-columns: 1fr;
             }
-            
             .link-input-group {
                 flex-direction: column;
             }
@@ -576,7 +763,7 @@
                     <div class="profile-image" id="profileImage">JF</div>
                     <div class="user-info">
                         <div class="welcome-text">Welcome back,</div>
-                        <div class="user-name" id="userName">Jey Folix</div>
+                        <div class="user-name" id="userName">Loading...</div>
                     </div>
                 </div>
                 <button id="logoutBtn" class="btn-logout">
@@ -589,165 +776,18 @@
             <!-- Sidebar -->
             <aside class="sidebar">
                 <ul class="sidebar-menu">
-                    <li class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
-                    <li><i class="fas fa-link"></i> My Referrals</li>
-                    <li><i class="fas fa-chart-line"></i> Earnings History</li>
-                    <li><i class="fas fa-users"></i> My Team</li>
-                    <li><i class="fas fa-cog"></i> Settings</li>
+                    <li class="active" onclick="showSection('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                    <li onclick="showSection('payments')"><i class="fas fa-money-bill-wave"></i> Payments</li>
+                    <li onclick="showSection('referrals')"><i class="fas fa-link"></i> My Referrals</li>
+                    <li onclick="showSection('earnings')"><i class="fas fa-chart-line"></i> Earnings</li>
+                    <li onclick="showSection('withdraw')"><i class="fas fa-hand-holding-usd"></i> Withdraw</li>
+                    <li onclick="showSection('settings')"><i class="fas fa-cog"></i> Settings</li>
                 </ul>
             </aside>
 
             <!-- Main Content -->
-            <main class="main-content">
-                <!-- Welcome Banner -->
-                <div class="welcome-banner">
-                    <h1 id="welcomeMessage">Welcome back, Jey! 🚀</h1>
-                    <p id="welcomeSubtext">Share your referral code and start earning today!</p>
-                </div>
-
-                <!-- Stats Grid -->
-                <div class="stats-grid" id="statsContainer">
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-users"></i></div>
-                        <div class="stat-value" id="totalReferrals">0</div>
-                        <div class="stat-label">TOTAL REFERRALS</div>
-                        <small id="monthlyReferrals">0 this month</small>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                        <div class="stat-value" id="totalEarnings">KES 0</div>
-                        <div class="stat-label">TOTAL EARNINGS</div>
-                        <small id="monthlyEarnings">KES 0 this month</small>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-wallet"></i></div>
-                        <div class="stat-value" id="availableBalance">KES 0</div>
-                        <div class="stat-label">AVAILABLE BALANCE</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-                        <div class="stat-value" id="rank">Starter</div>
-                        <div class="stat-label">YOUR RANK</div>
-                    </div>
-                </div>
-
-                <!-- Referral Section -->
-                <div class="referral-section">
-                    <div class="referral-header">
-                        <h2>Your Referral Code</h2>
-                        <p>Share this code and earn KES 150 per referral!</p>
-                    </div>
-                    
-                    <div class="referral-code-box" onclick="toggleReferralLink()">
-                        <div class="referral-code-text" id="referralCodeDisplay">REF060001</div>
-                        <div><i class="fas fa-hand-pointer"></i> Tap to reveal sharing options</div>
-                    </div>
-                    
-                    <div class="referral-link-box" id="referralLinkBox" style="display: none;">
-                        <div class="link-input-group">
-                            <input type="text" id="referralLink" readonly>
-                            <button class="copy-btn" onclick="copyReferralLink(event)"><i class="fas fa-copy"></i> Copy Link</button>
-                        </div>
-                        
-                        <div class="social-share">
-                            <a href="#" class="social-btn whatsapp" onclick="shareOnWhatsApp(event)"><i class="fab fa-whatsapp"></i></a>
-                            <a href="#" class="social-btn facebook" onclick="shareOnFacebook(event)"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-btn twitter" onclick="shareOnTwitter(event)"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="social-btn telegram" onclick="shareOnTelegram(event)"><i class="fab fa-telegram-plane"></i></a>
-                        </div>
-                        <p style="margin-top: 15px; color: var(--gray); font-size: 0.9rem;">
-                            <i class="fas fa-info-circle"></i> When someone registers with this link, your referral code will be auto-filled
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Marketing Content -->
-                <div class="marketing-content">
-                    <div class="info-card">
-                        <h3><i class="fas fa-rocket"></i> How It Works</h3>
-                        <ul class="benefits-list">
-                            <li><i class="fas fa-check-circle"></i> Share your unique referral link</li>
-                            <li><i class="fas fa-check-circle"></i> Friends join using your link</li>
-                            <li><i class="fas fa-check-circle"></i> Earn KES 150 instantly!</li>
-                            <li><i class="fas fa-check-circle"></i> Withdraw anytime to M-PESA</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-card">
-                        <h3><i class="fas fa-star"></i> Success Tips</h3>
-                        <ul class="benefits-list">
-                            <li><i class="fas fa-bullseye"></i> Share on WhatsApp groups daily</li>
-                            <li><i class="fas fa-bullseye"></i> Post on social media platforms</li>
-                            <li><i class="fas fa-bullseye"></i> Tell friends and family</li>
-                            <li><i class="fas fa-bullseye"></i> Create a broadcast list</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-card">
-                        <h3><i class="fas fa-gem"></i> Why Choose Us</h3>
-                        <ul class="benefits-list">
-                            <li><i class="fas fa-shield-alt"></i> 100% Legit & Verified</li>
-                            <li><i class="fas fa-bolt"></i> Instant M-PESA Payments</li>
-                            <li><i class="fas fa-headset"></i> 24/7 Customer Support</li>
-                            <li><i class="fas fa-chart-line"></i> Unlimited Earnings</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Withdrawal Section -->
-                <div class="withdrawal-section">
-                    <div class="withdrawal-header">
-                        <h3><i class="fas fa-hand-holding-usd"></i> Withdraw Your Earnings</h3>
-                        <span class="min-amount">Min: KES 100</span>
-                    </div>
-
-                    <div class="withdrawal-methods">
-                        <div class="method-card selected" onclick="selectMethod('mpesa')">
-                            <div class="method-icon"><i class="fas fa-mobile-alt"></i></div>
-                            <div>
-                                <h4>M-PESA</h4>
-                                <p>Instant to phone</p>
-                            </div>
-                        </div>
-                        <div class="method-card" onclick="selectMethod('bank')">
-                            <div class="method-icon"><i class="fas fa-university"></i></div>
-                            <div>
-                                <h4>Bank Transfer</h4>
-                                <p>1-2 business days</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="withdraw-input">
-                        <label>Amount (KES)</label>
-                        <div class="input-group">
-                            <span>KES</span>
-                            <input type="number" id="withdrawAmount" min="100" step="50" value="100">
-                        </div>
-                    </div>
-
-                    <button class="withdraw-btn" onclick="processWithdrawal()">
-                        <i class="fas fa-arrow-right"></i> Withdraw Funds
-                    </button>
-                </div>
-
-                <!-- Recent Activity -->
-                <div class="recent-activity">
-                    <div class="activity-header">
-                        <h3><i class="fas fa-history"></i> Recent Referrals</h3>
-                        <span class="view-all" onclick="viewAllReferrals()">View All →</span>
-                    </div>
-                    <div id="recentActivity">
-                        <div class="activity-item">
-                            <div class="activity-avatar">JD</div>
-                            <div>
-                                <div><strong>John Doe</strong></div>
-                                <small>2 minutes ago</small>
-                            </div>
-                            <div class="activity-amount">+KES 150</div>
-                        </div>
-                    </div>
-                </div>
+            <main class="main-content" id="mainContent">
+                <!-- Content will be dynamically loaded -->
             </main>
         </div>
     </div>
