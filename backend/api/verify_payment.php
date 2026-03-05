@@ -24,7 +24,6 @@ $email = $data->email;
 $mpesa_code = $data->mpesa_code;
 
 try {
-    // Check if M-PESA code already exists
     $check_query = "SELECT id FROM transactions WHERE mpesa_code = :mpesa_code";
     $check_stmt = $db->prepare($check_query);
     $check_stmt->bindParam(':mpesa_code', $mpesa_code);
@@ -36,7 +35,6 @@ try {
         exit();
     }
     
-    // Insert transaction
     $query = "INSERT INTO transactions (user_id, phone, email, mpesa_code, amount, status) 
               VALUES (:user_id, :phone, :email, :mpesa_code, 300, 'pending')";
     $stmt = $db->prepare($query);

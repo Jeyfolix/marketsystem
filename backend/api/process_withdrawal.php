@@ -24,13 +24,12 @@ $method = $data->method;
 $phone = $data->phone;
 
 try {
-    // Check if user has sufficient balance
-    $balance_query = "SELECT (COUNT(r.id) * 150) - COALESCE((SELECT SUM(amount) FROM withdrawals WHERE user_id = :user_id AND status = 'completed'), 0) as balance
-                      FROM users u
-                      LEFT JOIN users r ON r.referred_by = u.referral_code
-                      WHERE u.id = :user_id";
+    $balance_query = "SELECT 
+                        (SELECT COUNT(*) * 150 FROM users WHERE referred_by = (SELECT referral_code FROM users WHERE id = :user_id)) -
+                        (SELECT COALESCE(SUM(amount), 0) FROM withdrawals WHERE user_id = :user_id2 AND status = 'completed') as balance";
     $balance_stmt = $db->prepare($balance_query);
     $balance_stmt->bindParam(':user_id', $user_id);
+    $balance_stmt->bindParam(':user_id2', $user_id);
     $balance_stmt->execute();
     $balance = $balance_stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -40,7 +39,12 @@ try {
         exit();
     }
     
-    // Insert withdrawal request
+    if($amount < 100) {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "Minimum withdrawal amount is KES 100"]);
+        exit();
+    }
+    
     $query = "INSERT INTO withdrawals (user_id, amount, method, phone, status) 
               VALUES (:user_id, :amount, :method, :phone, 'pending')";
     $stmt = $db->prepare($query);

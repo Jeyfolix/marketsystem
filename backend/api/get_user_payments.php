@@ -21,14 +21,6 @@ if(!isset($data->user_id)) {
 $user_id = $data->user_id;
 
 try {
-    // Get user's payment status
-    $status_query = "SELECT status FROM transactions WHERE user_id = :user_id ORDER BY created_at DESC LIMIT 1";
-    $status_stmt = $db->prepare($status_query);
-    $status_stmt->bindParam(':user_id', $user_id);
-    $status_stmt->execute();
-    $current_status = $status_stmt->fetch(PDO::FETCH_ASSOC);
-    
-    // Get all user's payments
     $payments_query = "SELECT id, user_id, phone, email, amount, mpesa_code, status, created_at 
                        FROM transactions 
                        WHERE user_id = :user_id 
@@ -38,14 +30,12 @@ try {
     $payments_stmt->execute();
     $payments = $payments_stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Get user's referral code
     $ref_code_query = "SELECT referral_code FROM users WHERE id = :user_id";
     $ref_code_stmt = $db->prepare($ref_code_query);
     $ref_code_stmt->bindParam(':user_id', $user_id);
     $ref_code_stmt->execute();
     $user = $ref_code_stmt->fetch(PDO::FETCH_ASSOC);
     
-    // Get referrals (people who used this user's referral code)
     $referrals_query = "SELECT id, name, username, email, phone, created_at 
                        FROM users 
                        WHERE referred_by = :referral_code
@@ -58,7 +48,6 @@ try {
     http_response_code(200);
     echo json_encode([
         "success" => true,
-        "current_status" => $current_status ? $current_status['status'] : 'unpaid',
         "payments" => $payments,
         "referrals" => $referrals
     ]);

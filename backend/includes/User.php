@@ -21,7 +21,6 @@ class User {
     }
 
     public function create() {
-        // Generate unique referral code
         $this->referral_code = $this->generateReferralCode();
         
         $query = "INSERT INTO " . $this->table_name . "
@@ -38,7 +37,6 @@ class User {
 
         $stmt = $this->conn->prepare($query);
 
-        // Sanitize inputs
         $this->name = htmlspecialchars(strip_tags($this->name));
         $this->username = htmlspecialchars(strip_tags($this->username));
         $this->email = htmlspecialchars(strip_tags($this->email));
@@ -47,7 +45,6 @@ class User {
         $this->referred_by = !empty($this->referred_by) ? htmlspecialchars(strip_tags($this->referred_by)) : null;
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
 
-        // Bind parameters
         $stmt->bindParam(":name", $this->name);
         $stmt->bindParam(":username", $this->username);
         $stmt->bindParam(":email", $this->email);
@@ -117,7 +114,7 @@ class User {
     }
 
     public function getReferralByCode($code) {
-        $query = "SELECT id, username FROM " . $this->table_name . " WHERE referral_code = :code LIMIT 0,1";
+        $query = "SELECT id, username, name FROM " . $this->table_name . " WHERE referral_code = :code LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":code", $code);
         $stmt->execute();
@@ -134,17 +131,16 @@ class User {
         for ($i = 0; $i < 6; $i++) {
             $code .= $characters[rand(0, strlen($characters) - 1)];
         }
-        
-        // Check if code already exists
+
         $query = "SELECT id FROM " . $this->table_name . " WHERE referral_code = :code";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":code", $code);
         $stmt->execute();
-        
+
         if($stmt->rowCount() > 0) {
-            return $this->generateReferralCode();
+            return $this->generateReferralCode(); 
         }
-        
+
         return $code;
     }
 }

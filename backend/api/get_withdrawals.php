@@ -21,29 +21,20 @@ if(!isset($data->user_id)) {
 $user_id = $data->user_id;
 
 try {
-    $earnings_query = "SELECT r.*, u.name as referred_name, u.username, u.email, u.phone
-                       FROM referrals r 
-                       JOIN users u ON r.referred_id = u.id 
-                       WHERE r.referrer_id = :user_id 
-                       ORDER BY r.created_at DESC";
-    $earnings_stmt = $db->prepare($earnings_query);
-    $earnings_stmt->bindParam(':user_id', $user_id);
-    $earnings_stmt->execute();
-    $earnings = $earnings_stmt->fetchAll(PDO::FETCH_ASSOC);
+    $query = "SELECT id, amount, method, phone, status, created_at, completed_at 
+              FROM withdrawals 
+              WHERE user_id = :user_id 
+              ORDER BY created_at DESC";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
     
-    $total_query = "SELECT COALESCE(SUM(commission), 0) as total 
-                    FROM referrals 
-                    WHERE referrer_id = :user_id";
-    $total_stmt = $db->prepare($total_query);
-    $total_stmt->bindParam(':user_id', $user_id);
-    $total_stmt->execute();
-    $total = $total_stmt->fetch(PDO::FETCH_ASSOC);
+    $withdrawals = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     http_response_code(200);
     echo json_encode([
         "success" => true,
-        "earnings" => $earnings,
-        "total" => $total['total']
+        "withdrawals" => $withdrawals
     ]);
     
 } catch(PDOException $e) {
