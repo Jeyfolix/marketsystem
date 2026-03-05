@@ -141,22 +141,56 @@
             gap: 30px;
         }
 
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+        }
+
+        .stat-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
         /* Status Card */
         .status-card {
             background: white;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border-left: 5px solid;
-            transition: all 0.3s;
-        }
-
-        .status-card.pending {
-            border-left-color: var(--warning);
-        }
-
-        .status-card.verified {
-            border-left-color: var(--success);
+            border-left: 5px solid var(--warning);
         }
 
         .status-card h2 {
@@ -173,16 +207,8 @@
             border-radius: 50px;
             font-weight: 600;
             font-size: 1rem;
-        }
-
-        .badge-pending {
             background: #fef3c7;
             color: #d97706;
-        }
-
-        .badge-verified {
-            background: #d1fae5;
-            color: #059669;
         }
 
         /* Payment Card */
@@ -252,11 +278,6 @@
             margin-top: 10px;
         }
 
-        .form-grid {
-            display: grid;
-            gap: 20px;
-        }
-
         .form-group {
             margin-bottom: 20px;
         }
@@ -299,32 +320,6 @@
         .submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(37,99,235,0.3);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .message {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            display: none;
-        }
-
-        .message.success {
-            background: #d1fae5;
-            color: var(--success);
-            display: block;
-        }
-
-        .message.error {
-            background: #fee2e2;
-            color: var(--danger);
-            display: block;
         }
 
         /* Transactions Card */
@@ -378,7 +373,7 @@
             background: var(--light);
         }
 
-        .status-badge {
+        .status-badge-small {
             padding: 5px 12px;
             border-radius: 50px;
             font-size: 0.85rem;
@@ -396,108 +391,19 @@
             color: #059669;
         }
 
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
+        .demo-data {
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-        }
-
-        .stat-icon i {
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .stat-label {
+            margin-top: 20px;
+            padding: 10px;
+            background: var(--light);
+            border-radius: 10px;
             color: var(--gray);
             font-size: 0.9rem;
         }
 
-        /* Login Prompt */
-        .login-prompt {
-            text-align: center;
-            padding: 60px;
-            background: white;
-            border-radius: 20px;
-        }
-
-        .login-prompt i {
-            font-size: 4rem;
+        .demo-data i {
             color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .login-prompt h2 {
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-
-        .login-prompt p {
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-
-        .btn-login {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 15px 40px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 60px;
-        }
-
-        .spinner {
-            border: 4px solid var(--light);
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            margin-right: 5px;
         }
 
         /* Responsive */
@@ -527,10 +433,10 @@
             </div>
             <div class="nav-user">
                 <div class="user-profile">
-                    <div class="profile-image" id="profileImage">JF</div>
+                    <div class="profile-image">AU</div>
                     <div class="user-info">
                         <div class="welcome-text">Welcome back,</div>
-                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-name">Admin User</div>
                     </div>
                 </div>
                 <a href="dashboard.html" class="btn-dashboard">
@@ -539,325 +445,121 @@
             </div>
         </nav>
 
-        <!-- Main Content -->
-        <div id="mainContent" class="main-content">
-            <!-- Content will be loaded here -->
+        <!-- Main Content - Static Demo Version -->
+        <div class="main-content">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-value">KES 450</div>
+                    <div class="stat-label">Total Paid</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-value">1</div>
+                    <div class="stat-label">Verified</div>
+                </div>
+            </div>
+
+            <!-- Status Card -->
+            <div class="status-card">
+                <h2><i class="fas fa-clock"></i> Account Status</h2>
+                <span class="status-badge">Pending Verification</span>
+                <p style="margin-top: 15px; color: var(--gray);">
+                    Complete your payment of KES 300 to activate your account and start earning.
+                </p>
+            </div>
+
+            <!-- Payment Card -->
+            <div class="payment-card">
+                <h2>🔐 Verify Your Account</h2>
+                <p class="payment-subtitle">Make a payment of KES 300 to activate your account</p>
+
+                <div class="mpesa-section">
+                    <i class="fas fa-mobile-alt mpesa-icon"></i>
+                    <h3>Send to M-PESA</h3>
+                    <div class="mpesa-number">0701603497</div>
+                    <button class="copy-btn" onclick="alert('Copy functionality will be added with JavaScript')">
+                        <i class="fas fa-copy"></i> Copy Number
+                    </button>
+                    <div class="amount-badge">Amount: KES 300</div>
+                </div>
+
+                <form onsubmit="event.preventDefault(); alert('Form submission will be handled by JavaScript')">
+                    <div class="form-group">
+                        <label for="phone">Your M-PESA Phone Number</label>
+                        <input type="tel" id="phone" placeholder="e.g., 0701603497" value="0701603497">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mpesaCode">M-PESA Transaction Code</label>
+                        <input type="text" id="mpesaCode" placeholder="e.g., PPI8J3K4L5" value="TEST123">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="your@email.com" value="admin@example.com">
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-check-circle"></i> Submit Payment
+                    </button>
+                </form>
+            </div>
+
+            <!-- Transactions Card -->
+            <div class="transactions-card">
+                <div class="transactions-header">
+                    <h2><i class="fas fa-history"></i> Payment History</h2>
+                    <span class="status-badge-small status-verified">Total: 3</span>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Phone</th>
+                                <th>M-PESA Code</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026-03-04 20:51:26</td>
+                                <td>0701603497</td>
+                                <td><strong>TEST123</strong></td>
+                                <td>KES 300</td>
+                                <td><span class="status-badge-small status-pending">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>2026-03-03 15:22:10</td>
+                                <td>0712345678</td>
+                                <td><strong>PPI8J3K4L5</strong></td>
+                                <td>KES 300</td>
+                                <td><span class="status-badge-small status-verified">Verified</span></td>
+                            </tr>
+                            <tr>
+                                <td>2026-03-02 09:15:30</td>
+                                <td>0723456789</td>
+                                <td><strong>ABC123XYZ</strong></td>
+                                <td>KES 300</td>
+                                <td><span class="status-badge-small status-pending">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="demo-data">
+                <i class="fas fa-info-circle"></i> This is a static demo version. JavaScript functionality will be added later.
+            </div>
         </div>
     </div>
-
-    <script>
-        const API_URL = 'https://marketsystem-api.onrender.com/api';
-        const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
-        const mainContent = document.getElementById('mainContent');
-
-        // Check if user is logged in
-        if (!userData || !userData.id) {
-            mainContent.innerHTML = `
-                <div class="login-prompt">
-                    <i class="fas fa-lock"></i>
-                    <h2>Please Login First</h2>
-                    <p>You need to be logged in to make payments and view your transaction history.</p>
-                    <a href="index.html" class="btn-login">Go to Login</a>
-                </div>
-            `;
-        } else {
-            // Show loading
-            mainContent.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p style="color: var(--gray);">Loading payment details...</p>
-                </div>
-            `;
-            
-            // Load payment data
-            loadPaymentData();
-        }
-
-        // Load payment data
-        async function loadPaymentData() {
-            try {
-                const response = await fetch(`${API_URL}/transactions.php`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ user_id: userData.id })
-                });
-
-                const data = await response.json();
-                console.log('Payment data:', data);
-
-                if (data.success) {
-                    renderPaymentPage(data);
-                } else {
-                    showError(data.message || 'Failed to load payment data');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Connection error. Please try again.');
-            }
-        }
-
-        // Render payment page
-        function renderPaymentPage(data) {
-            const payments = data.payments || [];
-            const currentStatus = data.current_status || 'unpaid';
-            
-            // Calculate stats
-            const totalPaid = payments.reduce((sum, p) => sum + (p.status === 'verified' ? parseFloat(p.amount) : 0), 0);
-            const pendingCount = payments.filter(p => p.status === 'pending').length;
-            const verifiedCount = payments.filter(p => p.status === 'verified').length;
-            
-            // Determine status
-            let statusText = 'Not Paid';
-            let statusClass = 'badge-pending';
-            let cardClass = 'pending';
-            let statusIcon = 'fa-clock';
-            
-            if (currentStatus === 'verified') {
-                statusText = 'Account Verified';
-                statusClass = 'badge-verified';
-                cardClass = 'verified';
-                statusIcon = 'fa-check-circle';
-            } else if (currentStatus === 'pending') {
-                statusText = 'Pending Verification';
-                statusClass = 'badge-pending';
-                cardClass = 'pending';
-                statusIcon = 'fa-clock';
-            }
-            
-            // Generate payment history HTML
-            let historyHTML = '';
-            if (payments.length === 0) {
-                historyHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px;">No payment history found</td></tr>';
-            } else {
-                historyHTML = payments.map(p => {
-                    const date = new Date(p.created_at).toLocaleString();
-                    const pStatusClass = p.status === 'verified' ? 'status-verified' : 'status-pending';
-                    const pStatusText = p.status === 'verified' ? 'Verified' : 'Pending';
-                    
-                    return `
-                        <tr>
-                            <td>${date}</td>
-                            <td>${p.phone || 'N/A'}</td>
-                            <td><strong>${p.mpesa_code || 'N/A'}</strong></td>
-                            <td>KES ${parseFloat(p.amount).toLocaleString()}</td>
-                            <td><span class="status-badge ${pStatusClass}">${pStatusText}</span></td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-            
-            // Update user name in navbar
-            document.getElementById('userName').textContent = userData.name || userData.username;
-            document.getElementById('profileImage').textContent = (userData.name || userData.username).charAt(0).toUpperCase();
-            
-            // Render the page
-            mainContent.innerHTML = `
-                <!-- Stats Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                        <div class="stat-value">KES ${totalPaid.toLocaleString()}</div>
-                        <div class="stat-label">Total Paid</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
-                        <div class="stat-value">${pendingCount}</div>
-                        <div class="stat-label">Pending</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                        <div class="stat-value">${verifiedCount}</div>
-                        <div class="stat-label">Verified</div>
-                    </div>
-                </div>
-
-                <!-- Status Card -->
-                <div class="status-card ${cardClass}">
-                    <h2><i class="fas ${statusIcon}"></i> Account Status</h2>
-                    <span class="status-badge ${statusClass}">${statusText}</span>
-                    <p style="margin-top: 15px; color: var(--gray);">
-                        ${currentStatus === 'verified' 
-                            ? 'Your account is verified! You can now earn commissions from referrals.' 
-                            : 'Complete your payment of KES 300 to activate your account and start earning.'}
-                    </p>
-                </div>
-
-                <!-- Payment Card -->
-                <div class="payment-card">
-                    <h2>🔐 Verify Your Account</h2>
-                    <p class="payment-subtitle">Make a payment of KES 300 to activate your account</p>
-
-                    <div class="mpesa-section">
-                        <i class="fas fa-mobile-alt mpesa-icon"></i>
-                        <h3>Send to M-PESA</h3>
-                        <div class="mpesa-number" id="mpesaNumber">0701603497</div>
-                        <button class="copy-btn" onclick="copyNumber()">
-                            <i class="fas fa-copy"></i> Copy Number
-                        </button>
-                        <div class="amount-badge">Amount: KES 300</div>
-                    </div>
-
-                    <form id="paymentForm" class="form-grid">
-                        <div class="form-group">
-                            <label for="phone">Your M-PESA Phone Number</label>
-                            <input type="tel" id="phone" placeholder="e.g., 0701603497" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="mpesaCode">M-PESA Transaction Code</label>
-                            <input type="text" id="mpesaCode" placeholder="e.g., PPI8J3K4L5" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" placeholder="your@email.com" required>
-                        </div>
-
-                        <button type="submit" class="submit-btn" id="submitBtn">
-                            <i class="fas fa-check-circle"></i> Submit Payment
-                        </button>
-                    </form>
-
-                    <div id="message" class="message"></div>
-                </div>
-
-                <!-- Transactions Card -->
-                <div class="transactions-card">
-                    <div class="transactions-header">
-                        <h2><i class="fas fa-history"></i> Payment History</h2>
-                        <span class="status-badge ${payments.length > 0 ? 'badge-verified' : ''}">Total: ${payments.length}</span>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Phone</th>
-                                    <th>M-PESA Code</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${historyHTML}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-            
-            // Setup form submission
-            setupPaymentForm();
-        }
-
-        // Setup payment form
-        function setupPaymentForm() {
-            const form = document.getElementById('paymentForm');
-            if (!form) return;
-            
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const phone = document.getElementById('phone').value.trim();
-                const mpesaCode = document.getElementById('mpesaCode').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const submitBtn = document.getElementById('submitBtn');
-                const messageDiv = document.getElementById('message');
-                
-                // Validate
-                if (!phone || !mpesaCode || !email) {
-                    showMessage('Please fill in all fields', 'error', messageDiv);
-                    return;
-                }
-                
-                if (phone.length < 10) {
-                    showMessage('Please enter a valid phone number', 'error', messageDiv);
-                    return;
-                }
-                
-                if (mpesaCode.length < 5) {
-                    showMessage('Please enter a valid M-PESA code', 'error', messageDiv);
-                    return;
-                }
-                
-                // Disable button
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-                
-                try {
-                    const response = await fetch(`${API_URL}/verify_payment.php`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            user_id: userData.id,
-                            phone: phone,
-                            email: email,
-                            mpesa_code: mpesaCode,
-                            amount: 300
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        showMessage('Payment submitted successfully! Admin will verify within 24 hours.', 'success', messageDiv);
-                        form.reset();
-                        // Reload data after 2 seconds
-                        setTimeout(() => {
-                            loadPaymentData();
-                        }, 2000);
-                    } else {
-                        showMessage(data.message || 'Payment submission failed', 'error', messageDiv);
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    showMessage('Connection error. Please try again.', 'error', messageDiv);
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
-                }
-            });
-        }
-
-        // Show message
-        function showMessage(text, type, element) {
-            element.className = `message ${type}`;
-            element.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${text}`;
-            element.style.display = 'block';
-            
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, 5000);
-        }
-
-        // Show error
-        function showError(message) {
-            mainContent.innerHTML = `
-                <div class="login-prompt">
-                    <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
-                    <h2 style="color: var(--danger);">Error</h2>
-                    <p>${message}</p>
-                    <button onclick="location.reload()" class="btn-login" style="background: var(--primary);">Try Again</button>
-                </div>
-            `;
-        }
-
-        // Copy M-PESA number
-        window.copyNumber = function() {
-            const number = document.getElementById('mpesaNumber').textContent;
-            navigator.clipboard.writeText(number).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                }, 2000);
-            });
-        };
-    </script>
 </body>
 </html>
