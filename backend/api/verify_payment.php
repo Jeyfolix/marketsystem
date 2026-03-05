@@ -1,29 +1,57 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
+// Handle CORS properly
+$allowed_origins = [
+    'https://jeyfolix.github.io',
+    'http://localhost',
+    'http://localhost:8080'
+];
+
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+} else {
+    header("Access-Control-Allow-Origin: *");
+}
+
+header("Access-Control-Max-Age: 86400");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-include_once '../config/database.php';
-
-$database = new Database();
-$db = $database->getConnection();
-
-$data = json_decode(file_get_contents("php://input"));
-
-if(!isset($data->user_id) || !isset($data->phone) || !isset($data->email) || !isset($data->mpesa_code)) {
-    http_response_code(400);
-    echo json_encode(["success" => false, "message" => "All fields are required"]);
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
     exit();
 }
 
-$user_id = $data->user_id;
-$phone = $data->phone;
-$email = $data->email;
-$mpesa_code = $data->mpesa_code;
+header("Content-Type: application/json; charset=UTF-8");
+
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include_once '../config/database.php';
 
 try {
+    $database = new Database();
+    $db = $database->getConnection();
+    
+    if (!$db) {
+        throw new Exception("Database connection failed");
+    }
+    
+    $data = json_decode(file_get_contents("php://input"));
+    
+    if(!isset($data->user_id) || !isset($data->phone) || !isset($data->email) || !isset($data->mpesa_code)) {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "All fields are required"]);
+        exit();
+    }
+    
+    $user_id = $data->user_id;
+    $phone = $data->phone;
+    $email = $data->email;
+    $mpesa_code = $data->mpesa_code;
+    
     // Check if M-PESA code already exists
     $check_query = "SELECT id FROM transactions WHERE mpesa_code = :mpesa_code";
     $check_stmt = $db->prepare($check_query);
@@ -58,6 +86,9 @@ try {
     
 } catch(PDOException $e) {
     http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["success" => false, "message" => "Database error"]);
+} catch(Exception $e) {
+    http_response_code(500);
+    echo json_encode(["success" => false, "message" => "Server error"]);
 }
 ?>
