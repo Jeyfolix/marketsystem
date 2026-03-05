@@ -35,7 +35,7 @@ try {
     
     $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
     
-    // Get referral stats (users who used this user's referral code)
+    // Get referral stats
     $ref_stats_query = "SELECT 
                         COUNT(*) as total_referrals,
                         SUM(CASE WHEN created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY) THEN 1 ELSE 0 END) as referrals_this_month,
@@ -52,7 +52,7 @@ try {
     $earnings_this_month = (int)$ref_stats['referrals_this_month'] * 150;
     $earnings_today = (int)$ref_stats['referrals_today'] * 150;
     
-    // Get total withdrawals from withdrawals table
+    // Get withdrawals
     $withdrawals_query = "SELECT COALESCE(SUM(amount), 0) as total_withdrawn 
                           FROM withdrawals 
                           WHERE user_id = :user_id AND status = 'completed'";
@@ -64,7 +64,7 @@ try {
     $available_balance = $total_earnings - $withdrawals['total_withdrawn'];
     if ($available_balance < 0) $available_balance = 0;
     
-    // Determine rank based on referrals
+    // Determine rank
     $rank = 'Starter';
     $rank_color = '#6B7280';
     if($total_referrals >= 50) {
@@ -81,7 +81,7 @@ try {
         $rank_color = '#CD7F32';
     }
     
-    // Get recent referrals (last 5)
+    // Get recent referrals
     $recent_query = "SELECT id, name, username, created_at 
                      FROM users 
                      WHERE referred_by = :referral_code
@@ -91,13 +91,6 @@ try {
     $recent_stmt->bindParam(':referral_code', $user['referral_code']);
     $recent_stmt->execute();
     $recent_referrals = $recent_stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Get payment status from transactions table
-    $payment_query = "SELECT status FROM transactions WHERE user_id = :user_id ORDER BY created_at DESC LIMIT 1";
-    $payment_stmt = $db->prepare($payment_query);
-    $payment_stmt->bindParam(':user_id', $user_id);
-    $payment_stmt->execute();
-    $payment_status = $payment_stmt->fetch(PDO::FETCH_ASSOC);
     
     http_response_code(200);
     echo json_encode([
@@ -123,8 +116,7 @@ try {
             "earnings_today" => $earnings_today,
             "available_balance" => $available_balance,
             "rank" => $rank,
-            "rank_color" => $rank_color,
-            "payment_status" => $payment_status ? $payment_status['status'] : 'unpaid'
+            "rank_color" => $rank_color
         ],
         "recent_referrals" => $recent_referrals
     ]);
