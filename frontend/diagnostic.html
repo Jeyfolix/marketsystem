@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Diagnostic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        button { padding: 15px; width: 100%; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; margin: 5px 0; cursor: pointer; }
+        pre { background: #1e1e1e; color: #00ff00; padding: 15px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; font-size: 14px; }
+        .success { color: #10b981; font-weight: bold; }
+        .error { color: #dc2626; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Dashboard Diagnostic</h1>
+        
+        <div class="card">
+            <h3>Step 1: Session Storage Check</h3>
+            <button onclick="checkSession()">Check Login Status</button>
+            <pre id="sessionResult">Click to check...</pre>
+        </div>
+
+        <div class="card">
+            <h3>Step 2: Test API Connection</h3>
+            <button onclick="testAPI()">Test Dashboard API</button>
+            <pre id="apiResult">Click to test...</pre>
+        </div>
+
+        <div class="card">
+            <h3>Step 3: Fix Session (if needed)</h3>
+            <button onclick="fixSession()">Set Test Session (User ID 1)</button>
+            <button onclick="clearSession()">Clear Session</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://marketsystem-api.onrender.com/api/dashboard.php';
+
+        function checkSession() {
+            const result = document.getElementById('sessionResult');
+            const userData = sessionStorage.getItem('user');
+            
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    result.innerHTML = `✅ Logged in as: ${user.name || user.username}\nUser ID: ${user.id}\n\nFull data: ${JSON.stringify(user, null, 2)}`;
+                } catch(e) {
+                    result.innerHTML = `❌ Invalid session data: ${userData}`;
+                }
+            } else {
+                result.innerHTML = '❌ Not logged in. Click "Set Test Session" to fix.';
+            }
+        }
+
+        async function testAPI() {
+            const result = document.getElementById('apiResult');
+            result.innerHTML = 'Testing...';
+            
+            // Try with user_id 1 first
+            let userId = 1;
+            
+            // Check if we have logged in user
+            const userData = sessionStorage.getItem('user');
+            if (userData) {
+                try {
+                    userId = JSON.parse(userData).id;
+                } catch(e) {}
+            }
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: userId })
+                });
+                
+                const responseText = await response.text();
+                let json;
+                try {
+                    json = JSON.parse(responseText);
+                    result.innerHTML = `✅ Status: ${response.status}\n\nResponse: ${JSON.stringify(json, null, 2)}`;
+                } catch(e) {
+                    result.innerHTML = `⚠️ Status: ${response.status}\n\nRaw Response: ${responseText}`;
+                }
+            } catch (error) {
+                result.innerHTML = `❌ Error: ${error.message}\n\nType: ${error.name}`;
+            }
+        }
+
+        function fixSession() {
+            // Create a test user session
+            const testUser = {
+                id: 1,
+                name: 'Admin User',
+                username: 'admin',
+                email: 'admin@affiliatepro.com'
+            };
+            sessionStorage.setItem('user', JSON.stringify(testUser));
+            checkSession();
+            alert('Test session created! Now test the API again.');
+        }
+
+        function clearSession() {
+            sessionStorage.removeItem('user');
+            checkSession();
+            alert('Session cleared!');
+        }
+
+        // Auto-run checks on page load
+        window.onload = function() {
+            checkSession();
+        };
+    </script>
+</body>
+</html>
