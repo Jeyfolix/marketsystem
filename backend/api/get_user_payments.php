@@ -35,10 +35,11 @@ try {
     $payments_stmt->execute();
     $payments = $payments_stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Get referral info for each payment
-    $referrals_query = "SELECT u.name, u.phone, u.email, u.referral_code 
+    // Get referrals (people this user referred)
+    $referrals_query = "SELECT u.id, u.name, u.username, u.email, u.phone, u.created_at 
                        FROM users u 
-                       WHERE u.referred_by = (SELECT referral_code FROM users WHERE id = :user_id)";
+                       WHERE u.referred_by = (SELECT referral_code FROM users WHERE id = :user_id)
+                       ORDER BY u.created_at DESC";
     $referrals_stmt = $db->prepare($referrals_query);
     $referrals_stmt->bindParam(':user_id', $user_id);
     $referrals_stmt->execute();
@@ -49,12 +50,11 @@ try {
         "success" => true,
         "current_status" => $current_status ? $current_status['status'] : 'unpaid',
         "payments" => $payments,
-        "referrals" => $referrals,
-        "total_referrals" => count($referrals)
+        "referrals" => $referrals
     ]);
     
 } catch(PDOException $e) {
     http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["success" => false, "message" => "Database error"]);
 }
 ?>

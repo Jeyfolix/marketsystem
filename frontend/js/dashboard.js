@@ -321,6 +321,75 @@ function showPayments() {
     setupPaymentForm();
 }
 
+// Load payment data
+async function loadPaymentData() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/get_user_payments.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userData.id })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            updatePaymentUI(data);
+        }
+    } catch (error) {
+        console.error('Error loading payment data:', error);
+        const tbody = document.getElementById('paymentHistory');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error loading payment history</td></tr>';
+        }
+    }
+}
+
+// Update payment UI
+function updatePaymentUI(data) {
+    const payments = data.payments;
+    const currentStatus = data.current_status;
+    
+    // Update payment status
+    const statusCard = document.getElementById('paymentStatusCard');
+    const statusBadge = document.getElementById('paymentStatus');
+    
+    if (statusCard && statusBadge) {
+        if (currentStatus === 'verified') {
+            statusCard.className = 'payment-status-card verified';
+            statusBadge.className = 'payment-status status-verified';
+            statusBadge.innerHTML = '<i class="fas fa-check-circle"></i> Verified';
+        } else if (currentStatus === 'pending') {
+            statusCard.className = 'payment-status-card pending';
+            statusBadge.className = 'payment-status status-pending';
+            statusBadge.innerHTML = '<i class="fas fa-clock"></i> Pending Verification';
+        } else {
+            statusCard.className = 'payment-status-card pending';
+            statusBadge.className = 'payment-status status-pending';
+            statusBadge.innerHTML = '<i class="fas fa-exclamation-circle"></i> Not Paid';
+        }
+    }
+    
+    // Update payment history
+    const tbody = document.getElementById('paymentHistory');
+    if (!tbody) return;
+    
+    if (!payments || payments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No payment history</td></tr>';
+    } else {
+        tbody.innerHTML = payments.map(p => `
+            <tr>
+                <td>${new Date(p.created_at).toLocaleString()}</td>
+                <td>${p.phone}</td>
+                <td><strong>${p.mpesa_code}</strong></td>
+                <td>KES ${p.amount}</td>
+                <td><span class="${p.status === 'verified' ? 'badge-verified' : 'badge-pending'}">${p.status}</span></td>
+            </tr>
+        `).join('');
+    }
+}
+
 // Show referrals section
 function showReferrals() {
     const mainContent = document.getElementById('mainContent');
@@ -333,7 +402,7 @@ function showReferrals() {
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Email</th>
-                        <th>Commission</th>
+                        <th>Date Joined</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -349,12 +418,58 @@ function showReferrals() {
     loadReferrals();
 }
 
+// Load referrals
+async function loadReferrals() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/get_user_payments.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userData.id })
+        });
+
+        const data = await response.json();
+        const tbody = document.getElementById('referralsList');
+
+        if (data.success && data.referrals) {
+            if (data.referrals.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No referrals yet. Start sharing your code!</td></tr>';
+            } else {
+                tbody.innerHTML = data.referrals.map(ref => {
+                    const date = new Date(ref.created_at).toLocaleDateString();
+                    return `
+                        <tr>
+                            <td><strong>${ref.name}</strong></td>
+                            <td>${ref.phone || 'N/A'}</td>
+                            <td>${ref.email}</td>
+                            <td>${date}</td>
+                            <td><span class="badge-verified">Active</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        } else {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Failed to load referrals</td></tr>';
+        }
+    } catch (error) {
+        console.error('Error loading referrals:', error);
+        const tbody = document.getElementById('referralsList');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error loading referrals</td></tr>';
+        }
+    }
+}
+
 // Show earnings section
 function showEarnings() {
     const mainContent = document.getElementById('mainContent');
     mainContent.innerHTML = `
         <div class="transactions-section">
             <h2><i class="fas fa-chart-line"></i> Earnings History</h2>
+            <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: white;">Total Earned: <span id="totalEarned">KES 0</span></h3>
+            </div>
             <table class="transactions-table">
                 <thead>
                     <tr>
@@ -364,14 +479,121 @@ function showEarnings() {
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="earningsList">
                     <tr>
-                        <td colspan="4" style="text-align: center;">Coming soon...</td>
+                        <td colspan="4" style="text-align: center;">Loading...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     `;
+    
+    loadEarnings();
+}
+
+// Load earnings
+async function loadEarnings() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/get_earnings.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userData.id })
+        });
+
+        const data = await response.json();
+        const tbody = document.getElementById('earningsList');
+        const totalSpan = document.getElementById('totalEarned');
+
+        if (data.success) {
+            totalSpan.textContent = `KES ${data.total.toLocaleString()}`;
+            
+            if (!data.earnings || data.earnings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No earnings yet</td></tr>';
+            } else {
+                tbody.innerHTML = data.earnings.map(e => {
+                    const date = new Date(e.created_at).toLocaleDateString();
+                    const status = e.status === 'verified' ? 'Paid' : 'Pending';
+                    const statusClass = e.status === 'verified' ? 'badge-verified' : 'badge-pending';
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${e.referred_name}</td>
+                            <td>KES ${e.commission}</td>
+                            <td><span class="${statusClass}">${status}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        } else {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Failed to load earnings</td></tr>';
+        }
+    } catch (error) {
+        console.error('Error loading earnings:', error);
+        const tbody = document.getElementById('earningsList');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error loading earnings</td></tr>';
+        }
+    }
+}
+
+// Setup payment form
+function setupPaymentForm() {
+    const form = document.getElementById('paymentForm');
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const phone = document.getElementById('phone').value;
+        const mpesaCode = document.getElementById('mpesaCode').value;
+        const email = document.getElementById('email').value;
+        const verifyBtn = document.getElementById('verifyBtn');
+        
+        verifyBtn.disabled = true;
+        verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/verify_payment.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userData.id,
+                    phone: phone,
+                    email: email,
+                    mpesa_code: mpesaCode
+                })
+            });
+            
+            const data = await response.json();
+            const messageDiv = document.getElementById('paymentMessage');
+            
+            if (data.success) {
+                messageDiv.className = 'message success';
+                messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                form.reset();
+                loadPaymentData(); // Reload payment data
+            } else {
+                messageDiv.className = 'message error';
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+            }
+            
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
+            
+        } catch (error) {
+            console.error('Payment error:', error);
+            const messageDiv = document.getElementById('paymentMessage');
+            messageDiv.className = 'message error';
+            messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Connection error. Please try again.';
+            
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
+        }
+    });
 }
 
 // Show withdraw section
@@ -425,159 +647,6 @@ function showSettings() {
             <p style="text-align: center; padding: 30px;">Settings page coming soon...</p>
         </div>
     `;
-}
-
-// Load payment data
-async function loadPaymentData() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/get_user_payments.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user_id: userData.id })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            updatePaymentUI(data);
-        }
-    } catch (error) {
-        console.error('Error loading payment data:', error);
-    }
-}
-
-// Update payment UI
-function updatePaymentUI(data) {
-    const payments = data.payments;
-    const currentStatus = data.current_status;
-    
-    // Update payment status
-    const statusCard = document.getElementById('paymentStatusCard');
-    const statusBadge = document.getElementById('paymentStatus');
-    
-    if (currentStatus === 'verified') {
-        statusCard.className = 'payment-status-card verified';
-        statusBadge.className = 'payment-status status-verified';
-        statusBadge.innerHTML = '<i class="fas fa-check-circle"></i> Verified';
-    } else if (currentStatus === 'pending') {
-        statusCard.className = 'payment-status-card pending';
-        statusBadge.className = 'payment-status status-pending';
-        statusBadge.innerHTML = '<i class="fas fa-clock"></i> Pending Verification';
-    } else {
-        statusCard.className = 'payment-status-card pending';
-        statusBadge.className = 'payment-status status-pending';
-        statusBadge.innerHTML = '<i class="fas fa-exclamation-circle"></i> Not Paid';
-    }
-    
-    // Update payment history
-    const tbody = document.getElementById('paymentHistory');
-    if (!payments || payments.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No payment history</td></tr>';
-    } else {
-        tbody.innerHTML = payments.map(p => `
-            <tr>
-                <td>${new Date(p.created_at).toLocaleString()}</td>
-                <td>${p.phone}</td>
-                <td><strong>${p.mpesa_code}</strong></td>
-                <td>KES ${p.amount}</td>
-                <td><span class="${p.status === 'verified' ? 'badge-verified' : 'badge-pending'}">${p.status}</span></td>
-            </tr>
-        `).join('');
-    }
-}
-
-// Load referrals
-async function loadReferrals() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/get_user_payments.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user_id: userData.id })
-        });
-
-        const data = await response.json();
-
-        if (data.success && data.referrals) {
-            const tbody = document.getElementById('referralsList');
-            if (data.referrals.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No referrals yet</td></tr>';
-            } else {
-                tbody.innerHTML = data.referrals.map(ref => `
-                    <tr>
-                        <td><strong>${ref.name}</strong></td>
-                        <td>${ref.phone || 'N/A'}</td>
-                        <td>${ref.email}</td>
-                        <td>KES 150</td>
-                        <td><span class="badge-verified">Verified</span></td>
-                    </tr>
-                `).join('');
-            }
-        }
-    } catch (error) {
-        console.error('Error loading referrals:', error);
-    }
-}
-
-// Setup payment form
-function setupPaymentForm() {
-    const form = document.getElementById('paymentForm');
-    if (!form) return;
-    
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const phone = document.getElementById('phone').value;
-        const mpesaCode = document.getElementById('mpesaCode').value;
-        const email = document.getElementById('email').value;
-        const verifyBtn = document.getElementById('verifyBtn');
-        
-        verifyBtn.disabled = true;
-        verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-        
-        try {
-            const response = await fetch(`${API_BASE_URL}/verify_payment.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    user_id: userData.id,
-                    phone: phone,
-                    email: email,
-                    mpesa_code: mpesaCode
-                })
-            });
-            
-            const data = await response.json();
-            const messageDiv = document.getElementById('paymentMessage');
-            
-            if (data.success) {
-                messageDiv.className = 'message success';
-                messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
-                form.reset();
-                loadPaymentData(); // Reload payment data
-            } else {
-                messageDiv.className = 'message error';
-                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
-            }
-            
-            verifyBtn.disabled = false;
-            verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
-            
-        } catch (error) {
-            console.error('Error:', error);
-            const messageDiv = document.getElementById('paymentMessage');
-            messageDiv.className = 'message error';
-            messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Connection error. Please try again.';
-            
-            verifyBtn.disabled = false;
-            verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
-        }
-    });
 }
 
 // Copy M-PESA number
@@ -694,79 +763,3 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 
 // Show dashboard by default
 document.addEventListener('DOMContentLoaded', showDashboard);
-
-// Fix payment form submission
-function setupPaymentForm() {
-    const form = document.getElementById('paymentForm');
-    if (!form) return;
-    
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
-        if (!userData || !userData.id) {
-            alert('Please login first');
-            window.location.href = 'index.html';
-            return;
-        }
-        
-        const phone = document.getElementById('phone').value;
-        const mpesaCode = document.getElementById('mpesaCode').value;
-        const email = document.getElementById('email').value;
-        const verifyBtn = document.getElementById('verifyBtn');
-        
-        console.log('Submitting payment for user:', userData.id);
-        
-        verifyBtn.disabled = true;
-        verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-        
-        try {
-            const response = await fetch(`${API_BASE_URL}/verify_payment.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    user_id: userData.id,
-                    phone: phone,
-                    email: email,
-                    mpesa_code: mpesaCode
-                })
-            });
-            
-            console.log('Response status:', response.status);
-            const data = await response.json();
-            console.log('Response data:', data);
-            
-            const messageDiv = document.getElementById('paymentMessage');
-            
-            if (data.success) {
-                messageDiv.className = 'message success';
-                messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
-                form.reset();
-                
-                // Reload payment data after 2 seconds
-                setTimeout(() => {
-                    if (typeof loadPaymentData === 'function') {
-                        loadPaymentData();
-                    }
-                }, 2000);
-            } else {
-                messageDiv.className = 'message error';
-                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
-            }
-            
-            verifyBtn.disabled = false;
-            verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
-            
-        } catch (error) {
-            console.error('Payment error:', error);
-            const messageDiv = document.getElementById('paymentMessage');
-            messageDiv.className = 'message error';
-            messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Connection error. Please try again.';
-            
-            verifyBtn.disabled = false;
-            verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
-        }
-    });
-}
