@@ -20,8 +20,8 @@ if(empty($user_id)) {
 }
 
 try {
-    // Get user data for welcome banner
-    $query = "SELECT id, name, username, email, created_at 
+    // Get user data
+    $query = "SELECT id, name, username, created_at 
               FROM users 
               WHERE id = :user_id";
     $stmt = $db->prepare($query);
@@ -36,20 +36,18 @@ try {
     
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    // Get today's stats for welcome message
-    $stats_query = "SELECT 
-                    COUNT(*) as total_referrals,
-                    SUM(CASE WHEN DATE(created_at) = CURDATE() THEN 1 ELSE 0 END) as referrals_today
+    // Get today's referrals count
+    $today_query = "SELECT COUNT(*) as count 
                     FROM users 
-                    WHERE referred_by = (SELECT referral_code FROM users WHERE id = :user_id)";
-    $stats_stmt = $db->prepare($stats_query);
-    $stats_stmt->bindParam(':user_id', $user_id);
-    $stats_stmt->execute();
-    $stats = $stats_stmt->fetch(PDO::FETCH_ASSOC);
+                    WHERE referred_by = (SELECT referral_code FROM users WHERE id = :user_id)
+                    AND DATE(created_at) = CURDATE()";
+    $today_stmt = $db->prepare($today_query);
+    $today_stmt->bindParam(':user_id', $user_id);
+    $today_stmt->execute();
+    $today = $today_stmt->fetch(PDO::FETCH_ASSOC);
     
-    // Generate personalized welcome message
+    // Generate greeting based on time
     $hour = (int)date('H');
-    $greeting = '';
     if ($hour < 12) {
         $greeting = 'Good morning';
     } elseif ($hour < 17) {
@@ -59,12 +57,12 @@ try {
     }
     
     $firstName = explode(' ', $user['name'])[0];
-    
     $message = $greeting . ', ' . $firstName . '! 🚀';
-    $subtext = 'Share your referral code and start earning today!';
     
-    if ($stats['referrals_today'] > 0) {
-        $subtext = 'You have ' . $stats['referrals_today'] . ' new referral' . ($stats['referrals_today'] > 1 ? 's' : '') . ' today! Keep up the great work!';
+    if ($today['count'] > 0) {
+        $subtext = 'You have ' . $today['count'] . ' new referral' . ($today['count'] > 1 ? 's' : '') . ' today! Keep up the great work!';
+    } else {
+        $subtext = 'Share your referral code and start earning today!';
     }
     
     http_response_code(200);
@@ -72,13 +70,7 @@ try {
         "success" => true,
         "welcome" => [
             "message" => $message,
-            "subtext" => $subtext,
-            "name" => $user['name'],
-            "username" => $user['username'],
-            "email" => $user['email'],
-            "member_since" => date('F j, Y', strtotime($user['created_at'])),
-            "referrals_today" => (int)$stats['referrals_today'],
-            "total_referrals" => (int)$stats['total_referrals']
+            "subtext" => $subtext
         ]
     ]);
     
