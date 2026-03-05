@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>marketSystem - Payment Verification</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #60a5fa;
+            --secondary: #7c3aed;
+            --secondary-dark: #5b21b6;
+            --success: #059669;
+            --success-light: #10b981;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --dark: #111827;
+            --gray-dark: #374151;
+            --gray: #6b7280;
+            --gray-light: #9ca3af;
+            --light: #f3f4f6;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-home {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-home:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Status Card */
+        .status-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid;
+            transition: all 0.3s;
+        }
+
+        .status-card.pending {
+            border-left-color: var(--warning);
+        }
+
+        .status-card.verified {
+            border-left-color: var(--success);
+        }
+
+        .status-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge-verified {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        /* Payment Card */
+        .payment-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .payment-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .payment-card .subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .mpesa-box {
+            background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(124,58,237,0.1));
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .mpesa-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 10px 0;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+        }
+
+        .amount-badge {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+            display: block;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+            display: block;
+        }
+
+        /* Transactions Table */
+        .transactions-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .transactions-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--light);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .status-badge-small {
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-pending-small {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge-verified-small {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .login-prompt i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .login-prompt h2 {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .btn-login {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-store"></i>
+                <span>marketSystem</span>
+            </div>
+            <a href="dashboard.html" class="btn-home">← Back to Dashboard</a>
+        </div>
+
+        <!-- Content will be dynamically loaded here -->
+        <div id="content"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://marketsystem-api.onrender.com/api';
+        
+        // Check if user is logged in
+        const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const contentDiv = document.getElementById('content');
+
+        // If not logged in, show login prompt
+        if (!userData || !userData.id) {
+            contentDiv.innerHTML = `
+                <div class="login-prompt">
+                    <i class="fas fa-lock"></i>
+                    <h2>Please Login First</h2>
+                    <p style="margin-bottom: 30px; color: var(--gray);">You need to be logged in to make payments</p>
+                    <a href="index.html" class="btn-login">Go to Login</a>
+                </div>
+            `;
+        } else {
+            // Show loading
+            contentDiv.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p style="color: var(--gray);">Loading payment details...</p>
+                </div>
+            `;
+            
+            // Load payment data
+            loadPaymentData();
+        }
+
+        // Load payment data from server
+        async function loadPaymentData() {
+            try {
+                const response = await fetch(`${API_URL}/transactions.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: userData.id })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    renderPaymentPage(data);
+                } else {
+                    showError(data.message || 'Failed to load payment data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Connection error. Please try again.');
+            }
+        }
+
+        // Render payment page with data
+        function renderPaymentPage(data) {
+            const payments = data.payments || [];
+            const currentStatus = data.current_status || 'unpaid';
+            
+            // Determine status text and class
+            let statusText = 'Not Paid';
+            let statusClass = 'badge-pending';
+            let cardClass = 'pending';
+            
+            if (currentStatus === 'verified') {
+                statusText = 'Verified';
+                statusClass = 'badge-verified';
+                cardClass = 'verified';
+            } else if (currentStatus === 'pending') {
+                statusText = 'Pending Verification';
+                statusClass = 'badge-pending';
+                cardClass = 'pending';
+            }
+            
+            // Generate payment history HTML
+            let historyHTML = '';
+            if (payments.length === 0) {
+                historyHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px;">No payment history</td></tr>';
+            } else {
+                historyHTML = payments.map(p => {
+                    const date = new Date(p.created_at).toLocaleString();
+                    const pStatusClass = p.status === 'verified' ? 'badge-verified-small' : 'badge-pending-small';
+                    const pStatusText = p.status === 'verified' ? 'Verified' : 'Pending';
+                    
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${p.phone || 'N/A'}</td>
+                            <td><strong>${p.mpesa_code || 'N/A'}</strong></td>
+                            <td>KES ${p.amount || 300}</td>
+                            <td><span class="status-badge-small ${pStatusClass}">${pStatusText}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            // Render the complete page
+            contentDiv.innerHTML = `
+                <!-- Status Card -->
+                <div class="status-card ${cardClass}">
+                    <h3><i class="fas fa-${currentStatus === 'verified' ? 'check-circle' : 'clock'}"></i> Account Status</h3>
+                    <span class="status-badge ${statusClass}">${statusText}</span>
+                    <p style="margin-top: 15px; color: var(--gray);">
+                        ${currentStatus === 'verified' 
+                            ? 'Your account is verified! You can now earn commissions.' 
+                            : 'Complete your payment to activate your account and start earning.'}
+                    </p>
+                </div>
+
+                <!-- Payment Card -->
+                <div class="payment-card">
+                    <h2>🔐 Verify Your Account</h2>
+                    <p class="subtitle">Pay KES 300 to activate your account and start earning</p>
+
+                    <div class="mpesa-box">
+                        <i class="fas fa-mobile-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+                        <h3>Send to M-PESA</h3>
+                        <div class="mpesa-number" id="mpesaNumber">0701603497</div>
+                        <button class="copy-btn" onclick="copyNumber()">
+                            <i class="fas fa-copy"></i> Copy Number
+                        </button>
+                        <div class="amount-badge">Amount: KES 300</div>
+                    </div>
+
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <label for="phone">Your M-PESA Phone Number</label>
+                            <input type="tel" id="phone" placeholder="e.g., 0701603497" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mpesaCode">M-PESA Transaction Code</label>
+                            <input type="text" id="mpesaCode" placeholder="e.g., PPI8J3K4L5" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="your@email.com" required>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <i class="fas fa-check-circle"></i> Submit Payment
+                        </button>
+                    </form>
+
+                    <div id="message" class="message"></div>
+                </div>
+
+                <!-- Payment History -->
+                <div class="transactions-card">
+                    <h3><i class="fas fa-history"></i> Payment History</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Phone</th>
+                                    <th>M-PESA Code</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${historyHTML}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            // Setup form submission
+            setupPaymentForm();
+        }
+
+        // Setup payment form submission
+        function setupPaymentForm() {
+            const form = document.getElementById('paymentForm');
+            if (!form) return;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const phone = document.getElementById('phone').value.trim();
+                const mpesaCode = document.getElementById('mpesaCode').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const submitBtn = document.getElementById('submitBtn');
+                const messageDiv = document.getElementById('message');
+                
+                // Validate inputs
+                if (!phone || !mpesaCode || !email) {
+                    showMessage('Please fill in all fields', 'error', messageDiv);
+                    return;
+                }
+                
+                if (phone.length < 10) {
+                    showMessage('Please enter a valid phone number', 'error', messageDiv);
+                    return;
+                }
+                
+                if (mpesaCode.length < 5) {
+                    showMessage('Please enter a valid M-PESA code', 'error', messageDiv);
+                    return;
+                }
+                
+                if (!email.includes('@') || !email.includes('.')) {
+                    showMessage('Please enter a valid email address', 'error', messageDiv);
+                    return;
+                }
+                
+                // Disable button
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                
+                try {
+                    const response = await fetch(`${API_URL}/verify_payment.php`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: userData.id,
+                            phone: phone,
+                            email: email,
+                            mpesa_code: mpesaCode,
+                            amount: 300
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMessage('Payment submitted successfully! Admin will verify within 24 hours.', 'success', messageDiv);
+                        form.reset();
+                        // Reload data after 2 seconds
+                        setTimeout(() => {
+                            loadPaymentData();
+                        }, 2000);
+                    } else {
+                        showMessage(data.message || 'Payment submission failed', 'error', messageDiv);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('Connection error. Please try again.', 'error', messageDiv);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
+                }
+            });
+        }
+
+        // Show message function
+        function showMessage(text, type, element) {
+            element.className = `message ${type}`;
+            element.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${text}`;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show error function
+        function showError(message) {
+            contentDiv.innerHTML = `
+                <div class="login-prompt" style="color: var(--danger);">
+                    <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
+                    <h2 style="color: var(--danger);">Error</h2>
+                    <p style="margin-bottom: 30px;">${message}</p>
+                    <button onclick="location.reload()" class="btn-login" style="background: var(--primary);">Try Again</button>
+                </div>
+            `;
+        }
+
+        // Copy M-PESA number function
+        window.copyNumber = function() {
+            const number = document.getElementById('mpesaNumber').textContent;
+            navigator.clipboard.writeText(number).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                }, 2000);
+            });
+        };
+    </script>
+</body>
+</html>

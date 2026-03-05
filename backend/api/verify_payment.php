@@ -41,13 +41,17 @@ try {
     $insert_query = "INSERT INTO transactions (user_id, phone, email, mpesa_code, amount, status) 
                      VALUES (?, ?, ?, ?, ?, 'pending')";
     $insert_stmt = $db->prepare($insert_query);
-    $insert_stmt->execute([$user_id, $phone, $email, $mpesa_code, $amount]);
     
-    http_response_code(201);
-    echo json_encode([
-        "success" => true,
-        "message" => "Payment verification submitted! Admin will verify within 24 hours."
-    ]);
+    if($insert_stmt->execute([$user_id, $phone, $email, $mpesa_code, $amount])) {
+        http_response_code(201);
+        echo json_encode([
+            "success" => true,
+            "message" => "Payment verification submitted! Admin will verify within 24 hours."
+        ]);
+    } else {
+        http_response_code(503);
+        echo json_encode(["success" => false, "message" => "Unable to process payment"]);
+    }
     
 } catch(PDOException $e) {
     http_response_code(500);
