@@ -16,21 +16,19 @@ class Database {
         // marketSystem database configuration
         $this->host = getenv('DB_HOST') ?: "gateway01.eu-central-1.prod.aws.tidbcloud.com";
         $this->port = getenv('DB_PORT') ?: "4000";
-        $this->db_name = getenv('DB_NAME') ?: "affiliatepro"; // Your TiDB database name
+        $this->db_name = getenv('DB_NAME') ?: "affiliatepro";
         $this->username = getenv('DB_USER') ?: "3pMRcvLxZEGwhfN.root";
         $this->password = getenv('DB_PASSWORD') ?: "tPb6oe5MYUtDMyJ6";
     }
 
     public function getConnection() {
-        $this->conn = null;
-
         try {
             $dsn = "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name;
             
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_TIMEOUT => 5, // 5 second timeout
                 PDO::MYSQL_ATTR_SSL_CA => '/etc/ssl/certs/ca-certificates.crt',
                 PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
             ];
@@ -38,17 +36,13 @@ class Database {
             $this->conn = new PDO($dsn, $this->username, $this->password, $options);
             $this->conn->exec("set names utf8mb4");
             
+            return $this->conn;
+            
         } catch(PDOException $exception) {
             error_log("marketSystem Connection error: " . $exception->getMessage());
-            http_response_code(500);
-            echo json_encode([
-                "success" => false,
-                "message" => "marketSystem Database connection failed: " . $exception->getMessage()
-            ]);
-            exit();
+            // Don't output error here - let the API handle it
+            throw $exception;
         }
-
-        return $this->conn;
     }
 }
 ?>

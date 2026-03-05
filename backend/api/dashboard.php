@@ -5,21 +5,25 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-include_once '../config/database.php';
-
-$database = new Database();
-$db = $database->getConnection();
-
-$data = json_decode(file_get_contents("php://input"));
-$user_id = isset($data->user_id) ? $data->user_id : 0;
-
-if(empty($user_id)) {
-    http_response_code(400);
-    echo json_encode(["success" => false, "message" => "User ID required"]);
-    exit();
-}
-
 try {
+    include_once '../config/database.php';
+    
+    $database = new Database();
+    $db = $database->getConnection();
+    
+    if (!$db) {
+        throw new Exception("Database connection failed");
+    }
+    
+    $data = json_decode(file_get_contents("php://input"));
+    $user_id = isset($data->user_id) ? $data->user_id : 0;
+    
+    if(empty($user_id)) {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "User ID required"]);
+        exit();
+    }
+    
     // Get user data
     $user_query = "SELECT id, name, username, email, phone, country, referral_code, referred_by, role, created_at 
                    FROM users WHERE id = :user_id";
@@ -95,18 +99,7 @@ try {
     http_response_code(200);
     echo json_encode([
         "success" => true,
-        "user" => [
-            "id" => $user['id'],
-            "name" => $user['name'],
-            "username" => $user['username'],
-            "email" => $user['email'],
-            "phone" => $user['phone'],
-            "country" => $user['country'],
-            "referral_code" => $user['referral_code'],
-            "referred_by" => $user['referred_by'],
-            "role" => $user['role'],
-            "created_at" => $user['created_at']
-        ],
+        "user" => $user,
         "stats" => [
             "total_referrals" => $total_referrals,
             "referrals_this_month" => (int)$ref_stats['referrals_this_month'],
@@ -121,11 +114,11 @@ try {
         "recent_referrals" => $recent_referrals
     ]);
     
-} catch(PDOException $e) {
+} catch(Exception $e) {
     http_response_code(500);
     echo json_encode([
-        "success" => false, 
-        "message" => "Database error: " . $e->getMessage()
+        "success" => false,
+        "message" => "Server error: " . $e->getMessage()
     ]);
 }
 ?>
