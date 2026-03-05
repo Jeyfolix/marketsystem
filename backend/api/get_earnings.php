@@ -21,8 +21,8 @@ if(!isset($data->user_id)) {
 $user_id = $data->user_id;
 
 try {
-    // Get earnings from referrals
-    $query = "SELECT r.*, u.name as referred_name, u.username as referred_username, u.email as referred_email 
+    // Get earnings from referrals table
+    $query = "SELECT r.*, u.name as referred_name, u.username, u.email 
               FROM referrals r 
               JOIN users u ON r.referred_id = u.id 
               WHERE r.referrer_id = :user_id 
@@ -33,8 +33,10 @@ try {
     
     $earnings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Calculate total earnings
-    $total_query = "SELECT COALESCE(SUM(commission), 0) as total FROM referrals WHERE referrer_id = :user_id AND status = 'verified'";
+    // Calculate total earnings from referrals table
+    $total_query = "SELECT COALESCE(SUM(commission), 0) as total 
+                    FROM referrals 
+                    WHERE referrer_id = :user_id";
     $total_stmt = $db->prepare($total_query);
     $total_stmt->bindParam(':user_id', $user_id);
     $total_stmt->execute();
@@ -49,6 +51,9 @@ try {
     
 } catch(PDOException $e) {
     http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    echo json_encode([
+        "success" => false, 
+        "message" => "Database error: " . $e->getMessage()
+    ]);
 }
 ?>

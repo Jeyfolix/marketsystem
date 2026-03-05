@@ -21,8 +21,11 @@ if(!isset($data->user_id)) {
 $user_id = $data->user_id;
 
 try {
-    // Get user's payment history
-    $query = "SELECT * FROM transactions WHERE user_id = :user_id ORDER BY created_at DESC";
+    // Get user's payment history from transactions table
+    $query = "SELECT id, user_id, phone, email, amount, mpesa_code, status, created_at 
+              FROM transactions 
+              WHERE user_id = :user_id 
+              ORDER BY created_at DESC";
     $stmt = $db->prepare($query);
     $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
@@ -37,6 +40,9 @@ try {
     
 } catch(PDOException $e) {
     http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    echo json_encode([
+        "success" => false, 
+        "message" => "Database error: " . $e->getMessage()
+    ]);
 }
 ?>
