@@ -21,6 +21,94 @@ if (!userData || !userData.id) {
 document.getElementById('userName').textContent = userData.name || userData.username;
 document.getElementById('profileImage').textContent = (userData.name || userData.username).charAt(0).toUpperCase();
 
+// Show different sections
+window.showSection = function(section) {
+    const mainContent = document.getElementById('mainContent');
+    
+    // Update active menu
+    document.querySelectorAll('.sidebar-menu li').forEach(li => {
+        li.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+    
+    if (section === 'dashboard') {
+        showDashboard();
+    } else if (section === 'payments') {
+        showPayments();
+    } else if (section === 'referrals') {
+        showReferrals();
+    } else if (section === 'earnings') {
+        showEarnings();
+    } else if (section === 'withdraw') {
+        showWithdraw();
+    } else if (section === 'settings') {
+        showSettings();
+    }
+};
+
+// Show dashboard
+function showDashboard() {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = `
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <h1 id="welcomeMessage">Welcome back! 🚀</h1>
+            <p id="welcomeSubtext">Share your referral code and start earning today!</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsContainer">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-spinner fa-spin"></i></div>
+                <div class="stat-value">Loading...</div>
+                <div class="stat-label">Loading stats</div>
+            </div>
+        </div>
+
+        <!-- Referral Section -->
+        <div class="referral-section">
+            <div class="referral-header">
+                <h2>Your Referral Code</h2>
+                <p>Share this code and earn KES 150 per referral!</p>
+            </div>
+            
+            <div class="referral-code-box" onclick="toggleReferralLink()">
+                <div class="referral-code-text" id="referralCodeDisplay">REFXXXXXX</div>
+                <div><i class="fas fa-hand-pointer"></i> Tap to reveal sharing options</div>
+            </div>
+            
+            <div class="referral-link-box" id="referralLinkBox">
+                <div class="link-input-group">
+                    <input type="text" id="referralLink" readonly>
+                    <button class="copy-btn" onclick="copyReferralLink(event)"><i class="fas fa-copy"></i> Copy Link</button>
+                </div>
+                
+                <div class="social-share">
+                    <a href="#" class="social-btn whatsapp" onclick="shareOnWhatsApp(event)"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-btn facebook" onclick="shareOnFacebook(event)"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn twitter" onclick="shareOnTwitter(event)"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-btn telegram" onclick="shareOnTelegram(event)"><i class="fab fa-telegram-plane"></i></a>
+                </div>
+                <p style="margin-top: 15px; color: var(--gray); font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> When someone registers with this link, your referral code will be auto-filled
+                </p>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <div class="activity-header">
+                <h3><i class="fas fa-history"></i> Recent Referrals</h3>
+                <span class="view-all" onclick="showSection('referrals')">View All →</span>
+            </div>
+            <div id="recentActivity"></div>
+        </div>
+    `;
+    
+    // Load dashboard data
+    loadDashboardData();
+}
+
 // Load dashboard data
 async function loadDashboardData() {
     try {
@@ -52,12 +140,31 @@ function updateDashboardUI(data) {
     const referrals = data.recent_referrals;
 
     // Update stats
-    document.getElementById('totalReferrals').textContent = stats.total_referrals;
-    document.getElementById('monthlyReferrals').textContent = `${stats.referrals_this_month} this month`;
-    document.getElementById('totalEarnings').textContent = `KES ${stats.total_earnings.toLocaleString()}`;
-    document.getElementById('monthlyEarnings').textContent = `KES ${stats.earnings_this_month.toLocaleString()} this month`;
-    document.getElementById('availableBalance').textContent = `KES ${stats.available_balance.toLocaleString()}`;
-    document.getElementById('rank').textContent = stats.rank;
+    const statsGrid = document.getElementById('statsContainer');
+    statsGrid.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-value">${stats.total_referrals}</div>
+            <div class="stat-label">TOTAL REFERRALS</div>
+            <small>${stats.referrals_this_month} this month</small>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-coins"></i></div>
+            <div class="stat-value">KES ${stats.total_earnings.toLocaleString()}</div>
+            <div class="stat-label">TOTAL EARNINGS</div>
+            <small>KES ${stats.earnings_this_month.toLocaleString()} this month</small>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+            <div class="stat-value">KES ${stats.available_balance.toLocaleString()}</div>
+            <div class="stat-label">AVAILABLE BALANCE</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+            <div class="stat-value" style="color: ${stats.rank_color}">${stats.rank}</div>
+            <div class="stat-label">YOUR RANK</div>
+        </div>
+    `;
 
     // Update referral code
     document.getElementById('referralCodeDisplay').textContent = user.referral_code;
@@ -125,123 +232,6 @@ function getTimeAgo(date) {
     return 'just now';
 }
 
-// Show error
-function showError(message) {
-    const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = `
-        <div style="text-align: center; padding: 50px; background: white; border-radius: 20px;">
-            <i class="fas fa-exclamation-circle" style="font-size: 48px; color: #dc2626;"></i>
-            <p style="margin-top: 20px;">${message}</p>
-            <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer;">Retry</button>
-        </div>
-    `;
-}
-
-// Show different sections
-window.showSection = function(section) {
-    const mainContent = document.getElementById('mainContent');
-    
-    // Update active menu
-    document.querySelectorAll('.sidebar-menu li').forEach(li => {
-        li.classList.remove('active');
-    });
-    event.currentTarget.classList.add('active');
-    
-    if (section === 'dashboard') {
-        showDashboard();
-    } else if (section === 'payments') {
-        showPayments();
-    } else if (section === 'referrals') {
-        showReferrals();
-    } else if (section === 'earnings') {
-        showEarnings();
-    } else if (section === 'withdraw') {
-        showWithdraw();
-    } else if (section === 'settings') {
-        showSettings();
-    }
-};
-
-// Show dashboard
-function showDashboard() {
-    const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = `
-        <!-- Welcome Banner -->
-        <div class="welcome-banner">
-            <h1 id="welcomeMessage">Welcome back! 🚀</h1>
-            <p id="welcomeSubtext">Share your referral code and start earning today!</p>
-        </div>
-
-        <!-- Stats Grid -->
-        <div class="stats-grid" id="statsContainer">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-users"></i></div>
-                <div class="stat-value" id="totalReferrals">0</div>
-                <div class="stat-label">TOTAL REFERRALS</div>
-                <small id="monthlyReferrals">0 this month</small>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                <div class="stat-value" id="totalEarnings">KES 0</div>
-                <div class="stat-label">TOTAL EARNINGS</div>
-                <small id="monthlyEarnings">KES 0 this month</small>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-wallet"></i></div>
-                <div class="stat-value" id="availableBalance">KES 0</div>
-                <div class="stat-label">AVAILABLE BALANCE</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-                <div class="stat-value" id="rank">Starter</div>
-                <div class="stat-label">YOUR RANK</div>
-            </div>
-        </div>
-
-        <!-- Referral Section -->
-        <div class="referral-section">
-            <div class="referral-header">
-                <h2>Your Referral Code</h2>
-                <p>Share this code and earn KES 150 per referral!</p>
-            </div>
-            
-            <div class="referral-code-box" onclick="toggleReferralLink()">
-                <div class="referral-code-text" id="referralCodeDisplay">REFXXXXXX</div>
-                <div><i class="fas fa-hand-pointer"></i> Tap to reveal sharing options</div>
-            </div>
-            
-            <div class="referral-link-box" id="referralLinkBox">
-                <div class="link-input-group">
-                    <input type="text" id="referralLink" readonly>
-                    <button class="copy-btn" onclick="copyReferralLink(event)"><i class="fas fa-copy"></i> Copy Link</button>
-                </div>
-                
-                <div class="social-share">
-                    <a href="#" class="social-btn whatsapp" onclick="shareOnWhatsApp(event)"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" class="social-btn facebook" onclick="shareOnFacebook(event)"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-btn twitter" onclick="shareOnTwitter(event)"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-btn telegram" onclick="shareOnTelegram(event)"><i class="fab fa-telegram-plane"></i></a>
-                </div>
-                <p style="margin-top: 15px; color: var(--gray); font-size: 0.9rem;">
-                    <i class="fas fa-info-circle"></i> When someone registers with this link, your referral code will be auto-filled
-                </p>
-            </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="recent-activity">
-            <div class="activity-header">
-                <h3><i class="fas fa-history"></i> Recent Referrals</h3>
-                <span class="view-all" onclick="viewAllReferrals()">View All →</span>
-            </div>
-            <div id="recentActivity"></div>
-        </div>
-    `;
-    
-    // Load dashboard data
-    loadDashboardData();
-}
-
 // Show payments section
 function showPayments() {
     const mainContent = document.getElementById('mainContent');
@@ -249,7 +239,7 @@ function showPayments() {
         <!-- Payment Status Card -->
         <div class="payment-status-card pending" id="paymentStatusCard">
             <h3><i class="fas fa-clock"></i> Account Status</h3>
-            <div id="paymentStatus" class="payment-status status-pending">Pending Verification</div>
+            <div id="paymentStatus" class="payment-status status-pending">Loading...</div>
             <p style="margin-top: 15px; color: var(--gray);">Complete your payment to start earning commissions</p>
         </div>
 
@@ -336,13 +326,15 @@ async function loadPaymentData() {
 
         if (data.success) {
             updatePaymentUI(data);
+        } else {
+            console.error('Payment data error:', data.message);
+            const tbody = document.getElementById('paymentHistory');
+            if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Failed to load payment history</td></tr>';
         }
     } catch (error) {
         console.error('Error loading payment data:', error);
         const tbody = document.getElementById('paymentHistory');
-        if (tbody) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error loading payment history</td></tr>';
-        }
+        if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error loading payment history</td></tr>';
     }
 }
 
@@ -387,154 +379,6 @@ function updatePaymentUI(data) {
                 <td><span class="${p.status === 'verified' ? 'badge-verified' : 'badge-pending'}">${p.status}</span></td>
             </tr>
         `).join('');
-    }
-}
-
-// Show referrals section
-function showReferrals() {
-    const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = `
-        <div class="transactions-section">
-            <h2><i class="fas fa-users"></i> My Referrals</h2>
-            <table class="transactions-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Date Joined</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="referralsList">
-                    <tr>
-                        <td colspan="5" style="text-align: center;">Loading...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    `;
-    
-    loadReferrals();
-}
-
-// Load referrals
-async function loadReferrals() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/get_user_payments.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user_id: userData.id })
-        });
-
-        const data = await response.json();
-        const tbody = document.getElementById('referralsList');
-
-        if (data.success && data.referrals) {
-            if (data.referrals.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No referrals yet. Start sharing your code!</td></tr>';
-            } else {
-                tbody.innerHTML = data.referrals.map(ref => {
-                    const date = new Date(ref.created_at).toLocaleDateString();
-                    return `
-                        <tr>
-                            <td><strong>${ref.name}</strong></td>
-                            <td>${ref.phone || 'N/A'}</td>
-                            <td>${ref.email}</td>
-                            <td>${date}</td>
-                            <td><span class="badge-verified">Active</span></td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-        } else {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Failed to load referrals</td></tr>';
-        }
-    } catch (error) {
-        console.error('Error loading referrals:', error);
-        const tbody = document.getElementById('referralsList');
-        if (tbody) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error loading referrals</td></tr>';
-        }
-    }
-}
-
-// Show earnings section
-function showEarnings() {
-    const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = `
-        <div class="transactions-section">
-            <h2><i class="fas fa-chart-line"></i> Earnings History</h2>
-            <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                <h3 style="color: white;">Total Earned: <span id="totalEarned">KES 0</span></h3>
-            </div>
-            <table class="transactions-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>From</th>
-                        <th>Commission</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="earningsList">
-                    <tr>
-                        <td colspan="4" style="text-align: center;">Loading...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    `;
-    
-    loadEarnings();
-}
-
-// Load earnings
-async function loadEarnings() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/get_earnings.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user_id: userData.id })
-        });
-
-        const data = await response.json();
-        const tbody = document.getElementById('earningsList');
-        const totalSpan = document.getElementById('totalEarned');
-
-        if (data.success) {
-            totalSpan.textContent = `KES ${data.total.toLocaleString()}`;
-            
-            if (!data.earnings || data.earnings.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No earnings yet</td></tr>';
-            } else {
-                tbody.innerHTML = data.earnings.map(e => {
-                    const date = new Date(e.created_at).toLocaleDateString();
-                    const status = e.status === 'verified' ? 'Paid' : 'Pending';
-                    const statusClass = e.status === 'verified' ? 'badge-verified' : 'badge-pending';
-                    return `
-                        <tr>
-                            <td>${date}</td>
-                            <td>${e.referred_name}</td>
-                            <td>KES ${e.commission}</td>
-                            <td><span class="${statusClass}">${status}</span></td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-        } else {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Failed to load earnings</td></tr>';
-        }
-    } catch (error) {
-        console.error('Error loading earnings:', error);
-        const tbody = document.getElementById('earningsList');
-        if (tbody) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error loading earnings</td></tr>';
-        }
     }
 }
 
@@ -596,6 +440,148 @@ function setupPaymentForm() {
     });
 }
 
+// Show referrals section
+function showReferrals() {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = `
+        <div class="transactions-section">
+            <h2><i class="fas fa-users"></i> My Referrals</h2>
+            <table class="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Date Joined</th>
+                    </tr>
+                </thead>
+                <tbody id="referralsList">
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    loadReferrals();
+}
+
+// Load referrals
+async function loadReferrals() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/get_user_payments.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userData.id })
+        });
+
+        const data = await response.json();
+        const tbody = document.getElementById('referralsList');
+
+        if (data.success && data.referrals) {
+            if (data.referrals.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No referrals yet. Start sharing your code!</td></tr>';
+            } else {
+                tbody.innerHTML = data.referrals.map(ref => {
+                    const date = new Date(ref.created_at).toLocaleDateString();
+                    return `
+                        <tr>
+                            <td><strong>${ref.name}</strong></td>
+                            <td>${ref.phone || 'N/A'}</td>
+                            <td>${ref.email}</td>
+                            <td>${date}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        } else {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Failed to load referrals</td></tr>';
+        }
+    } catch (error) {
+        console.error('Error loading referrals:', error);
+        const tbody = document.getElementById('referralsList');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error loading referrals</td></tr>';
+        }
+    }
+}
+
+// Show earnings section
+function showEarnings() {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = `
+        <div class="transactions-section">
+            <h2><i class="fas fa-chart-line"></i> Earnings History</h2>
+            <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: white;">Total Earned: <span id="totalEarned">KES 0</span></h3>
+            </div>
+            <table class="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>From</th>
+                        <th>Commission</th>
+                    </tr>
+                </thead>
+                <tbody id="earningsList">
+                    <tr>
+                        <td colspan="3" style="text-align: center;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    loadEarnings();
+}
+
+// Load earnings
+async function loadEarnings() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/get_earnings.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userData.id })
+        });
+
+        const data = await response.json();
+        const tbody = document.getElementById('earningsList');
+        const totalSpan = document.getElementById('totalEarned');
+
+        if (data.success) {
+            totalSpan.textContent = `KES ${data.total.toLocaleString()}`;
+            
+            if (!data.earnings || data.earnings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No earnings yet</td></tr>';
+            } else {
+                tbody.innerHTML = data.earnings.map(e => {
+                    const date = new Date(e.created_at).toLocaleDateString();
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${e.name}</td>
+                            <td>KES 150</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        } else {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Failed to load earnings</td></tr>';
+        }
+    } catch (error) {
+        console.error('Error loading earnings:', error);
+        const tbody = document.getElementById('earningsList');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: red;">Error loading earnings</td></tr>';
+        }
+    }
+}
+
 // Show withdraw section
 function showWithdraw() {
     const mainContent = document.getElementById('mainContent');
@@ -631,12 +617,76 @@ function showWithdraw() {
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="withdrawPhone">M-PESA Phone Number</label>
+                <input type="tel" id="withdrawPhone" placeholder="e.g., 0701603497" required>
+            </div>
+
             <button class="withdraw-btn" onclick="processWithdrawal()">
                 <i class="fas fa-arrow-right"></i> Withdraw Funds
             </button>
+            <div id="withdrawMessage" class="message"></div>
         </div>
     `;
 }
+
+// Process withdrawal
+window.processWithdrawal = async function() {
+    const amount = document.getElementById('withdrawAmount').value;
+    const phone = document.getElementById('withdrawPhone').value;
+    const method = document.querySelector('.method-card.selected h4').textContent === 'M-PESA' ? 'mpesa' : 'bank';
+    const withdrawBtn = document.querySelector('.withdraw-btn');
+    const messageDiv = document.getElementById('withdrawMessage');
+    
+    if (!phone) {
+        messageDiv.className = 'message error';
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter your phone number';
+        return;
+    }
+    
+    if (amount < 100) {
+        messageDiv.className = 'message error';
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Minimum withdrawal amount is KES 100';
+        return;
+    }
+    
+    withdrawBtn.disabled = true;
+    withdrawBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/process_withdrawal.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id: userData.id,
+                amount: amount,
+                method: method,
+                phone: phone
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            messageDiv.className = 'message success';
+            messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+            document.getElementById('withdrawAmount').value = '100';
+            document.getElementById('withdrawPhone').value = '';
+        } else {
+            messageDiv.className = 'message error';
+            messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+        }
+    } catch (error) {
+        console.error('Withdrawal error:', error);
+        messageDiv.className = 'message error';
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Connection error. Please try again.';
+    }
+    
+    withdrawBtn.disabled = false;
+    withdrawBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Withdraw Funds';
+};
 
 // Show settings section
 function showSettings() {
@@ -644,9 +694,29 @@ function showSettings() {
     mainContent.innerHTML = `
         <div class="transactions-section">
             <h2><i class="fas fa-cog"></i> Account Settings</h2>
-            <p style="text-align: center; padding: 30px;">Settings page coming soon...</p>
+            <div style="text-align: center; padding: 30px;">
+                <p><i class="fas fa-user-circle" style="font-size: 80px; color: var(--primary);"></i></p>
+                <h3>${userData.name || userData.username}</h3>
+                <p>Email: ${userData.email || 'N/A'}</p>
+                <p>Member since: ${new Date(userData.created_at).toLocaleDateString()}</p>
+                <button class="copy-btn" style="margin-top: 20px;" onclick="alert('Profile update coming soon!')">Edit Profile</button>
+            </div>
         </div>
     `;
+}
+
+// Show error
+function showError(message) {
+    const statsGrid = document.getElementById('statsContainer');
+    if (statsGrid) {
+        statsGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: white; border-radius: 20px;">
+                <i class="fas fa-exclamation-circle" style="font-size: 48px; color: #dc2626;"></i>
+                <p style="margin-top: 20px;">${message}</p>
+                <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer;">Retry</button>
+            </div>
+        `;
+    }
 }
 
 // Copy M-PESA number
@@ -668,27 +738,6 @@ window.selectMethod = function(method) {
         card.classList.remove('selected');
     });
     event.currentTarget.classList.add('selected');
-};
-
-// Process withdrawal
-window.processWithdrawal = function() {
-    const amount = document.getElementById('withdrawAmount').value;
-    const balanceEl = document.getElementById('availableBalance');
-    const balance = parseInt(balanceEl ? balanceEl.textContent.replace('KES ', '').replace(',', '') : 0);
-    
-    if (amount < 100) {
-        alert('Minimum withdrawal amount is KES 100');
-        return;
-    }
-    
-    if (amount > balance) {
-        alert('Insufficient balance');
-        return;
-    }
-    
-    if (confirm(`Withdraw KES ${amount} to your M-PESA?`)) {
-        alert('Withdrawal request submitted! You will receive payment within 24 hours.');
-    }
 };
 
 // Toggle referral link
@@ -746,11 +795,6 @@ window.shareOnTelegram = function(event) {
     const referralLink = document.getElementById('referralLink').value;
     const text = `Join marketSystem and start earning! ${referralLink}`;
     window.open(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(text)}`, '_blank');
-};
-
-// View all referrals
-window.viewAllReferrals = function() {
-    showSection('referrals');
 };
 
 // Logout

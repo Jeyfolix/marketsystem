@@ -21,7 +21,7 @@ if(!isset($data->user_id)) {
 $user_id = $data->user_id;
 
 try {
-    // Get user's payment history from transactions table
+    // Get user's payment history
     $query = "SELECT id, user_id, phone, email, amount, mpesa_code, status, created_at 
               FROM transactions 
               WHERE user_id = :user_id 
