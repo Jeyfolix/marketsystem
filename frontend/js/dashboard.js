@@ -334,3 +334,85 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 
 // Show dashboard by default
 document.addEventListener('DOMContentLoaded', showDashboard);
+
+// Show payments section (updated)
+window.showPayments = function() {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = `
+        <!-- Payment Status Card -->
+        <div class="payment-status-card pending" id="paymentStatusCard">
+            <h3><i class="fas fa-clock"></i> Account Status</h3>
+            <div id="paymentStatus" class="payment-status status-pending">Loading...</div>
+            <p style="margin-top: 15px; color: var(--gray);">Complete your payment to start earning commissions</p>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="payment-section">
+            <div class="payment-header">
+                <h2>🔐 Verify Your Account</h2>
+                <p>Pay KES 300 to activate your account and start earning</p>
+            </div>
+
+            <div class="mpesa-details">
+                <i class="fas fa-mobile-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+                <h3>Send to M-PESA</h3>
+                <div class="mpesa-number" id="mpesaNumber">0701603497</div>
+                <button class="copy-btn" onclick="copyMpesaNumber()">
+                    <i class="fas fa-copy"></i> Copy Number
+                </button>
+                <div class="amount-badge">Amount: KES 300</div>
+            </div>
+
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="phone">Your M-PESA Phone Number</label>
+                    <input type="tel" id="phone" placeholder="e.g., 0701603497" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mpesaCode">M-PESA Transaction Code</label>
+                    <input type="text" id="mpesaCode" placeholder="e.g., PPI8J3K4L5" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                </div>
+
+                <button type="submit" class="verify-btn" id="verifyBtn">
+                    <i class="fas fa-check-circle"></i> Submit Payment
+                </button>
+            </form>
+
+            <div id="paymentMessage" class="message"></div>
+        </div>
+
+        <!-- Payment History -->
+        <div class="transactions-section">
+            <h2><i class="fas fa-history"></i> Payment History</h2>
+            <table class="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Phone</th>
+                        <th>M-PESA Code</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentHistory">
+                    <tr>
+                        <td colspan="5" style="text-align: center;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    // Initialize payment section
+    if (typeof initPaymentSection === 'function') {
+        initPaymentSection();
+    } else {
+        console.error('Payment module not loaded');
+    }
+};
