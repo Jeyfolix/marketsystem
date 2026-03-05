@@ -11,10 +11,6 @@ try {
     $database = new Database();
     $db = $database->getConnection();
     
-    if (!$db) {
-        throw new Exception("Database connection failed");
-    }
-    
     $data = json_decode(file_get_contents("php://input"));
     $user_id = isset($data->user_id) ? $data->user_id : 0;
     
@@ -39,34 +35,33 @@ try {
     
     $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
     
-    // Get referral stats
-    $ref_stats_query = "SELECT 
-                        COUNT(*) as total_referrals,
-                        SUM(CASE WHEN created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY) THEN 1 ELSE 0 END) as referrals_this_month,
-                        SUM(CASE WHEN DATE(created_at) = CURDATE() THEN 1 ELSE 0 END) as referrals_today
-                        FROM users 
-                        WHERE referred_by = :referral_code";
-    $ref_stats_stmt = $db->prepare($ref_stats_query);
-    $ref_stats_stmt->bindParam(':referral_code', $user['referral_code']);
-    $ref_stats_stmt->execute();
-    $ref_stats = $ref_stats_stmt->fetch(PDO::FETCH_ASSOC);
+    // SIMPLIFIED: Get referral count directly
+    $ref_query = "SELECT COUNT(*) as total FROM users WHERE referred_by = :code";
+    $ref_stmt = $db->prepare($ref_query);
+    $ref_stmt->bindParam(':code', $user['referral_code']);
+    $ref_stmt->execute();
+    $ref_count = $ref_stmt->fetch(PDO::FETCH_ASSOC);
+    $total_referrals = (int)$ref_count['total'];
     
-    $total_referrals = (int)$ref_stats['total_referrals'];
+    // Calculate earnings
     $total_earnings = $total_referrals * 150;
-    $earnings_this_month = (int)$ref_stats['referrals_this_month'] * 150;
-    $earnings_today = (int)$ref_stats['referrals_today'] * 150;
     
     // Get withdrawals
-    $withdrawals_query = "SELECT COALESCE(SUM(amount), 0) as total_withdrawn 
-                          FROM withdrawals 
-                          WHERE user_id = :user_id AND status = 'completed'";
+    $withdrawals_query = "SELECT COALESCE(SUM(amount), 0) as total FROM withdrawals WHERE user_id = :user_id AND status = 'completed'";
     $withdrawals_stmt = $db->prepare($withdrawals_query);
     $withdrawals_stmt->bindParam(':user_id', $user_id);
     $withdrawals_stmt->execute();
     $withdrawals = $withdrawals_stmt->fetch(PDO::FETCH_ASSOC);
     
-    $available_balance = $total_earnings - $withdrawals['total_withdrawn'];
+    $available_balance = $total_earnings - $withdrawals['total'];
     if ($available_balance < 0) $available_balance = 0;
+    
+    // Get recent referrals
+    $recent_query = "SELECT id, name, username, created_at FROM users WHERE referred_by = :code ORDER BY created_at DESC LIMIT 5";
+    $recent_stmt = $db->prepare($recent_query);
+    $recent_stmt->bindParam(':code', $user['referral_code']);
+    $recent_stmt->execute();
+    $recent_referrals = $recent_stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Determine rank
     $rank = 'Starter';
@@ -85,28 +80,17 @@ try {
         $rank_color = '#CD7F32';
     }
     
-    // Get recent referrals
-    $recent_query = "SELECT id, name, username, created_at 
-                     FROM users 
-                     WHERE referred_by = :referral_code
-                     ORDER BY created_at DESC 
-                     LIMIT 5";
-    $recent_stmt = $db->prepare($recent_query);
-    $recent_stmt->bindParam(':referral_code', $user['referral_code']);
-    $recent_stmt->execute();
-    $recent_referrals = $recent_stmt->fetchAll(PDO::FETCH_ASSOC);
-    
     http_response_code(200);
     echo json_encode([
         "success" => true,
         "user" => $user,
         "stats" => [
             "total_referrals" => $total_referrals,
-            "referrals_this_month" => (int)$ref_stats['referrals_this_month'],
-            "referrals_today" => (int)$ref_stats['referrals_today'],
+            "referrals_this_month" => 0,
+            "referrals_today" => 0,
             "total_earnings" => $total_earnings,
-            "earnings_this_month" => $earnings_this_month,
-            "earnings_today" => $earnings_today,
+            "earnings_this_month" => 0,
+            "earnings_today" => 0,
             "available_balance" => $available_balance,
             "rank" => $rank,
             "rank_color" => $rank_color
@@ -114,6 +98,12 @@ try {
         "recent_referrals" => $recent_referrals
     ]);
     
+} catch(PDOException $e) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Database error: " . $e->getMessage()
+    ]);
 } catch(Exception $e) {
     http_response_code(500);
     echo json_encode([
