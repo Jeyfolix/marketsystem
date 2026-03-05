@@ -24,7 +24,7 @@ document.getElementById('profileImage').textContent = (userData.name || userData
 // Load dashboard data
 async function loadDashboardData() {
     try {
-        const response = await fetch(`${API_BASE_URL}/dashboard_data.php`, {
+        const response = await fetch(`${API_BASE_URL}/dashboard.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
