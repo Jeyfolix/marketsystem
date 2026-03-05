@@ -21,6 +21,29 @@ if (!userData || !userData.id) {
 document.getElementById('userName').textContent = userData.name || userData.username;
 document.getElementById('profileImage').textContent = (userData.name || userData.username).charAt(0).toUpperCase();
 
+// Load welcome banner data
+async function loadWelcomeData() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/welcome.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userData.id })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Update welcome banner
+            document.getElementById('welcomeMessage').textContent = data.welcome.message;
+            document.getElementById('welcomeSubtext').textContent = data.welcome.subtext;
+        }
+    } catch (error) {
+        console.error('Error loading welcome data:', error);
+    }
+}
+
 // Load dashboard data
 async function loadDashboardData() {
     try {
@@ -238,7 +261,10 @@ function showDashboard() {
         </div>
     `;
     
-    // Load dashboard data
+    // Load welcome banner data first
+    loadWelcomeData();
+    
+    // Then load dashboard data
     loadDashboardData();
 }
 
@@ -333,13 +359,12 @@ function showReferrals() {
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Email</th>
-                        <th>Commission</th>
-                        <th>Status</th>
+                        <th>Date Joined</th>
                     </tr>
                 </thead>
                 <tbody id="referralsList">
                     <tr>
-                        <td colspan="5" style="text-align: center;">Loading...</td>
+                        <td colspan="4" style="text-align: center;">Loading...</td>
                     </tr>
                 </tbody>
             </table>
@@ -355,6 +380,9 @@ function showEarnings() {
     mainContent.innerHTML = `
         <div class="transactions-section">
             <h2><i class="fas fa-chart-line"></i> Earnings History</h2>
+            <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: white;">Total Earned: <span id="totalEarned">KES 0</span></h3>
+            </div>
             <table class="transactions-table">
                 <thead>
                     <tr>
@@ -364,14 +392,16 @@ function showEarnings() {
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="earningsList">
                     <tr>
-                        <td colspan="4" style="text-align: center;">Coming soon...</td>
+                        <td colspan="4" style="text-align: center;">Loading...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     `;
+    
+    loadEarnings();
 }
 
 // Show withdraw section
@@ -409,9 +439,15 @@ function showWithdraw() {
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="withdrawPhone">M-PESA Phone Number</label>
+                <input type="tel" id="withdrawPhone" placeholder="e.g., 0701603497" required>
+            </div>
+
             <button class="withdraw-btn" onclick="processWithdrawal()">
                 <i class="fas fa-arrow-right"></i> Withdraw Funds
             </button>
+            <div id="withdrawMessage" class="message"></div>
         </div>
     `;
 }
@@ -422,7 +458,13 @@ function showSettings() {
     mainContent.innerHTML = `
         <div class="transactions-section">
             <h2><i class="fas fa-cog"></i> Account Settings</h2>
-            <p style="text-align: center; padding: 30px;">Settings page coming soon...</p>
+            <div style="text-align: center; padding: 30px;">
+                <p><i class="fas fa-user-circle" style="font-size: 80px; color: var(--primary);"></i></p>
+                <h3>${userData.name || userData.username}</h3>
+                <p>Email: ${userData.email || 'N/A'}</p>
+                <p>Member since: ${new Date(userData.created_at).toLocaleDateString()}</p>
+                <button class="copy-btn" style="margin-top: 20px;" onclick="alert('Profile update coming soon!')">Edit Profile</button>
+            </div>
         </div>
     `;
 }
@@ -457,22 +499,26 @@ function updatePaymentUI(data) {
     const statusCard = document.getElementById('paymentStatusCard');
     const statusBadge = document.getElementById('paymentStatus');
     
-    if (currentStatus === 'verified') {
-        statusCard.className = 'payment-status-card verified';
-        statusBadge.className = 'payment-status status-verified';
-        statusBadge.innerHTML = '<i class="fas fa-check-circle"></i> Verified';
-    } else if (currentStatus === 'pending') {
-        statusCard.className = 'payment-status-card pending';
-        statusBadge.className = 'payment-status status-pending';
-        statusBadge.innerHTML = '<i class="fas fa-clock"></i> Pending Verification';
-    } else {
-        statusCard.className = 'payment-status-card pending';
-        statusBadge.className = 'payment-status status-pending';
-        statusBadge.innerHTML = '<i class="fas fa-exclamation-circle"></i> Not Paid';
+    if (statusCard && statusBadge) {
+        if (currentStatus === 'verified') {
+            statusCard.className = 'payment-status-card verified';
+            statusBadge.className = 'payment-status status-verified';
+            statusBadge.innerHTML = '<i class="fas fa-check-circle"></i> Verified';
+        } else if (currentStatus === 'pending') {
+            statusCard.className = 'payment-status-card pending';
+            statusBadge.className = 'payment-status status-pending';
+            statusBadge.innerHTML = '<i class="fas fa-clock"></i> Pending Verification';
+        } else {
+            statusCard.className = 'payment-status-card pending';
+            statusBadge.className = 'payment-status status-pending';
+            statusBadge.innerHTML = '<i class="fas fa-exclamation-circle"></i> Not Paid';
+        }
     }
     
     // Update payment history
     const tbody = document.getElementById('paymentHistory');
+    if (!tbody) return;
+    
     if (!payments || payments.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No payment history</td></tr>';
     } else {
@@ -504,21 +550,62 @@ async function loadReferrals() {
         if (data.success && data.referrals) {
             const tbody = document.getElementById('referralsList');
             if (data.referrals.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No referrals yet</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No referrals yet. Start sharing your code!</td></tr>';
             } else {
-                tbody.innerHTML = data.referrals.map(ref => `
-                    <tr>
-                        <td><strong>${ref.name}</strong></td>
-                        <td>${ref.phone || 'N/A'}</td>
-                        <td>${ref.email}</td>
-                        <td>KES 150</td>
-                        <td><span class="badge-verified">Verified</span></td>
-                    </tr>
-                `).join('');
+                tbody.innerHTML = data.referrals.map(ref => {
+                    const date = new Date(ref.created_at).toLocaleDateString();
+                    return `
+                        <tr>
+                            <td><strong>${ref.name}</strong></td>
+                            <td>${ref.phone || 'N/A'}</td>
+                            <td>${ref.email}</td>
+                            <td>${date}</td>
+                        </tr>
+                    `;
+                }).join('');
             }
         }
     } catch (error) {
         console.error('Error loading referrals:', error);
+    }
+}
+
+// Load earnings
+async function loadEarnings() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/get_earnings.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userData.id })
+        });
+
+        const data = await response.json();
+        const tbody = document.getElementById('earningsList');
+        const totalSpan = document.getElementById('totalEarned');
+
+        if (data.success) {
+            totalSpan.textContent = `KES ${data.total.toLocaleString()}`;
+            
+            if (!data.earnings || data.earnings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No earnings yet</td></tr>';
+            } else {
+                tbody.innerHTML = data.earnings.map(e => {
+                    const date = new Date(e.created_at).toLocaleDateString();
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${e.referred_name}</td>
+                            <td>KES ${e.commission}</td>
+                            <td><span class="badge-verified">Verified</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+    } catch (error) {
+        console.error('Error loading earnings:', error);
     }
 }
 
@@ -602,24 +689,73 @@ window.selectMethod = function(method) {
 };
 
 // Process withdrawal
-window.processWithdrawal = function() {
+window.processWithdrawal = async function() {
     const amount = document.getElementById('withdrawAmount').value;
+    const phone = document.getElementById('withdrawPhone').value;
+    const method = document.querySelector('.method-card.selected h4').textContent === 'M-PESA' ? 'mpesa' : 'bank';
+    const withdrawBtn = document.querySelector('.withdraw-btn');
+    const messageDiv = document.getElementById('withdrawMessage');
+    
+    if (!phone) {
+        messageDiv.className = 'message error';
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter your phone number';
+        return;
+    }
+    
+    if (amount < 100) {
+        messageDiv.className = 'message error';
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Minimum withdrawal amount is KES 100';
+        return;
+    }
+    
     const balanceEl = document.getElementById('availableBalance');
     const balance = parseInt(balanceEl ? balanceEl.textContent.replace('KES ', '').replace(',', '') : 0);
     
-    if (amount < 100) {
-        alert('Minimum withdrawal amount is KES 100');
-        return;
-    }
-    
     if (amount > balance) {
-        alert('Insufficient balance');
+        messageDiv.className = 'message error';
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Insufficient balance';
         return;
     }
     
-    if (confirm(`Withdraw KES ${amount} to your M-PESA?`)) {
-        alert('Withdrawal request submitted! You will receive payment within 24 hours.');
+    withdrawBtn.disabled = true;
+    withdrawBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/process_withdrawal.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id: userData.id,
+                amount: amount,
+                method: method,
+                phone: phone
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            messageDiv.className = 'message success';
+            messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+            document.getElementById('withdrawAmount').value = '100';
+            document.getElementById('withdrawPhone').value = '';
+            
+            // Reload dashboard data to update balance
+            loadDashboardData();
+        } else {
+            messageDiv.className = 'message error';
+            messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+        }
+    } catch (error) {
+        console.error('Withdrawal error:', error);
+        messageDiv.className = 'message error';
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Connection error. Please try again.';
     }
+    
+    withdrawBtn.disabled = false;
+    withdrawBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Withdraw Funds';
 };
 
 // Toggle referral link
