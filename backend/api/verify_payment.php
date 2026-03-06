@@ -5,26 +5,38 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-include_once '../config/database.php';
-
-$database = new Database();
-$db = $database->getConnection();
-
-$data = json_decode(file_get_contents("php://input"));
-
-if(!isset($data->user_id) || !isset($data->phone) || !isset($data->email) || !isset($data->mpesa_code)) {
-    http_response_code(400);
-    echo json_encode(["success" => false, "message" => "All fields are required"]);
-    exit();
-}
-
-$user_id = $data->user_id;
-$phone = $data->phone;
-$email = $data->email;
-$mpesa_code = $data->mpesa_code;
-$amount = 300;
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 try {
+    include_once '../config/database.php';
+    
+    $database = new Database();
+    $db = $database->getConnection();
+    
+    if (!$db) {
+        throw new Exception("Database connection failed");
+    }
+    
+    // Get posted data
+    $data = json_decode(file_get_contents("php://input"));
+    
+    // Log received data
+    error_log("Payment data: " . print_r($data, true));
+    
+    if(!isset($data->user_id) || !isset($data->phone) || !isset($data->email) || !isset($data->mpesa_code)) {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "All fields are required"]);
+        exit();
+    }
+    
+    $user_id = $data->user_id;
+    $phone = $data->phone;
+    $email = $data->email;
+    $mpesa_code = $data->mpesa_code;
+    $amount = isset($data->amount) ? $data->amount : 300;
+    
     // Check if M-PESA code already exists
     $check_query = "SELECT id FROM transactions WHERE mpesa_code = ?";
     $check_stmt = $db->prepare($check_query);
@@ -49,8 +61,8 @@ try {
             "message" => "Payment of KES 300 submitted successfully! Admin will verify within 24 hours."
         ]);
     } else {
-        http_response_code(503);
-        echo json_encode(["success" => false, "message" => "Unable to process payment"]);
+        $error = $insert_stmt->errorInfo();
+        throw new Exception("Insert failed: " . $error[2]);
     }
     
 } catch(PDOException $e) {
@@ -58,6 +70,12 @@ try {
     echo json_encode([
         "success" => false,
         "message" => "Database error: " . $e->getMessage()
+    ]);
+} catch(Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Server error: " . $e->getMessage()
     ]);
 }
 ?>
