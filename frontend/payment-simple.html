@@ -19,233 +19,327 @@
 
         :root {
             --primary: #2563eb;
-            --primary-dark: #1e40af;
+            --primary-dark: #1d4ed8;
             --primary-light: #60a5fa;
             --secondary: #7c3aed;
-            --secondary-dark: #5b21b6;
+            --secondary-dark: #6d28d9;
             --success: #059669;
+            --success-light: #10b981;
             --warning: #d97706;
             --danger: #dc2626;
-            --dark: #111827;
+            --dark: #1f2937;
+            --dark-light: #374151;
             --gray: #6b7280;
             --gray-light: #9ca3af;
-            --light: #f3f4f6;
+            --gray-lighter: #e5e7eb;
+            --light: #f9fafb;
             --white: #ffffff;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f3f4f6;
             min-height: 100vh;
-            padding: 20px;
+            padding: 16px;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 480px;
             margin: 0 auto;
         }
 
         /* Header */
         .header {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
+            background: var(--white);
+            padding: 16px 20px;
+            border-radius: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .logo i {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--primary);
         }
 
         .logo span {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--dark);
         }
 
         .btn-back {
             background: var(--light);
             color: var(--dark);
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 8px 16px;
+            border-radius: 30px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .btn-back:hover {
-            background: var(--gray-light);
+            background: var(--gray-lighter);
         }
 
         /* User Info */
         .user-card {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: var(--white);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .user-avatar {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 1.2rem;
         }
 
         .user-details h3 {
             color: var(--dark);
-            margin-bottom: 5px;
+            font-size: 1rem;
+            margin-bottom: 4px;
         }
 
         .user-details p {
             color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* Steps Section */
+        .steps-container {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .steps-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            color: var(--dark);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .steps-title i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed var(--gray-lighter);
+        }
+
+        .step-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
             font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            color: var(--dark);
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: var(--gray);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .highlight-number {
+            background: var(--light);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 12px 0 8px;
+            border: 1px solid var(--gray-lighter);
+        }
+
+        .number-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .copy-small-btn {
+            background: var(--white);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .copy-small-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .amount-pill {
+            background: var(--success-light);
+            color: var(--success);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 8px;
         }
 
         /* Payment Card */
         .payment-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .payment-card h2 {
-            text-align: center;
             color: var(--dark);
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            font-weight: 700;
         }
 
         .payment-subtitle {
-            text-align: center;
             color: var(--gray);
-            margin-bottom: 30px;
-        }
-
-        .mpesa-box {
-            background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(124,58,237,0.1));
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .mpesa-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .mpesa-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin: 15px 0;
-            letter-spacing: 2px;
-        }
-
-        .copy-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
-        }
-
-        .amount-badge {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            font-weight: 600;
-            margin-top: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
+            margin-bottom: 6px;
+            font-weight: 500;
             color: var(--dark);
+            font-size: 0.9rem;
         }
 
         .form-group input {
             width: 100%;
-            padding: 15px;
-            border: 2px solid var(--gray-light);
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s;
+            padding: 14px;
+            border: 1.5px solid var(--gray-lighter);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            background: var(--light);
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
+            background: var(--white);
             box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .form-group input::placeholder {
+            color: var(--gray-light);
+            font-size: 0.9rem;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+            box-shadow: 0 8px 16px rgba(37,99,235,0.2);
         }
 
         .submit-btn:disabled {
-            opacity: 0.7;
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
         .message {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 16px;
+            padding: 12px;
             border-radius: 10px;
             text-align: center;
+            font-size: 0.9rem;
             display: none;
         }
 
@@ -264,64 +358,85 @@
         /* Login Prompt */
         .login-prompt {
             text-align: center;
-            padding: 60px 30px;
-            background: white;
-            border-radius: 20px;
+            padding: 40px 20px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .login-prompt i {
-            font-size: 4rem;
+            font-size: 3rem;
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .login-prompt h2 {
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
             color: var(--dark);
         }
 
         .login-prompt p {
             color: var(--gray);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
         }
 
         .btn-login {
             display: inline-block;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 15px 40px;
-            border-radius: 10px;
+            padding: 12px 30px;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s;
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+            box-shadow: 0 8px 16px rgba(37,99,235,0.2);
         }
 
         /* Loading */
         .loading {
             text-align: center;
-            padding: 50px;
-            background: white;
-            border-radius: 20px;
+            padding: 40px;
+            background: var(--white);
+            border-radius: 16px;
         }
 
         .spinner {
-            border: 4px solid var(--light);
-            border-top: 4px solid var(--primary);
+            border: 3px solid var(--gray-lighter);
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 16px;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .step-item {
+                flex-direction: column;
+            }
+            
+            .highlight-number {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .number-display {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
@@ -357,7 +472,7 @@
                 </div>
             `;
         } else {
-            // Show the payment form
+            // Show the payment form with steps
             document.getElementById('content').innerHTML = `
                 <!-- User Info -->
                 <div class="user-card">
@@ -368,25 +483,73 @@
                     </div>
                 </div>
 
-                <!-- Payment Card -->
-                <div class="payment-card">
-                    <h2>🔐 Verify Your Account</h2>
-                    <p class="payment-subtitle">Pay KES 300 to activate your account</p>
-
-                    <div class="mpesa-box">
-                        <i class="fas fa-mobile-alt mpesa-icon"></i>
-                        <h3>Send to M-PESA</h3>
-                        <div class="mpesa-number">0701603497</div>
-                        <button class="copy-btn" onclick="copyNumber()">
-                            <i class="fas fa-copy"></i> Copy Number
-                        </button>
-                        <div class="amount-badge">Amount: KES 300</div>
+                <!-- Step-by-Step Instructions -->
+                <div class="steps-container">
+                    <div class="steps-title">
+                        <i class="fas fa-list-ol"></i>
+                        <span>Follow these steps to verify your account</span>
                     </div>
+
+                    <!-- Step 1: Copy Number -->
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Copy M-PESA Number</h4>
+                            <p>Copy the M-PESA number below to send payment</p>
+                            <div class="highlight-number">
+                                <span class="number-display">0701603497</span>
+                                <button class="copy-small-btn" onclick="copyNumber()">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Send Money -->
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Send KES 300 via M-PESA</h4>
+                            <p>Open your M-PESA app or SIM toolkit and send exactly:</p>
+                            <div>
+                                <span class="amount-pill">
+                                    <i class="fas fa-mobile-alt"></i> KES 300 to 0701603497
+                                </span>
+                            </div>
+                            <p style="margin-top: 8px; color: var(--gray); font-size: 0.8rem;">
+                                <i class="fas fa-info-circle"></i> Make sure you send the exact amount
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Copy Code -->
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Copy Transaction Code</h4>
+                            <p>After sending, you'll receive an SMS with a transaction code (e.g., PPI8J3K4L5)</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Fill Form -->
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Fill the Form Below</h4>
+                            <p>Enter the phone number you used and the transaction code</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="payment-card">
+                    <h2>🔐 Complete Your Payment</h2>
+                    <p class="payment-subtitle">Enter your payment details below</p>
 
                     <form id="paymentForm">
                         <div class="form-group">
                             <label for="phone">Your M-PESA Phone Number</label>
-                            <input type="tel" id="phone" placeholder="e.g., 0701603497" required>
+                            <input type="tel" id="phone" placeholder="e.g., 0712345678" required>
                         </div>
 
                         <div class="form-group">
@@ -396,7 +559,7 @@
 
                         <div class="form-group">
                             <label for="email">Your Email Address</label>
-                            <input type="email" id="email" placeholder="your@email.com" value="${userData.email || ''}" required>
+                            <input type="email" id="email" placeholder="you@example.com" value="${userData.email || ''}" required>
                         </div>
 
                         <button type="submit" class="submit-btn" id="submitBtn">
@@ -431,12 +594,12 @@
                 }
                 
                 if (phone.length < 10) {
-                    showMessage('Please enter a valid phone number', 'error', messageDiv);
+                    showMessage('Please enter a valid phone number (10+ digits)', 'error', messageDiv);
                     return;
                 }
                 
                 if (mpesaCode.length < 5) {
-                    showMessage('Please enter a valid M-PESA code', 'error', messageDiv);
+                    showMessage('Please enter a valid M-PESA transaction code', 'error', messageDiv);
                     return;
                 }
                 
@@ -462,7 +625,7 @@
                     const data = await response.json();
                     
                     if (data.success) {
-                        showMessage('Payment of KES 300 submitted successfully! Admin will verify within 24 hours.', 'success', messageDiv);
+                        showMessage('✅ Payment of KES 300 submitted successfully! Admin will verify within 24 hours.', 'success', messageDiv);
                         form.reset();
                     } else {
                         showMessage(data.message || 'Payment submission failed', 'error', messageDiv);
@@ -490,12 +653,14 @@
         window.copyNumber = function() {
             const number = '0701603497';
             navigator.clipboard.writeText(number).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                }, 2000);
+                const btns = document.querySelectorAll('.copy-small-btn, .copy-btn');
+                btns.forEach(btn => {
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                });
             });
         };
     </script>
