@@ -469,6 +469,73 @@
             color: white;
         }
 
+        /* DataTables Overrides - Remove all white backgrounds */
+        .dataTables_wrapper {
+            color: var(--gold-light) !important;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            color: var(--gold-light) !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter input,
+        .dataTables_wrapper .dataTables_length select {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid rgba(255,215,0,0.3) !important;
+            color: var(--gold-light) !important;
+            border-radius: 30px !important;
+            padding: 8px 15px !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            color: var(--gold-light) !important;
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid rgba(255,215,0,0.2) !important;
+            border-radius: 30px !important;
+            margin: 0 3px !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: rgba(255,215,0,0.2) !important;
+            color: white !important;
+            border-color: var(--gold) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+            color: var(--dark) !important;
+            border-color: transparent !important;
+        }
+
+        /* Force all table backgrounds to be dark */
+        table.dataTable,
+        table.dataTable tbody,
+        table.dataTable thead,
+        table.dataTable tfoot {
+            background: transparent !important;
+        }
+
+        table.dataTable tbody tr {
+            background: transparent !important;
+        }
+
+        table.dataTable tbody tr:hover {
+            background: rgba(255,215,0,0.1) !important;
+        }
+
+        table.dataTable tbody td {
+            background: transparent !important;
+        }
+
+        .dataTables_wrapper .dataTables_processing {
+            background: var(--table-bg) !important;
+            color: var(--gold) !important;
+            border: 1px solid rgba(255,215,0,0.3) !important;
+        }
+
         /* Status Badges */
         .status-badge {
             padding: 8px 16px;
@@ -1236,7 +1303,7 @@
                                 }
                             }
                         ],
-                        responsive: false, // Disable responsive to allow our custom scroll
+                        responsive: false,
                         pageLength: 25,
                         order: [[0, 'desc']],
                         language: {
@@ -1244,7 +1311,6 @@
                         }
                     });
 
-                    // Add search functionality
                     $('#userSearch').on('keyup', function() {
                         usersTable.search(this.value).draw();
                     });
