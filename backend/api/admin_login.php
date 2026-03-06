@@ -31,11 +31,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 include_once '../config/database.php';
-include_once '../includes/User.php';
 
 $database = new Database();
 $db = $database->getConnection();
-$user = new User($db);
 
 // Get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -50,8 +48,8 @@ $username = $data->username;
 $password = $data->password;
 
 try {
-    // Query to check admin credentials
-    $query = "SELECT id, name, username, email, role, referral_code 
+    // Query to get admin from users table where role = 'admin'
+    $query = "SELECT id, name, username, email, phone, country, referral_code, role, created_at 
               FROM users 
               WHERE (username = :username OR email = :username) 
               AND role = 'admin' 
@@ -64,9 +62,18 @@ try {
     if($stmt->rowCount() > 0) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // For demo purposes - in production, verify password hash
-        // You should create an admin user in your database with password 'admin123'
-        if($password === 'admin123') {
+        // For demo purposes - plain text password comparison
+        // In production, you should use password_verify() with hashed passwords
+        // Get the stored password for this user
+        $pass_query = "SELECT password FROM users WHERE id = :id";
+        $pass_stmt = $db->prepare($pass_query);
+        $pass_stmt->bindParam(':id', $user['id']);
+        $pass_stmt->execute();
+        $pass_result = $pass_stmt->fetch(PDO::FETCH_ASSOC);
+        $stored_password = $pass_result['password'];
+        
+        // Compare passwords (plain text for demo)
+        if($password === $stored_password) {
             http_response_code(200);
             echo json_encode([
                 "success" => true,
@@ -75,9 +82,12 @@ try {
                     "name" => $user['name'],
                     "username" => $user['username'],
                     "email" => $user['email'],
+                    "phone" => $user['phone'],
+                    "country" => $user['country'],
+                    "referral_code" => $user['referral_code'],
                     "role" => $user['role']
                 ],
-                "message" => "Login successful"
+                "message" => "Admin login successful"
             ]);
         } else {
             http_response_code(401);
@@ -85,7 +95,10 @@ try {
         }
     } else {
         http_response_code(401);
-        echo json_encode(["success" => false, "message" => "Admin user not found"]);
+        echo json_encode([
+            "success" => false, 
+            "message" => "No admin user found with these credentials. Please ensure you have an admin account with role='admin'"
+        ]);
     }
     
 } catch(PDOException $e) {
