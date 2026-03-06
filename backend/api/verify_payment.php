@@ -22,7 +22,7 @@ $user_id = $data->user_id;
 $phone = $data->phone;
 $email = $data->email;
 $mpesa_code = $data->mpesa_code;
-$amount = isset($data->amount) ? $data->amount : 300;
+$amount = 300;
 
 try {
     // Check if M-PESA code already exists
@@ -43,25 +43,10 @@ try {
     
     if($insert_stmt->execute([$user_id, $phone, $email, $mpesa_code, $amount])) {
         
-        // Get user's name for response
-        $user_query = "SELECT name, username FROM users WHERE id = ?";
-        $user_stmt = $db->prepare($user_query);
-        $user_stmt->execute([$user_id]);
-        $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
-        
         http_response_code(201);
         echo json_encode([
             "success" => true,
-            "message" => "Payment submitted successfully! Admin will verify within 24 hours.",
-            "transaction" => [
-                "user_id" => $user_id,
-                "name" => $user ? $user['name'] : '',
-                "phone" => $phone,
-                "email" => $email,
-                "mpesa_code" => $mpesa_code,
-                "amount" => $amount,
-                "status" => "pending"
-            ]
+            "message" => "Payment of KES 300 submitted successfully! Admin will verify within 24 hours."
         ]);
     } else {
         http_response_code(503);

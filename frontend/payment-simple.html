@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>marketSystem - KES 300 Payment</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #60a5fa;
+            --secondary: #7c3aed;
+            --secondary-dark: #5b21b6;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --dark: #111827;
+            --gray: #6b7280;
+            --gray-light: #9ca3af;
+            --light: #f3f4f6;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .btn-back {
+            background: var(--light);
+            color: var(--dark);
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: var(--gray-light);
+        }
+
+        /* User Info */
+        .user-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .user-details h3 {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .user-details p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Payment Card */
+        .payment-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .payment-card h2 {
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .payment-subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .mpesa-box {
+            background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(124,58,237,0.1));
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mpesa-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .mpesa-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+        }
+
+        .amount-badge {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+            display: block;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+            display: block;
+        }
+
+        /* Login Prompt */
+        .login-prompt {
+            text-align: center;
+            padding: 60px 30px;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .login-prompt i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .login-prompt h2 {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .login-prompt p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .btn-login {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .spinner {
+            border: 4px solid var(--light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-store"></i>
+                <span>marketSystem</span>
+            </div>
+            <a href="dashboard.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+
+        <!-- Content will be loaded here -->
+        <div id="content"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://marketsystem-api.onrender.com/api';
+        const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+
+        // Check if user is logged in
+        if (!userData || !userData.id) {
+            document.getElementById('content').innerHTML = `
+                <div class="login-prompt">
+                    <i class="fas fa-lock"></i>
+                    <h2>Please Login First</h2>
+                    <p>You need to be logged in to make a payment.</p>
+                    <a href="index.html" class="btn-login">Go to Login</a>
+                </div>
+            `;
+        } else {
+            // Show the payment form
+            document.getElementById('content').innerHTML = `
+                <!-- User Info -->
+                <div class="user-card">
+                    <div class="user-avatar" id="userAvatar">${(userData.name || userData.username).charAt(0).toUpperCase()}</div>
+                    <div class="user-details">
+                        <h3 id="userFullName">${userData.name || userData.username}</h3>
+                        <p id="userEmail">${userData.email || 'No email'}</p>
+                    </div>
+                </div>
+
+                <!-- Payment Card -->
+                <div class="payment-card">
+                    <h2>🔐 Verify Your Account</h2>
+                    <p class="payment-subtitle">Pay KES 300 to activate your account</p>
+
+                    <div class="mpesa-box">
+                        <i class="fas fa-mobile-alt mpesa-icon"></i>
+                        <h3>Send to M-PESA</h3>
+                        <div class="mpesa-number">0701603497</div>
+                        <button class="copy-btn" onclick="copyNumber()">
+                            <i class="fas fa-copy"></i> Copy Number
+                        </button>
+                        <div class="amount-badge">Amount: KES 300</div>
+                    </div>
+
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <label for="phone">Your M-PESA Phone Number</label>
+                            <input type="tel" id="phone" placeholder="e.g., 0701603497" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mpesaCode">M-PESA Transaction Code</label>
+                            <input type="text" id="mpesaCode" placeholder="e.g., PPI8J3K4L5" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Your Email Address</label>
+                            <input type="email" id="email" placeholder="your@email.com" value="${userData.email || ''}" required>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <i class="fas fa-check-circle"></i> Submit Payment
+                        </button>
+                    </form>
+
+                    <div id="message" class="message"></div>
+                </div>
+            `;
+            
+            setupPaymentForm();
+        }
+
+        function setupPaymentForm() {
+            const form = document.getElementById('paymentForm');
+            if (!form) return;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const phone = document.getElementById('phone').value.trim();
+                const mpesaCode = document.getElementById('mpesaCode').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const submitBtn = document.getElementById('submitBtn');
+                const messageDiv = document.getElementById('message');
+                
+                // Validate
+                if (!phone || !mpesaCode || !email) {
+                    showMessage('Please fill in all fields', 'error', messageDiv);
+                    return;
+                }
+                
+                if (phone.length < 10) {
+                    showMessage('Please enter a valid phone number', 'error', messageDiv);
+                    return;
+                }
+                
+                if (mpesaCode.length < 5) {
+                    showMessage('Please enter a valid M-PESA code', 'error', messageDiv);
+                    return;
+                }
+                
+                // Disable button
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                
+                try {
+                    const response = await fetch(`${API_URL}/verify_payment.php`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: userData.id,
+                            phone: phone,
+                            email: email,
+                            mpesa_code: mpesaCode,
+                            amount: 300
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMessage('Payment of KES 300 submitted successfully! Admin will verify within 24 hours.', 'success', messageDiv);
+                        form.reset();
+                    } else {
+                        showMessage(data.message || 'Payment submission failed', 'error', messageDiv);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('Connection error. Please check your internet and try again.', 'error', messageDiv);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
+                }
+            });
+        }
+
+        function showMessage(text, type, element) {
+            element.className = `message ${type}`;
+            element.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${text}`;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+
+        window.copyNumber = function() {
+            const number = '0701603497';
+            navigator.clipboard.writeText(number).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        };
+    </script>
+</body>
+</html>
