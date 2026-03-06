@@ -42,6 +42,7 @@
             --gold: #FFD700;
             --gold-light: #FFED4A;
             --gold-dark: #CCAC00;
+            --table-bg: rgba(0, 0, 0, 0.3);
         }
 
         body {
@@ -98,7 +99,7 @@
 
         /* Header */
         .header {
-            background: rgba(0, 0, 0, 0.3);
+            background: var(--table-bg);
             backdrop-filter: blur(20px);
             padding: 20px 30px;
             border-radius: 50px;
@@ -213,7 +214,7 @@
         }
 
         .tab-btn {
-            background: rgba(0, 0, 0, 0.3);
+            background: var(--table-bg);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 215, 0, 0.3);
             padding: 15px 30px;
@@ -260,7 +261,7 @@
         }
 
         .stat-card {
-            background: rgba(0, 0, 0, 0.3);
+            background: var(--table-bg);
             backdrop-filter: blur(20px);
             border-radius: 40px;
             padding: 30px 25px;
@@ -306,9 +307,9 @@
             font-weight: 500;
         }
 
-        /* Table Card */
+        /* Table Card - Consistent background for all tables */
         .table-card {
-            background: rgba(0, 0, 0, 0.3);
+            background: var(--table-bg);
             backdrop-filter: blur(20px);
             border-radius: 50px;
             padding: 30px;
@@ -570,7 +571,7 @@
         }
 
         .modal-content {
-            background: rgba(0, 0, 0, 0.4);
+            background: var(--table-bg);
             backdrop-filter: blur(20px);
             border-radius: 50px;
             padding: 40px;
