@@ -41,6 +41,7 @@
             --white: #ffffff;
             --gold: #FFD700;
             --gold-light: #FFED4A;
+            --gold-dark: #CCAC00;
         }
 
         body {
@@ -59,9 +60,9 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, 
-                rgba(37, 99, 235, 0.9) 0%, 
-                rgba(124, 58, 237, 0.9) 50%,
-                rgba(219, 39, 119, 0.9) 100%);
+                rgba(37, 99, 235, 0.95) 0%, 
+                rgba(124, 58, 237, 0.95) 50%,
+                rgba(219, 39, 119, 0.95) 100%);
             background-size: 200% 200%;
             animation: gradientShift 15s ease infinite;
             z-index: 0;
@@ -81,8 +82,8 @@
             right: 0;
             bottom: 0;
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 2px, transparent 2px),
-                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 3px, transparent 3px);
+                radial-gradient(circle at 20% 30%, rgba(255,215,0,0.15) 2px, transparent 2px),
+                radial-gradient(circle at 80% 70%, rgba(255,215,0,0.15) 3px, transparent 3px);
             background-size: 200px 200px;
             animation: floatParticles 20s linear infinite;
             z-index: 0;
@@ -97,7 +98,7 @@
 
         /* Header */
         .header {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(20px);
             padding: 20px 30px;
             border-radius: 50px;
@@ -105,7 +106,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -120,7 +121,7 @@
             border-top: 4px solid var(--gold);
             border-left: 4px solid var(--gold);
             border-radius: 50px 0 0 0;
-            opacity: 0.5;
+            opacity: 0.7;
         }
 
         .logo {
@@ -145,7 +146,7 @@
         }
 
         .admin-badge {
-            background: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.15);
             border: 2px solid var(--gold);
             color: var(--gold);
             padding: 8px 20px;
@@ -180,13 +181,13 @@
         }
 
         .user-info span {
-            color: white;
+            color: var(--gold-light);
             font-weight: 600;
         }
 
         .logout-btn {
-            background: rgba(220, 38, 38, 0.2);
-            color: #ff9999;
+            background: rgba(220, 38, 38, 0.15);
+            color: #ffb3b3;
             padding: 10px 25px;
             border-radius: 40px;
             text-decoration: none;
@@ -198,8 +199,9 @@
         }
 
         .logout-btn:hover {
-            background: rgba(220, 38, 38, 0.3);
+            background: rgba(220, 38, 38, 0.25);
             transform: translateY(-2px);
+            color: #ffcccc;
         }
 
         /* Navigation Tabs */
@@ -211,14 +213,14 @@
         }
 
         .tab-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 215, 0, 0.3);
             padding: 15px 30px;
             border-radius: 50px;
             font-size: 1.1rem;
             font-weight: 600;
-            color: white;
+            color: var(--gold-light);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -246,6 +248,7 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             border-color: var(--gold);
+            color: white;
         }
 
         /* Stats Cards */
@@ -257,11 +260,11 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(20px);
             border-radius: 40px;
             padding: 30px 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             display: flex;
             align-items: center;
             gap: 20px;
@@ -272,6 +275,7 @@
             transform: translateY(-5px);
             border-color: var(--gold);
             box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.4);
         }
 
         .stat-icon {
@@ -292,24 +296,24 @@
         .stat-info h3 {
             font-size: 2rem;
             font-weight: 700;
-            color: white;
+            color: var(--gold);
             margin-bottom: 5px;
         }
 
         .stat-info p {
-            color: var(--gold);
+            color: var(--gold-light);
             font-size: 1rem;
             font-weight: 500;
         }
 
         /* Table Card */
         .table-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(20px);
             border-radius: 50px;
             padding: 30px;
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -324,7 +328,7 @@
             border-top: 4px solid var(--gold);
             border-right: 4px solid var(--gold);
             border-radius: 0 50px 0 0;
-            opacity: 0.5;
+            opacity: 0.7;
         }
 
         .section-title {
@@ -340,18 +344,19 @@
         }
 
         .section-title h2 {
-            color: white;
+            color: var(--gold);
             font-size: 1.8rem;
             font-weight: 700;
         }
 
         .section-title span {
-            color: var(--gold);
+            color: var(--gold-light);
             font-size: 1rem;
             margin-left: 15px;
             padding: 5px 15px;
-            background: rgba(255,215,0,0.2);
+            background: rgba(0,0,0,0.3);
             border-radius: 40px;
+            border: 1px solid rgba(255,215,0,0.2);
         }
 
         /* Filter Section */
@@ -368,19 +373,20 @@
             border: 2px solid rgba(255,215,0,0.3);
             border-radius: 40px;
             font-size: 1rem;
-            background: rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(0,0,0,0.3);
+            color: var(--gold-light);
             min-width: 250px;
         }
 
         .search-box::placeholder {
-            color: rgba(255,255,255,0.6);
+            color: rgba(255,215,0,0.5);
         }
 
         .search-box:focus {
             outline: none;
             border-color: var(--gold);
-            background: rgba(255,255,255,0.15);
+            background: rgba(0,0,0,0.4);
+            color: white;
         }
 
         .filter-select {
@@ -388,20 +394,53 @@
             border: 2px solid rgba(255,215,0,0.3);
             border-radius: 40px;
             font-size: 1rem;
-            background: rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(0,0,0,0.3);
+            color: var(--gold-light);
             cursor: pointer;
         }
 
         .filter-select option {
             background: var(--dark);
-            color: white;
+            color: var(--gold-light);
+        }
+
+        /* Table Container with Horizontal Scroll */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(255,215,0,0.1);
+            border-radius: 10px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-light);
         }
 
         /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 1200px; /* Forces horizontal scroll on mobile */
+        }
+
+        table.small-table {
+            min-width: 1000px;
         }
 
         th {
@@ -411,16 +450,22 @@
             font-weight: 600;
             font-size: 0.95rem;
             border-bottom: 2px solid rgba(255,215,0,0.3);
+            white-space: nowrap;
         }
 
         td {
             padding: 15px;
             border-bottom: 1px solid rgba(255,215,0,0.1);
-            color: white;
+            color: var(--gold-light);
+            white-space: nowrap;
         }
 
         tr:hover {
-            background: rgba(255,215,0,0.05);
+            background: rgba(255,215,0,0.1);
+        }
+
+        tr:hover td {
+            color: white;
         }
 
         /* Status Badges */
@@ -430,24 +475,25 @@
             font-size: 0.9rem;
             font-weight: 600;
             display: inline-block;
+            white-space: nowrap;
         }
 
         .status-verified {
             background: rgba(5,150,105,0.2);
-            color: #10b981;
-            border: 1px solid rgba(16,185,129,0.3);
+            color: #4ade80;
+            border: 1px solid rgba(74,222,128,0.3);
         }
 
         .status-pending {
             background: rgba(217,119,6,0.2);
-            color: #fbbf24;
-            border: 1px solid rgba(251,191,36,0.3);
+            color: #fcd34d;
+            border: 1px solid rgba(252,211,77,0.3);
         }
 
         .status-unpaid {
             background: rgba(220,38,38,0.2);
-            color: #f87171;
-            border: 1px solid rgba(248,113,113,0.3);
+            color: #fca5a5;
+            border: 1px solid rgba(252,165,165,0.3);
         }
 
         .role-badge {
@@ -455,6 +501,7 @@
             border-radius: 30px;
             font-size: 0.85rem;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .role-admin {
@@ -463,8 +510,9 @@
         }
 
         .role-user {
-            background: rgba(255,255,255,0.2);
-            color: white;
+            background: rgba(255,255,255,0.15);
+            color: var(--gold-light);
+            border: 1px solid rgba(255,215,0,0.3);
         }
 
         /* Action Buttons */
@@ -481,6 +529,7 @@
             transition: all 0.3s;
             background: transparent;
             border: 1px solid;
+            white-space: nowrap;
         }
 
         .btn-verify {
@@ -491,16 +540,18 @@
         .btn-verify:hover {
             background: rgba(255,215,0,0.2);
             transform: translateY(-2px);
+            color: white;
         }
 
         .btn-view {
-            color: #60a5fa;
-            border-color: #60a5fa;
+            color: #93c5fd;
+            border-color: #93c5fd;
         }
 
         .btn-view:hover {
-            background: rgba(96,165,250,0.2);
+            background: rgba(147,197,253,0.2);
             transform: translateY(-2px);
+            color: white;
         }
 
         /* Modal */
@@ -511,7 +562,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
             z-index: 1000;
             align-items: center;
@@ -519,13 +570,13 @@
         }
 
         .modal-content {
-            background: rgba(255,255,255,0.1);
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(20px);
             border-radius: 50px;
             padding: 40px;
             max-width: 500px;
             width: 90%;
-            border: 1px solid rgba(255,215,0,0.3);
+            border: 1px solid rgba(255,215,0,0.4);
             position: relative;
         }
 
@@ -539,7 +590,7 @@
             border-top: 4px solid var(--gold);
             border-left: 4px solid var(--gold);
             border-radius: 50px 0 0 0;
-            opacity: 0.5;
+            opacity: 0.7;
         }
 
         .modal-header {
@@ -568,13 +619,14 @@
 
         .close-modal:hover {
             transform: scale(1.2);
+            color: white;
         }
 
         .detail-row {
             display: flex;
             margin-bottom: 15px;
             padding: 15px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.3);
             border-radius: 30px;
             border: 1px solid rgba(255,215,0,0.2);
         }
@@ -587,7 +639,7 @@
 
         .detail-value {
             width: 60%;
-            color: white;
+            color: var(--gold-light);
         }
 
         .modal-actions {
@@ -618,26 +670,30 @@
         }
 
         .loading p {
-            color: white;
+            color: var(--gold-light);
             font-size: 1.1rem;
         }
 
         .referral-code {
-            background: rgba(255,215,0,0.2);
+            background: rgba(255,215,0,0.15);
             padding: 4px 8px;
             border-radius: 6px;
             font-family: monospace;
             color: var(--gold);
+            border: 1px solid rgba(255,215,0,0.2);
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
             }
             
             .header {
                 flex-direction: column;
                 gap: 20px;
+                padding: 20px;
             }
             
             .user-menu {
@@ -648,6 +704,14 @@
             .tab-btn {
                 padding: 12px 20px;
                 font-size: 1rem;
+            }
+
+            .table-card {
+                padding: 20px;
+            }
+
+            .section-title h2 {
+                font-size: 1.5rem;
             }
         }
 
@@ -667,6 +731,19 @@
 
             .filter-section {
                 flex-direction: column;
+            }
+
+            .search-box, .filter-select {
+                width: 100%;
+            }
+
+            .logo span {
+                font-size: 1.5rem;
+            }
+
+            .admin-badge {
+                margin-left: 0;
+                margin-top: 10px;
             }
         }
     </style>
@@ -724,30 +801,32 @@
                         <h2>Recent Users</h2>
                         <span>Last 10 registrations</span>
                     </div>
-                    <table id="recentUsersTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Country</th>
-                                <th>Referral Code</th>
-                                <th>Referred By</th>
-                                <th>Role</th>
-                                <th>Joined</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentUsersBody">
-                            <tr>
-                                <td colspan="10" class="loading">
-                                    <div class="spinner"></div>
-                                    Loading users...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table id="recentUsersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Country</th>
+                                    <th>Referral Code</th>
+                                    <th>Referred By</th>
+                                    <th>Role</th>
+                                    <th>Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentUsersBody">
+                                <tr>
+                                    <td colspan="10" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- Recent Payments -->
@@ -757,28 +836,30 @@
                         <h2>Recent Payments</h2>
                         <span>Last 10 transactions</span>
                     </div>
-                    <table id="recentPaymentsTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>User ID</th>
-                                <th>Phone</th>
-                                <th>Amount</th>
-                                <th>M-PESA Code</th>
-                                <th>Status</th>
-                                <th>Verified By</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentPaymentsBody">
-                            <tr>
-                                <td colspan="8" class="loading">
-                                    <div class="spinner"></div>
-                                    Loading payments...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table id="recentPaymentsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User ID</th>
+                                    <th>Phone</th>
+                                    <th>Amount</th>
+                                    <th>M-PESA Code</th>
+                                    <th>Status</th>
+                                    <th>Verified By</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentPaymentsBody">
+                                <tr>
+                                    <td colspan="8" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading payments...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -798,31 +879,33 @@
                             <option value="user">User</option>
                         </select>
                     </div>
-                    <table id="usersTable" class="display responsive nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Country</th>
-                                <th>Referral Code</th>
-                                <th>Referred By</th>
-                                <th>Role</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersBody">
-                            <tr>
-                                <td colspan="11" class="loading">
-                                    <div class="spinner"></div>
-                                    Loading users...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table id="usersTable" class="display responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Country</th>
+                                    <th>Referral Code</th>
+                                    <th>Referred By</th>
+                                    <th>Role</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersBody">
+                                <tr>
+                                    <td colspan="11" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -843,31 +926,33 @@
                             <option value="unpaid">Unpaid</option>
                         </select>
                     </div>
-                    <table id="paymentsTable" class="display responsive nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>User ID</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Amount</th>
-                                <th>M-PESA Code</th>
-                                <th>Status</th>
-                                <th>Verified By</th>
-                                <th>Verified At</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="paymentsBody">
-                            <tr>
-                                <td colspan="11" class="loading">
-                                    <div class="spinner"></div>
-                                    Loading payments...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table id="paymentsTable" class="display responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User ID</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Amount</th>
+                                    <th>M-PESA Code</th>
+                                    <th>Status</th>
+                                    <th>Verified By</th>
+                                    <th>Verified At</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsBody">
+                                <tr>
+                                    <td colspan="11" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading payments...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -888,31 +973,33 @@
                             <option value="unpaid">Unpaid</option>
                         </select>
                     </div>
-                    <table id="adminPaymentTable" class="display responsive nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Referral Code</th>
-                                <th>Referred By Code</th>
-                                <th>Referred By Phone</th>
-                                <th>Phone</th>
-                                <th>Amount</th>
-                                <th>M-PESA Code</th>
-                                <th>Status</th>
-                                <th>Verified By</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminPaymentBody">
-                            <tr>
-                                <td colspan="11" class="loading">
-                                    <div class="spinner"></div>
-                                    Loading data...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table id="adminPaymentTable" class="display responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Referral Code</th>
+                                    <th>Referred By Code</th>
+                                    <th>Referred By Phone</th>
+                                    <th>Phone</th>
+                                    <th>Amount</th>
+                                    <th>M-PESA Code</th>
+                                    <th>Status</th>
+                                    <th>Verified By</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminPaymentBody">
+                                <tr>
+                                    <td colspan="11" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1054,7 +1141,7 @@
         function renderRecentUsers(users) {
             const tbody = document.getElementById('recentUsersBody');
             if (users.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px; color: white;">No users found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px; color: #FFD700;">No users found</td></tr>';
                 return;
             }
 
@@ -1077,7 +1164,7 @@
         function renderRecentPayments(payments) {
             const tbody = document.getElementById('recentPaymentsBody');
             if (payments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: white;">No payments found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #FFD700;">No payments found</td></tr>';
                 return;
             }
 
@@ -1148,7 +1235,7 @@
                                 }
                             }
                         ],
-                        responsive: true,
+                        responsive: false, // Disable responsive to allow our custom scroll
                         pageLength: 25,
                         order: [[0, 'desc']],
                         language: {
@@ -1237,7 +1324,7 @@
                                 }
                             }
                         ],
-                        responsive: true,
+                        responsive: false,
                         pageLength: 25,
                         order: [[0, 'desc']]
                     });
@@ -1309,7 +1396,7 @@
                                 }
                             }
                         ],
-                        responsive: true,
+                        responsive: false,
                         pageLength: 25,
                         order: [[0, 'desc']]
                     });
