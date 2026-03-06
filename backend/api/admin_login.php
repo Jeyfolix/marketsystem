@@ -1,5 +1,5 @@
 <?php
-// Allow specific origin
+// Allow specific origin - GitHub Pages
 $allowed_origins = [
     'https://jeyfolix.github.io',
     'http://localhost',
@@ -26,13 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 header("Content-Type: application/json; charset=UTF-8");
 
+// Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 include_once '../config/database.php';
+include_once '../includes/User.php';
 
 $database = new Database();
 $db = $database->getConnection();
+$user = new User($db);
 
 // Get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -62,9 +65,8 @@ try {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
         // For demo purposes - in production, verify password hash
-        // Since this is a school project, we'll use a simple admin password
-        // In production, you should use password_verify()
-        if($password === 'admin123') { // Default admin password
+        // You should create an admin user in your database with password 'admin123'
+        if($password === 'admin123') {
             http_response_code(200);
             echo json_encode([
                 "success" => true,
