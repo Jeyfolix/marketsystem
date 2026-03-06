@@ -1,11 +1,35 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
+// Allow specific origin - GitHub Pages
+$allowed_origins = [
+    'https://jeyfolix.github.io',
+    'http://localhost',
+    'http://localhost:8080',
+    'http://localhost:8081'
+];
+
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+} else {
+    header("Access-Control-Allow-Origin: *");
+}
+
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Max-Age: 86400");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// Include database config
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+header("Content-Type: application/json; charset=UTF-8");
+
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include_once '../config/database.php';
 
 $database = new Database();
@@ -15,31 +39,31 @@ $db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
 
 // Validate required fields
-if(!isset($data->user_id) || !isset($data->phone) || !isset($data->email) || !isset($data->mpesa_code)) {
-    http_response_code(400);
-    echo json_encode(["success" => false, "message" => "All fields are required"]);
-    exit();
-}
+if(
+    !empty($data->user_id) && 
+    !empty($data->phone) && 
+    !empty($data->email) && 
+    !empty($data->mpesa_code)
+) {
+    
+    $user_id = $data->user_id;
+    $phone = $data->phone;
+    $email = $data->email;
+    $mpesa_code = $data->mpesa_code;
+    $amount = 300;
 
-$user_id = $data->user_id;
-$phone = $data->phone;
-$email = $data->email;
-$mpesa_code = $data->mpesa_code;
-$amount = 300; // Fixed amount
-
-try {
     // Check if user exists
-    $user_check = "SELECT id FROM users WHERE id = :user_id";
-    $user_stmt = $db->prepare($user_check);
+    $user_query = "SELECT id FROM users WHERE id = :user_id";
+    $user_stmt = $db->prepare($user_query);
     $user_stmt->bindParam(':user_id', $user_id);
     $user_stmt->execute();
     
     if($user_stmt->rowCount() == 0) {
         http_response_code(400);
-        echo json_encode(["success" => false, "message" => "User not found"]);
+        echo json_encode(["success" => false, "message" => "User not found!"]);
         exit();
     }
-    
+
     // Check if M-PESA code already exists
     $check_query = "SELECT id FROM transactions WHERE mpesa_code = :mpesa_code";
     $check_stmt = $db->prepare($check_query);
@@ -48,11 +72,11 @@ try {
     
     if($check_stmt->rowCount() > 0) {
         http_response_code(400);
-        echo json_encode(["success" => false, "message" => "This M-PESA code has already been used"]);
+        echo json_encode(["success" => false, "message" => "This M-PESA code has already been used!"]);
         exit();
     }
-    
-    // Insert transaction - matching your exact table columns
+
+    // Insert transaction
     $insert_query = "INSERT INTO transactions (user_id, phone, email, amount, mpesa_code, status, created_at) 
                      VALUES (:user_id, :phone, :email, :amount, :mpesa_code, 'pending', NOW())";
     
@@ -66,21 +90,24 @@ try {
     if($insert_stmt->execute()) {
         http_response_code(201);
         echo json_encode([
-            "success" => true,
+            "success" => true, 
             "message" => "✅ Payment of KES 300 submitted successfully! Admin will verify within 24 hours."
         ]);
     } else {
         http_response_code(503);
-        echo json_encode(["success" => false, "message" => "Unable to process payment. Please try again."]);
+        echo json_encode(["success" => false, "message" => "Payment submission failed!"]);
     }
+} else {
+    $missing = [];
+    if(empty($data->user_id)) $missing[] = 'user_id';
+    if(empty($data->phone)) $missing[] = 'phone';
+    if(empty($data->email)) $missing[] = 'email';
+    if(empty($data->mpesa_code)) $missing[] = 'mpesa_code';
     
-} catch(PDOException $e) {
-    // Log error but don't expose details to client
-    error_log("Payment error: " . $e->getMessage());
-    http_response_code(500);
+    http_response_code(400);
     echo json_encode([
-        "success" => false,
-        "message" => "Database error occurred. Please try again later."
+        "success" => false, 
+        "message" => "Missing required fields: " . implode(', ', $missing)
     ]);
 }
 ?>
