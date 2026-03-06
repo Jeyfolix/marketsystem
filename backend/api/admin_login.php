@@ -26,29 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 header("Content-Type: application/json; charset=UTF-8");
 
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 include_once '../config/database.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
-// Get posted data
 $data = json_decode(file_get_contents("php://input"));
 
-if(!isset($data->username) || !isset($data->password)) {
-    http_response_code(400);
-    echo json_encode(["success" => false, "message" => "Username and password required"]);
-    exit();
-}
-
-$username = $data->username;
-$password = $data->password;
-
-try {
-    // Query to get admin from users table where role = 'admin' - include password field
+if(!empty($data->username) && !empty($data->password)) {
+    
+    $username = $data->username;
+    
+    // Query to get admin from users table where role = 'admin'
     $query = "SELECT id, name, username, email, phone, country, referral_code, role, password, created_at 
               FROM users 
               WHERE (username = :username OR email = :username) 
@@ -62,15 +51,16 @@ try {
     if($stmt->rowCount() > 0) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // DIRECT PASSWORD COMPARISON - for plain text passwords
-        // If your passwords are stored as plain text in the database
-        if($password === $user['password']) {
+        // Use password_verify() like the user login does
+        if(password_verify($data->password, $user['password'])) {
+            
             // Remove password before sending
             unset($user['password']);
             
             http_response_code(200);
             echo json_encode([
                 "success" => true,
+                "message" => "Admin login successful",
                 "user" => [
                     "id" => $user['id'],
                     "name" => $user['name'],
@@ -79,36 +69,23 @@ try {
                     "phone" => $user['phone'],
                     "country" => $user['country'],
                     "referral_code" => $user['referral_code'],
-                    "role" => $user['role']
-                ],
-                "message" => "Admin login successful"
+                    "role" => $user['role'],
+                    "created_at" => $user['created_at']
+                ]
             ]);
-        } 
-        // If passwords are hashed, use this instead:
-        // else if (password_verify($password, $user['password'])) {
-        //     unset($user['password']);
-        //     ... same response ...
-        // }
-        else {
+        } else {
             http_response_code(401);
-            echo json_encode([
-                "success" => false, 
-                "message" => "Invalid password. Please check and try again."
-            ]);
+            echo json_encode(["success" => false, "message" => "Invalid password!"]);
         }
     } else {
         http_response_code(401);
         echo json_encode([
             "success" => false, 
-            "message" => "No admin user found with these credentials. User exists but role may not be 'admin'"
+            "message" => "Admin user not found! User must have role='admin'"
         ]);
     }
-    
-} catch(PDOException $e) {
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "message" => "Database error: " . $e->getMessage()
-    ]);
+} else {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Username and password required!"]);
 }
 ?>
