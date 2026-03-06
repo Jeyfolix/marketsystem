@@ -12,7 +12,6 @@ $db = $database->getConnection();
 
 $data = json_decode(file_get_contents("php://input"));
 
-// Validate required fields
 if(!isset($data->user_id) || !isset($data->phone) || !isset($data->email) || !isset($data->mpesa_code)) {
     http_response_code(400);
     echo json_encode(["success" => false, "message" => "All fields are required"]);
@@ -43,10 +42,26 @@ try {
     $insert_stmt = $db->prepare($insert_query);
     
     if($insert_stmt->execute([$user_id, $phone, $email, $mpesa_code, $amount])) {
+        
+        // Get user's name for response
+        $user_query = "SELECT name, username FROM users WHERE id = ?";
+        $user_stmt = $db->prepare($user_query);
+        $user_stmt->execute([$user_id]);
+        $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
+        
         http_response_code(201);
         echo json_encode([
             "success" => true,
-            "message" => "Payment verification submitted! Admin will verify within 24 hours."
+            "message" => "Payment submitted successfully! Admin will verify within 24 hours.",
+            "transaction" => [
+                "user_id" => $user_id,
+                "name" => $user ? $user['name'] : '',
+                "phone" => $phone,
+                "email" => $email,
+                "mpesa_code" => $mpesa_code,
+                "amount" => $amount,
+                "status" => "pending"
+            ]
         ]);
     } else {
         http_response_code(503);

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>marketSystem - Payments</title>
+    <title>marketSystem - Payments & Withdrawals</title>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -29,7 +29,6 @@
             --warning: #d97706;
             --danger: #dc2626;
             --dark: #111827;
-            --dark-light: #1f2937;
             --gray-dark: #374151;
             --gray: #6b7280;
             --gray-light: #9ca3af;
@@ -134,6 +133,37 @@
             box-shadow: 0 10px 20px rgba(37,99,235,0.3);
         }
 
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 10px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: var(--gray);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .tab i {
+            margin-right: 8px;
+        }
+
         /* Main Content */
         .main-content {
             display: flex;
@@ -144,7 +174,7 @@
         /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -190,7 +220,16 @@
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border-left: 5px solid var(--warning);
+            border-left: 5px solid;
+            transition: all 0.3s;
+        }
+
+        .status-card.pending {
+            border-left-color: var(--warning);
+        }
+
+        .status-card.verified {
+            border-left-color: var(--success);
         }
 
         .status-card h2 {
@@ -207,8 +246,21 @@
             border-radius: 50px;
             font-weight: 600;
             font-size: 1rem;
+        }
+
+        .badge-pending {
             background: #fef3c7;
             color: #d97706;
+        }
+
+        .badge-verified {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .badge-unpaid {
+            background: #fee2e2;
+            color: #dc2626;
         }
 
         /* Payment Card */
@@ -289,7 +341,7 @@
             color: var(--dark);
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 15px;
             border: 2px solid var(--gray-light);
@@ -298,7 +350,7 @@
             transition: all 0.3s;
         }
 
-        .form-group input:focus {
+        .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
@@ -320,6 +372,31 @@
         .submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+            display: block;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+            display: block;
         }
 
         /* Transactions Card */
@@ -391,19 +468,73 @@
             color: #059669;
         }
 
-        .demo-data {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            background: var(--light);
-            border-radius: 10px;
-            color: var(--gray);
-            font-size: 0.9rem;
+        .status-completed {
+            background: #d1fae5;
+            color: #059669;
         }
 
-        .demo-data i {
+        .status-failed {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .spinner {
+            border: 4px solid var(--light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .login-prompt i {
+            font-size: 4rem;
             color: var(--primary);
-            margin-right: 5px;
+            margin-bottom: 20px;
+        }
+
+        .login-prompt h2 {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .login-prompt p {
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .btn-login {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37,99,235,0.3);
         }
 
         /* Responsive */
@@ -414,11 +545,16 @@
             }
             
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .mpesa-number {
                 font-size: 1.8rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                border-radius: 20px;
             }
         }
     </style>
@@ -433,10 +569,10 @@
             </div>
             <div class="nav-user">
                 <div class="user-profile">
-                    <div class="profile-image">AU</div>
+                    <div class="profile-image" id="profileImage">AU</div>
                     <div class="user-info">
                         <div class="welcome-text">Welcome back,</div>
-                        <div class="user-name">Admin User</div>
+                        <div class="user-name" id="userName">Loading...</div>
                     </div>
                 </div>
                 <a href="dashboard.html" class="btn-dashboard">
@@ -445,121 +581,562 @@
             </div>
         </nav>
 
-        <!-- Main Content - Static Demo Version -->
-        <div class="main-content">
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                    <div class="stat-value">KES 450</div>
-                    <div class="stat-label">Total Paid</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
-                    <div class="stat-value">2</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                    <div class="stat-value">1</div>
-                    <div class="stat-label">Verified</div>
-                </div>
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('payments')">
+                <i class="fas fa-money-bill-wave"></i> Payments
             </div>
-
-            <!-- Status Card -->
-            <div class="status-card">
-                <h2><i class="fas fa-clock"></i> Account Status</h2>
-                <span class="status-badge">Pending Verification</span>
-                <p style="margin-top: 15px; color: var(--gray);">
-                    Complete your payment of KES 300 to activate your account and start earning.
-                </p>
+            <div class="tab" onclick="switchTab('withdrawals')">
+                <i class="fas fa-hand-holding-usd"></i> Withdrawals
             </div>
+        </div>
 
-            <!-- Payment Card -->
-            <div class="payment-card">
-                <h2>🔐 Verify Your Account</h2>
-                <p class="payment-subtitle">Make a payment of KES 300 to activate your account</p>
-
-                <div class="mpesa-section">
-                    <i class="fas fa-mobile-alt mpesa-icon"></i>
-                    <h3>Send to M-PESA</h3>
-                    <div class="mpesa-number">0701603497</div>
-                    <button class="copy-btn" onclick="alert('Copy functionality will be added with JavaScript')">
-                        <i class="fas fa-copy"></i> Copy Number
-                    </button>
-                    <div class="amount-badge">Amount: KES 300</div>
-                </div>
-
-                <form onsubmit="event.preventDefault(); alert('Form submission will be handled by JavaScript')">
-                    <div class="form-group">
-                        <label for="phone">Your M-PESA Phone Number</label>
-                        <input type="tel" id="phone" placeholder="e.g., 0701603497" value="0701603497">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="mpesaCode">M-PESA Transaction Code</label>
-                        <input type="text" id="mpesaCode" placeholder="e.g., PPI8J3K4L5" value="TEST123">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" placeholder="your@email.com" value="admin@example.com">
-                    </div>
-
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-check-circle"></i> Submit Payment
-                    </button>
-                </form>
-            </div>
-
-            <!-- Transactions Card -->
-            <div class="transactions-card">
-                <div class="transactions-header">
-                    <h2><i class="fas fa-history"></i> Payment History</h2>
-                    <span class="status-badge-small status-verified">Total: 3</span>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Phone</th>
-                                <th>M-PESA Code</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2026-03-04 20:51:26</td>
-                                <td>0701603497</td>
-                                <td><strong>TEST123</strong></td>
-                                <td>KES 300</td>
-                                <td><span class="status-badge-small status-pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>2026-03-03 15:22:10</td>
-                                <td>0712345678</td>
-                                <td><strong>PPI8J3K4L5</strong></td>
-                                <td>KES 300</td>
-                                <td><span class="status-badge-small status-verified">Verified</span></td>
-                            </tr>
-                            <tr>
-                                <td>2026-03-02 09:15:30</td>
-                                <td>0723456789</td>
-                                <td><strong>ABC123XYZ</strong></td>
-                                <td>KES 300</td>
-                                <td><span class="status-badge-small status-pending">Pending</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="demo-data">
-                <i class="fas fa-info-circle"></i> This is a static demo version. JavaScript functionality will be added later.
+        <!-- Main Content -->
+        <div id="mainContent" class="main-content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p style="color: var(--gray);">Loading your data...</p>
             </div>
         </div>
     </div>
+
+    <script>
+        const API_URL = 'https://marketsystem-api.onrender.com/api';
+        const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+        
+        // Check if user is logged in
+        if (!userData || !userData.id) {
+            document.body.innerHTML = `
+                <div class="container">
+                    <div class="login-prompt">
+                        <i class="fas fa-lock"></i>
+                        <h2>Please Login First</h2>
+                        <p>You need to be logged in to view your payment and withdrawal history.</p>
+                        <a href="index.html" class="btn-login">Go to Login</a>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Update user info
+            document.getElementById('userName').textContent = userData.name || userData.username;
+            document.getElementById('profileImage').textContent = (userData.name || userData.username).charAt(0).toUpperCase();
+            
+            // Load initial data
+            loadPaymentsData();
+        }
+
+        let currentTab = 'payments';
+        let paymentsData = null;
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab styles
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            if (tab === 'payments') {
+                if (paymentsData) {
+                    renderPayments(paymentsData);
+                } else {
+                    loadPaymentsData();
+                }
+            } else {
+                if (paymentsData && paymentsData.withdrawals) {
+                    renderWithdrawals(paymentsData);
+                } else {
+                    loadPaymentsData();
+                }
+            }
+        }
+
+        async function loadPaymentsData() {
+            const mainContent = document.getElementById('mainContent');
+            
+            try {
+                const response = await fetch(`${API_URL}/transactions.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: userData.id })
+                });
+
+                const data = await response.json();
+                console.log('Payment data:', data);
+
+                if (data.success) {
+                    paymentsData = data;
+                    if (currentTab === 'payments') {
+                        renderPayments(data);
+                    } else {
+                        renderWithdrawals(data);
+                    }
+                } else {
+                    showError(data.message || 'Failed to load data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Connection error. Please try again.');
+            }
+        }
+
+        function renderPayments(data) {
+            const mainContent = document.getElementById('mainContent');
+            const payments = data.payments || [];
+            const currentStatus = data.current_status || 'unpaid';
+            const stats = data.stats || { total_paid: 0, pending_count: 0, verified_count: 0 };
+            
+            // Determine status
+            let statusText = 'Not Paid';
+            let statusClass = 'badge-unpaid';
+            let cardClass = 'pending';
+            let statusIcon = 'fa-clock';
+            
+            if (currentStatus === 'verified') {
+                statusText = 'Verified';
+                statusClass = 'badge-verified';
+                cardClass = 'verified';
+                statusIcon = 'fa-check-circle';
+            } else if (currentStatus === 'pending') {
+                statusText = 'Pending Verification';
+                statusClass = 'badge-pending';
+                cardClass = 'pending';
+                statusIcon = 'fa-clock';
+            }
+            
+            // Generate payment history HTML
+            let historyHTML = '';
+            if (payments.length === 0) {
+                historyHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px;">No payment history found</td></tr>';
+            } else {
+                historyHTML = payments.map(p => {
+                    const date = new Date(p.created_at).toLocaleString();
+                    const pStatusClass = p.status === 'verified' ? 'status-verified' : 'status-pending';
+                    const pStatusText = p.status === 'verified' ? 'Verified' : 'Pending';
+                    
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${p.phone || 'N/A'}</td>
+                            <td><strong>${p.mpesa_code || 'N/A'}</strong></td>
+                            <td>KES ${parseFloat(p.amount).toLocaleString()}</td>
+                            <td><span class="status-badge-small ${pStatusClass}">${pStatusText}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            mainContent.innerHTML = `
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                        <div class="stat-value">KES ${stats.total_paid.toLocaleString()}</div>
+                        <div class="stat-label">Total Paid</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-value">${stats.pending_count}</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-value">${stats.verified_count}</div>
+                        <div class="stat-label">Verified</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                        <div class="stat-value">${stats.withdrawal_count || 0}</div>
+                        <div class="stat-label">Withdrawals</div>
+                    </div>
+                </div>
+
+                <!-- Status Card -->
+                <div class="status-card ${cardClass}">
+                    <h2><i class="fas ${statusIcon}"></i> Account Status</h2>
+                    <span class="status-badge ${statusClass}">${statusText}</span>
+                    <p style="margin-top: 15px; color: var(--gray);">
+                        ${currentStatus === 'verified' 
+                            ? 'Your account is verified! You can now make withdrawals and earn commissions.' 
+                            : 'Complete your payment of KES 300 to activate your account and start earning.'}
+                    </p>
+                </div>
+
+                <!-- Payment Card -->
+                <div class="payment-card">
+                    <h2>🔐 Verify Your Account</h2>
+                    <p class="payment-subtitle">Make a payment of KES 300 to activate your account</p>
+
+                    <div class="mpesa-section">
+                        <i class="fas fa-mobile-alt mpesa-icon"></i>
+                        <h3>Send to M-PESA</h3>
+                        <div class="mpesa-number" id="mpesaNumber">0701603497</div>
+                        <button class="copy-btn" onclick="copyNumber()">
+                            <i class="fas fa-copy"></i> Copy Number
+                        </button>
+                        <div class="amount-badge">Amount: KES 300</div>
+                    </div>
+
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <label for="phone">Your M-PESA Phone Number</label>
+                            <input type="tel" id="phone" placeholder="e.g., 0701603497" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mpesaCode">M-PESA Transaction Code</label>
+                            <input type="text" id="mpesaCode" placeholder="e.g., PPI8J3K4L5" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="your@email.com" required>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <i class="fas fa-check-circle"></i> Submit Payment
+                        </button>
+                    </form>
+
+                    <div id="paymentMessage" class="message"></div>
+                </div>
+
+                <!-- Transactions Card -->
+                <div class="transactions-card">
+                    <div class="transactions-header">
+                        <h2><i class="fas fa-history"></i> Payment History</h2>
+                        <span class="status-badge-small status-verified">Total: ${payments.length}</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Phone</th>
+                                    <th>M-PESA Code</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${historyHTML}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            setupPaymentForm();
+        }
+
+        function renderWithdrawals(data) {
+            const mainContent = document.getElementById('mainContent');
+            const withdrawals = data.withdrawals || [];
+            const stats = data.stats || { total_paid: 0 };
+            
+            // Calculate total withdrawn
+            const totalWithdrawn = withdrawals.reduce((sum, w) => {
+                return sum + (w.status === 'completed' ? parseFloat(w.amount) : 0);
+            }, 0);
+            
+            const availableBalance = stats.total_paid - totalWithdrawn;
+            
+            // Generate withdrawals history HTML
+            let historyHTML = '';
+            if (withdrawals.length === 0) {
+                historyHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px;">No withdrawal history found</td></tr>';
+            } else {
+                historyHTML = withdrawals.map(w => {
+                    const date = new Date(w.created_at).toLocaleString();
+                    const completedDate = w.completed_at ? new Date(w.completed_at).toLocaleString() : '-';
+                    const statusClass = w.status === 'completed' ? 'status-verified' : 
+                                        w.status === 'pending' ? 'status-pending' : 'status-failed';
+                    
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td>KES ${parseFloat(w.amount).toLocaleString()}</td>
+                            <td>${w.method}</td>
+                            <td>${w.phone || w.account_number || '-'}</td>
+                            <td><span class="status-badge-small ${statusClass}">${w.status}</span></td>
+                            <td>${completedDate}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            mainContent.innerHTML = `
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+                        <div class="stat-value">KES ${availableBalance.toLocaleString()}</div>
+                        <div class="stat-label">Available Balance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-history"></i></div>
+                        <div class="stat-value">${withdrawals.length}</div>
+                        <div class="stat-label">Total Withdrawals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-value">KES ${totalWithdrawn.toLocaleString()}</div>
+                        <div class="stat-label">Total Withdrawn</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-value">${withdrawals.filter(w => w.status === 'pending').length}</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                </div>
+
+                <!-- Withdrawal Card -->
+                <div class="payment-card">
+                    <h2>💰 Withdraw Your Earnings</h2>
+                    <p class="payment-subtitle">Request a withdrawal of your earnings (Minimum KES 100)</p>
+
+                    <form id="withdrawalForm">
+                        <div class="form-group">
+                            <label for="withdrawAmount">Amount (KES)</label>
+                            <input type="number" id="withdrawAmount" min="100" step="50" placeholder="Enter amount" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="withdrawMethod">Withdrawal Method</label>
+                            <select id="withdrawMethod" required>
+                                <option value="mpesa">M-PESA</option>
+                                <option value="bank">Bank Transfer</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="phoneField">
+                            <label for="withdrawPhone">M-PESA Phone Number</label>
+                            <input type="tel" id="withdrawPhone" placeholder="e.g., 0701603497" required>
+                        </div>
+
+                        <div class="form-group" id="accountField" style="display: none;">
+                            <label for="accountNumber">Bank Account Number</label>
+                            <input type="text" id="accountNumber" placeholder="Enter account number">
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="withdrawBtn">
+                            <i class="fas fa-arrow-right"></i> Request Withdrawal
+                        </button>
+                    </form>
+
+                    <div id="withdrawMessage" class="message"></div>
+                </div>
+
+                <!-- Withdrawals History -->
+                <div class="transactions-card">
+                    <div class="transactions-header">
+                        <h2><i class="fas fa-history"></i> Withdrawal History</h2>
+                        <span class="status-badge-small status-verified">Total: ${withdrawals.length}</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Phone/Account</th>
+                                    <th>Status</th>
+                                    <th>Completed Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${historyHTML}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            setupWithdrawalForm();
+        }
+
+        function setupPaymentForm() {
+            const form = document.getElementById('paymentForm');
+            if (!form) return;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const phone = document.getElementById('phone').value.trim();
+                const mpesaCode = document.getElementById('mpesaCode').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const submitBtn = document.getElementById('submitBtn');
+                const messageDiv = document.getElementById('paymentMessage');
+                
+                if (!phone || !mpesaCode || !email) {
+                    showMessage('Please fill in all fields', 'error', messageDiv);
+                    return;
+                }
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                
+                try {
+                    const response = await fetch(`${API_URL}/verify_payment.php`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: userData.id,
+                            phone: phone,
+                            email: email,
+                            mpesa_code: mpesaCode,
+                            amount: 300
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMessage('Payment submitted successfully! Admin will verify within 24 hours.', 'success', messageDiv);
+                        form.reset();
+                        setTimeout(() => {
+                            loadPaymentsData();
+                        }, 2000);
+                    } else {
+                        showMessage(data.message || 'Payment submission failed', 'error', messageDiv);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('Connection error. Please try again.', 'error', messageDiv);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Payment';
+                }
+            });
+        }
+
+        function setupWithdrawalForm() {
+            const methodSelect = document.getElementById('withdrawMethod');
+            const phoneField = document.getElementById('phoneField');
+            const accountField = document.getElementById('accountField');
+            const phoneInput = document.getElementById('withdrawPhone');
+            const accountInput = document.getElementById('accountNumber');
+            
+            if (methodSelect) {
+                methodSelect.addEventListener('change', function() {
+                    if (this.value === 'mpesa') {
+                        phoneField.style.display = 'block';
+                        accountField.style.display = 'none';
+                        phoneInput.required = true;
+                        accountInput.required = false;
+                    } else {
+                        phoneField.style.display = 'none';
+                        accountField.style.display = 'block';
+                        phoneInput.required = false;
+                        accountInput.required = true;
+                    }
+                });
+            }
+            
+            const form = document.getElementById('withdrawalForm');
+            if (!form) return;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const amount = document.getElementById('withdrawAmount').value.trim();
+                const method = document.getElementById('withdrawMethod').value;
+                const phone = document.getElementById('withdrawPhone')?.value.trim() || '';
+                const accountNumber = document.getElementById('accountNumber')?.value.trim() || '';
+                const submitBtn = document.getElementById('withdrawBtn');
+                const messageDiv = document.getElementById('withdrawMessage');
+                
+                if (!amount || amount < 100) {
+                    showMessage('Please enter a valid amount (minimum KES 100)', 'error', messageDiv);
+                    return;
+                }
+                
+                if (method === 'mpesa' && !phone) {
+                    showMessage('Please enter your M-PESA phone number', 'error', messageDiv);
+                    return;
+                }
+                
+                if (method === 'bank' && !accountNumber) {
+                    showMessage('Please enter your bank account number', 'error', messageDiv);
+                    return;
+                }
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                try {
+                    const response = await fetch(`${API_URL}/withdraw.php`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: userData.id,
+                            amount: amount,
+                            method: method,
+                            phone: phone,
+                            account_number: accountNumber
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMessage('Withdrawal request submitted successfully!', 'success', messageDiv);
+                        form.reset();
+                        setTimeout(() => {
+                            loadPaymentsData();
+                        }, 2000);
+                    } else {
+                        showMessage(data.message || 'Withdrawal request failed', 'error', messageDiv);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage('Connection error. Please try again.', 'error', messageDiv);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Request Withdrawal';
+                }
+            });
+        }
+
+        function showMessage(text, type, element) {
+            element.className = `message ${type}`;
+            element.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${text}`;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+
+        function showError(message) {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="login-prompt">
+                    <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
+                    <h2 style="color: var(--danger);">Error</h2>
+                    <p>${message}</p>
+                    <button onclick="location.reload()" class="btn-login" style="background: var(--primary);">Try Again</button>
+                </div>
+            `;
+        }
+
+        window.copyNumber = function() {
+            const number = document.getElementById('mpesaNumber').textContent;
+            navigator.clipboard.writeText(number).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        };
+    </script>
 </body>
 </html>

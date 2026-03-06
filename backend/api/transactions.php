@@ -36,11 +36,41 @@ try {
     $payments_stmt->execute([$user_id]);
     $payments = $payments_stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    // Get user's withdrawals
+    $withdrawals_query = "SELECT id, amount, method, phone, account_number, status, created_at, completed_at 
+                          FROM withdrawals 
+                          WHERE user_id = ? 
+                          ORDER BY created_at DESC";
+    $withdrawals_stmt = $db->prepare($withdrawals_query);
+    $withdrawals_stmt->execute([$user_id]);
+    $withdrawals = $withdrawals_stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Calculate totals
+    $total_paid = 0;
+    $pending_count = 0;
+    $verified_count = 0;
+    
+    foreach($payments as $payment) {
+        if($payment['status'] === 'verified') {
+            $total_paid += floatval($payment['amount']);
+            $verified_count++;
+        } else if($payment['status'] === 'pending') {
+            $pending_count++;
+        }
+    }
+    
     http_response_code(200);
     echo json_encode([
         "success" => true,
         "current_status" => $current_status,
-        "payments" => $payments
+        "payments" => $payments,
+        "withdrawals" => $withdrawals,
+        "stats" => [
+            "total_paid" => $total_paid,
+            "pending_count" => $pending_count,
+            "verified_count" => $verified_count,
+            "withdrawal_count" => count($withdrawals)
+        ]
     ]);
     
 } catch(PDOException $e) {
