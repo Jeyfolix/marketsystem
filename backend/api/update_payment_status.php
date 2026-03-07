@@ -44,21 +44,20 @@ if(!isset($data->payment_id) || !isset($data->status)) {
     http_response_code(400);
     echo json_encode([
         "success" => false, 
-        "message" => "Payment ID and status required",
-        "received" => $data
+        "message" => "Payment ID and status required"
     ]);
     exit();
 }
 
-// CRITICAL FIX: Force convert to integer and remove any quotes
-$payment_id = intval($data->payment_id);
+// AGGRESSIVE INTEGER CONVERSION - Remove any non-numeric characters
+$payment_id = preg_replace('/[^0-9]/', '', $data->payment_id);
+$payment_id = intval($payment_id);
 
-// Double-check that we have a valid integer
-if ($payment_id === 0 && $data->payment_id !== "0") {
+if ($payment_id <= 0) {
     http_response_code(400);
     echo json_encode([
         "success" => false, 
-        "message" => "Invalid payment ID format - must be a number"
+        "message" => "Invalid payment ID format - must be a positive number"
     ]);
     exit();
 }
@@ -78,10 +77,9 @@ if (!in_array($status, $allowed_status)) {
 }
 
 try {
-    // First check if payment exists
-    $check_query = "SELECT id FROM transactions WHERE id = ?";
-    $check_stmt = $db->prepare($check_query);
-    $check_stmt->execute([$payment_id]);
+    // First check if payment exists using direct integer in query
+    $check_query = "SELECT id FROM transactions WHERE id = " . $payment_id;
+    $check_stmt = $db->query($check_query);
     
     if($check_stmt->rowCount() == 0) {
         http_response_code(404);
@@ -92,21 +90,16 @@ try {
         exit();
     }
     
-    // Update payment status - using direct value binding
+    // DIRECT STRING CONCATENATION - Avoid parameter binding issues
     $query = "UPDATE transactions 
-              SET status = ?, 
-                  verified_by = ?, 
+              SET status = '" . $status . "', 
+                  verified_by = '" . $verified_by . "', 
                   verified_at = NOW() 
-              WHERE id = ?";
+              WHERE id = " . $payment_id;
     
-    $stmt = $db->prepare($query);
+    error_log("Executing query: " . $query);
     
-    // Bind parameters - order matters
-    $stmt->bindParam(1, $status);
-    $stmt->bindParam(2, $verified_by);
-    $stmt->bindParam(3, $payment_id, PDO::PARAM_INT);
-    
-    if($stmt->execute()) {
+    if($db->exec($query) !== false) {
         http_response_code(200);
         echo json_encode([
             "success" => true,
@@ -114,7 +107,7 @@ try {
             "payment_id" => $payment_id
         ]);
     } else {
-        $error = $stmt->errorInfo();
+        $error = $db->errorInfo();
         http_response_code(500);
         echo json_encode([
             "success" => false, 
