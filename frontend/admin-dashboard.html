@@ -205,7 +205,7 @@
             color: #ffcccc;
         }
 
-        /* Navigation Tabs */
+        /* Navigation Tabs - ALL 4 TABS RESTORED */
         .nav-tabs {
             display: flex;
             gap: 15px;
@@ -550,7 +550,7 @@
             border-color: transparent !important;
         }
 
-        /* Status Badges */
+        /* Status Badges - UPDATED to match database enum */
         .status-badge {
             padding: 8px 16px;
             border-radius: 40px;
@@ -572,7 +572,7 @@
             border: 1px solid rgba(252,211,77,0.3);
         }
 
-        .status-paid {  /* Changed from status-unpaid to status-paid */
+        .status-paid {
             background: rgba(59,130,246,0.2);
             color: #93c5fd;
             border: 1px solid rgba(147,197,253,0.3);
@@ -864,7 +864,7 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
+        <!-- Navigation Tabs - ALL 4 TABS RESTORED -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="showTab('dashboard')">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -882,12 +882,12 @@
 
         <!-- Content Area -->
         <div id="content">
-            <!-- Dashboard Tab -->
+            <!-- Dashboard Tab - Shows ALL Users and ALL Payments -->
             <div id="dashboard-tab">
                 <!-- Stats -->
                 <div class="stats-grid" id="statsGrid"></div>
 
-                <!-- ALL USERS -->
+                <!-- ALL USERS with Delete Buttons -->
                 <div class="table-card">
                     <div class="section-title">
                         <i class="fas fa-users"></i>
@@ -895,7 +895,7 @@
                         <span id="totalUsersCount"></span>
                     </div>
                     <div class="filter-section">
-                        <input type="text" id="dashboardUserSearch" class="search-box" placeholder="Search users...">
+                        <input type="text" id="dashboardUserSearch" class="search-box" placeholder="Search users by name, email, phone...">
                         <select id="dashboardRoleFilter" class="filter-select">
                             <option value="">All Roles</option>
                             <option value="admin">Admin</option>
@@ -920,13 +920,18 @@
                                 </tr>
                             </thead>
                             <tbody id="dashboardUsersBody">
-                                <tr><td colspan="11" class="loading"><div class="spinner"></div>Loading users...</td></tr>
+                                <tr>
+                                    <td colspan="11" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading users...
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- ALL PAYMENTS -->
+                <!-- ALL Payments with Delete and Verify Buttons -->
                 <div class="table-card">
                     <div class="section-title">
                         <i class="fas fa-credit-card"></i>
@@ -934,7 +939,7 @@
                         <span id="dashboardPendingCount"></span>
                     </div>
                     <div class="filter-section">
-                        <input type="text" id="dashboardPaymentSearch" class="search-box" placeholder="Search payments...">
+                        <input type="text" id="dashboardPaymentSearch" class="search-box" placeholder="Search by M-PESA code, phone...">
                         <select id="dashboardStatusFilter" class="filter-select">
                             <option value="">All Status</option>
                             <option value="pending">Pending</option>
@@ -960,24 +965,208 @@
                                 </tr>
                             </thead>
                             <tbody id="dashboardPaymentsBody">
-                                <tr><td colspan="11" class="loading"><div class="spinner"></div>Loading payments...</td></tr>
+                                <tr>
+                                    <td colspan="11" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading payments...
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Other tabs (simplified for brevity - keep same as before) -->
-            <div id="users-tab" style="display: none;"><!-- same content as before --></div>
-            <div id="payments-tab" style="display: none;"><!-- same content as before --></div>
-            <div id="admin-payments-tab" style="display: none;"><!-- same content as before --></div>
+            <!-- User Management Tab (ALL Users with Delete) -->
+            <div id="users-tab" style="display: none;">
+                <div class="table-card">
+                    <div class="section-title">
+                        <i class="fas fa-users"></i>
+                        <h2>User Management</h2>
+                        <span id="usersTabCount"></span>
+                    </div>
+                    <div class="filter-section">
+                        <input type="text" id="userSearch" class="search-box" placeholder="Search users by name, email, phone...">
+                        <select id="roleFilter" class="filter-select">
+                            <option value="">All Roles</option>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table id="usersTable" class="display responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Country</th>
+                                    <th>Referral Code</th>
+                                    <th>Referred By</th>
+                                    <th>Role</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersBody">
+                                <tr>
+                                    <td colspan="11" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Tables Tab (ALL Payments with Delete) -->
+            <div id="payments-tab" style="display: none;">
+                <div class="table-card">
+                    <div class="section-title">
+                        <i class="fas fa-credit-card"></i>
+                        <h2>Payment Tables</h2>
+                        <span id="pendingCount"></span>
+                    </div>
+                    <div class="filter-section">
+                        <input type="text" id="paymentSearch" class="search-box" placeholder="Search by M-PESA code, phone...">
+                        <select id="statusFilter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="verified">Verified</option>
+                            <option value="paid">Paid</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table id="paymentsTable" class="display responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User ID</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Amount</th>
+                                    <th>M-PESA Code</th>
+                                    <th>Status</th>
+                                    <th>Verified By</th>
+                                    <th>Verified At</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsBody">
+                                <tr>
+                                    <td colspan="11" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading payments...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Payment Table Tab -->
+            <div id="admin-payments-tab" style="display: none;">
+                <div class="table-card">
+                    <div class="section-title">
+                        <i class="fas fa-table"></i>
+                        <h2>Admin Payment Table</h2>
+                        <span>Combined user & payment data</span>
+                    </div>
+                    <div class="filter-section">
+                        <input type="text" id="adminPaymentSearch" class="search-box" placeholder="Search by name, code, phone...">
+                        <select id="adminStatusFilter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="verified">Verified</option>
+                            <option value="paid">Paid</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table id="adminPaymentTable" class="display responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Referral Code</th>
+                                    <th>Referred By Code</th>
+                                    <th>Referred By Phone</th>
+                                    <th>Phone</th>
+                                    <th>Amount</th>
+                                    <th>M-PESA Code</th>
+                                    <th>Status</th>
+                                    <th>Verified By</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminPaymentBody">
+                                <tr>
+                                    <td colspan="11" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Modals -->
-    <div id="verifyModal" class="modal"><!-- same content as before --></div>
-    <div id="deleteModal" class="modal"><!-- same content as before --></div>
+    <!-- Verification Modal -->
+    <div id="verifyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-check-circle"></i> Verify Payment</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalDetails"></div>
+            <div class="modal-actions">
+                <button class="action-btn" style="color: #fcd34d; border-color: #fcd34d;" onclick="updatePaymentStatus('pending')">
+                    <i class="fas fa-clock"></i> Mark Pending
+                </button>
+                <button class="action-btn btn-verify" onclick="updatePaymentStatus('verified')">
+                    <i class="fas fa-check"></i> Verify Payment
+                </button>
+                <button class="action-btn" style="color: #93c5fd; border-color: #93c5fd;" onclick="updatePaymentStatus('paid')">
+                    <i class="fas fa-check-double"></i> Mark Paid
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-trash-alt" style="color: #f87171;"></i> Confirm Delete</h3>
+                <button class="close-modal" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <div id="deleteModalDetails"></div>
+            <div class="input-group" style="margin: 20px 0;">
+                <label style="color: var(--gold); display: block; margin-bottom: 10px;">
+                    <i class="fas fa-lock"></i> Enter Admin Password to Confirm:
+                </label>
+                <input type="password" id="confirmPassword" class="search-box" placeholder="Enter your password" style="width: 100%;">
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn btn-view" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="action-btn btn-delete" onclick="confirmDelete()">
+                    <i class="fas fa-trash-alt"></i> Delete Permanently
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -986,13 +1175,19 @@
         const API_URL = 'https://marketsystem-api.onrender.com/api';
         const adminData = JSON.parse(sessionStorage.getItem('admin') || '{}');
 
+        // Check if admin is logged in
         if (!adminData || !adminData.id || adminData.role !== 'admin') {
             window.location.href = 'admin-login.html';
         }
 
         document.querySelector('#adminInfo span').textContent = adminData.name || adminData.username;
 
-        let deleteType = null, deleteId = null, currentPaymentId = null;
+        // Variables
+        let deleteType = null;
+        let deleteId = null;
+        let currentPaymentId = null;
+        
+        // DataTable instances
         let dashboardUsersTable, dashboardPaymentsTable, usersTable, paymentsTable, adminPaymentTable;
 
         $(document).ready(function() {
@@ -1004,99 +1199,365 @@
         function showTab(tabName) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.closest('.tab-btn').classList.add('active');
-            
-            ['dashboard', 'users', 'payments', 'admin-payments'].forEach(t => 
-                document.getElementById(t + '-tab').style.display = t === tabName ? 'block' : 'none'
-            );
 
-            if (tabName === 'admin-payments' && !adminPaymentTable) loadAdminPaymentData();
+            document.getElementById('dashboard-tab').style.display = 'none';
+            document.getElementById('users-tab').style.display = 'none';
+            document.getElementById('payments-tab').style.display = 'none';
+            document.getElementById('admin-payments-tab').style.display = 'none';
+
+            document.getElementById(tabName + '-tab').style.display = 'block';
+
+            if (tabName === 'admin-payments' && !adminPaymentTable) {
+                loadAdminPaymentData();
+            }
         }
 
         async function loadDashboardData() {
             try {
-                const stats = await (await fetch(`${API_URL}/admin_stats.php`)).json();
-                if (stats.success) renderStats(stats.stats);
+                // Load stats
+                const statsResponse = await fetch(`${API_URL}/admin_stats.php`);
+                const statsData = await statsResponse.json();
+                if (statsData.success) renderStats(statsData.stats);
 
-                const users = await (await fetch(`${API_URL}/get_all_users.php`)).json();
-                if (users.success) {
-                    renderDashboardUsers(users.users);
-                    document.getElementById('totalUsersCount').textContent = `(${users.users.length} total)`;
+                // Load ALL users for dashboard
+                const usersResponse = await fetch(`${API_URL}/get_all_users.php`);
+                const usersData = await usersResponse.json();
+                if (usersData.success) {
+                    renderDashboardUsers(usersData.users);
+                    document.getElementById('totalUsersCount').textContent = `(${usersData.users.length} total)`;
+                    document.getElementById('usersTabCount').textContent = `(${usersData.users.length} total)`;
                 }
 
-                const payments = await (await fetch(`${API_URL}/get_all_payments.php`)).json();
-                if (payments.success) {
-                    renderDashboardPayments(payments.payments);
-                    const pending = payments.payments.filter(p => p.status === 'pending').length;
+                // Load ALL payments for dashboard
+                const paymentsResponse = await fetch(`${API_URL}/get_all_payments.php`);
+                const paymentsData = await paymentsResponse.json();
+                if (paymentsData.success) {
+                    renderDashboardPayments(paymentsData.payments);
+                    const pending = paymentsData.payments.filter(p => p.status === 'pending').length;
                     document.getElementById('dashboardPendingCount').textContent = `(${pending} pending)`;
+                    document.getElementById('pendingCount').textContent = `(${pending} pending)`;
                 }
-            } catch (error) { console.error('Error:', error); }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
         }
 
         function renderStats(stats) {
             document.getElementById('statsGrid').innerHTML = `
-                <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h3>${stats.totalUsers || 0}</h3><p>Total Users</p></div></div>
-                <div class="stat-card"><div class="stat-icon"><i class="fas fa-user-plus"></i></div><div class="stat-info"><h3>${stats.newUsersToday || 0}</h3><p>New Today</p></div></div>
-                <div class="stat-card"><div class="stat-icon"><i class="fas fa-credit-card"></i></div><div class="stat-info"><h3>${stats.totalPayments || 0}</h3><p>Total Payments</p></div></div>
-                <div class="stat-card"><div class="stat-icon"><i class="fas fa-clock"></i></div><div class="stat-info"><h3>${stats.pendingPayments || 0}</h3><p>Pending Verification</p></div></div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3>${stats.totalUsers || 0}</h3>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="stat-info">
+                        <h3>${stats.newUsersToday || 0}</h3>
+                        <p>New Today</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-credit-card"></i></div>
+                    <div class="stat-info">
+                        <h3>${stats.totalPayments || 0}</h3>
+                        <p>Total Payments</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3>${stats.pendingPayments || 0}</h3>
+                        <p>Pending Verification</p>
+                    </div>
+                </div>
             `;
         }
 
         function renderDashboardUsers(users) {
             const tbody = document.getElementById('dashboardUsersBody');
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 40px; color: #FFD700;">No users found</td></tr>';
+                return;
+            }
+
             tbody.innerHTML = users.map(user => {
-                const deleteBtn = user.role === 'admin' 
+                const deleteButton = user.role === 'admin' 
                     ? '<span class="status-badge" style="color: var(--gold);">Protected</span>'
-                    : `<button class="action-btn btn-delete" onclick="openDeleteModal('user', ${user.id}, '${user.name}')"><i class="fas fa-trash-alt"></i> Delete</button>`;
+                    : `<button class="action-btn btn-delete" onclick="openDeleteModal('user', ${user.id}, '${user.name}')">
+                        <i class="fas fa-trash-alt"></i> Delete
+                       </button>`;
                 
-                return `<tr>
-                    <td>${user.id}</td><td>${user.name || 'N/A'}</td><td>${user.username}</td><td>${user.email}</td>
-                    <td>${user.phone || 'N/A'}</td><td>${user.country || 'N/A'}</td>
-                    <td><span class="referral-code">${user.referral_code}</span></td><td>${user.referred_by || 'N/A'}</td>
-                    <td><span class="role-badge ${user.role === 'admin' ? 'role-admin' : 'role-user'}">${user.role}</span></td>
-                    <td>${new Date(user.created_at).toLocaleString()}</td><td>${deleteBtn}</td>
-                </tr>`;
+                return `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name || 'N/A'}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${user.phone || 'N/A'}</td>
+                        <td>${user.country || 'N/A'}</td>
+                        <td><span class="referral-code">${user.referral_code}</span></td>
+                        <td>${user.referred_by || 'N/A'}</td>
+                        <td><span class="role-badge ${user.role === 'admin' ? 'role-admin' : 'role-user'}">${user.role}</span></td>
+                        <td>${new Date(user.created_at).toLocaleString()}</td>
+                        <td>${deleteButton}</td>
+                    </tr>
+                `;
             }).join('');
 
             if (dashboardUsersTable) dashboardUsersTable.destroy();
-            dashboardUsersTable = $('#dashboardUsersTable').DataTable({ responsive: false, pageLength: 25, order: [[0, 'desc']] });
-            $('#dashboardUserSearch').off().on('keyup', function() { dashboardUsersTable.search(this.value).draw(); });
-            $('#dashboardRoleFilter').off().on('change', function() { dashboardUsersTable.column(8).search(this.value).draw(); });
+            
+            dashboardUsersTable = $('#dashboardUsersTable').DataTable({
+                responsive: false,
+                pageLength: 25,
+                order: [[0, 'desc']]
+            });
+
+            $('#dashboardUserSearch').off().on('keyup', function() {
+                dashboardUsersTable.search(this.value).draw();
+            });
+
+            $('#dashboardRoleFilter').off().on('change', function() {
+                dashboardUsersTable.column(8).search(this.value).draw();
+            });
         }
 
         function renderDashboardPayments(payments) {
             const tbody = document.getElementById('dashboardPaymentsBody');
-            tbody.innerHTML = payments.map(payment => {
-                let statusClass = 'status-pending', statusText = 'Pending';
-                if (payment.status === 'verified') { statusClass = 'status-verified'; statusText = 'Verified'; }
-                else if (payment.status === 'paid') { statusClass = 'status-paid'; statusText = 'Paid'; }
+            if (payments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 40px; color: #FFD700;">No payments found</td></tr>';
+                return;
+            }
 
-                const verifyBtn = payment.status !== 'verified' && payment.status !== 'paid'
+            tbody.innerHTML = payments.map(payment => {
+                let statusClass = 'status-pending';
+                let statusText = 'Pending';
+                
+                if (payment.status === 'verified') {
+                    statusClass = 'status-verified';
+                    statusText = 'Verified';
+                } else if (payment.status === 'paid') {
+                    statusClass = 'status-paid';
+                    statusText = 'Paid';
+                }
+
+                const verifyButton = payment.status === 'pending' 
                     ? `<button class="action-btn btn-verify" onclick="openVerifyModal(${payment.id})"><i class="fas fa-check"></i> Verify</button>`
                     : '';
 
-                return `<tr>
-                    <td>${payment.id}</td><td>${payment.user_id}</td><td>${payment.phone || 'N/A'}</td><td>${payment.email || 'N/A'}</td>
-                    <td>KES ${payment.amount}</td><td>${payment.mpesa_code || 'N/A'}</td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td>${payment.verified_by || 'N/A'}</td>
-                    <td>${payment.verified_at ? new Date(payment.verified_at).toLocaleString() : 'N/A'}</td>
-                    <td>${new Date(payment.created_at).toLocaleString()}</td>
-                    <td>${verifyBtn} <button class="action-btn btn-delete" onclick="openDeleteModal('payment', ${payment.id}, 'Payment #${payment.id}')"><i class="fas fa-trash-alt"></i> Delete</button></td>
-                </tr>`;
+                return `
+                    <tr>
+                        <td>${payment.id}</td>
+                        <td>${payment.user_id}</td>
+                        <td>${payment.phone || 'N/A'}</td>
+                        <td>${payment.email || 'N/A'}</td>
+                        <td>KES ${payment.amount}</td>
+                        <td>${payment.mpesa_code || 'N/A'}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>${payment.verified_by || 'N/A'}</td>
+                        <td>${payment.verified_at ? new Date(payment.verified_at).toLocaleString() : 'N/A'}</td>
+                        <td>${new Date(payment.created_at).toLocaleString()}</td>
+                        <td>
+                            ${verifyButton}
+                            <button class="action-btn btn-delete" onclick="openDeleteModal('payment', ${payment.id}, 'Payment #${payment.id}')">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
             }).join('');
 
             if (dashboardPaymentsTable) dashboardPaymentsTable.destroy();
-            dashboardPaymentsTable = $('#dashboardPaymentsTable').DataTable({ responsive: false, pageLength: 25, order: [[0, 'desc']] });
-            $('#dashboardPaymentSearch').off().on('keyup', function() { dashboardPaymentsTable.search(this.value).draw(); });
-            $('#dashboardStatusFilter').off().on('change', function() { dashboardPaymentsTable.column(6).search(this.value).draw(); });
+            
+            dashboardPaymentsTable = $('#dashboardPaymentsTable').DataTable({
+                responsive: false,
+                pageLength: 25,
+                order: [[0, 'desc']]
+            });
+
+            $('#dashboardPaymentSearch').off().on('keyup', function() {
+                dashboardPaymentsTable.search(this.value).draw();
+            });
+
+            $('#dashboardStatusFilter').off().on('change', function() {
+                dashboardPaymentsTable.column(6).search(this.value).draw();
+            });
         }
 
-        async function loadUsersData() { /* similar to renderDashboardUsers but for users tab */ }
-        async function loadPaymentsData() { /* similar to renderDashboardPayments but for payments tab */ }
-        async function loadAdminPaymentData() { /* existing code */ }
+        async function loadUsersData() {
+            try {
+                const response = await fetch(`${API_URL}/get_all_users.php`);
+                const data = await response.json();
 
+                if (data.success) {
+                    const tbody = document.getElementById('usersBody');
+                    tbody.innerHTML = data.users.map(user => {
+                        const deleteButton = user.role === 'admin' 
+                            ? '<span class="status-badge" style="color: var(--gold);">Protected</span>'
+                            : `<button class="action-btn btn-delete" onclick="openDeleteModal('user', ${user.id}, '${user.name}')"><i class="fas fa-trash-alt"></i> Delete</button>`;
+                        
+                        return `<tr>
+                            <td>${user.id}</td>
+                            <td>${user.name || 'N/A'}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>${user.phone || 'N/A'}</td>
+                            <td>${user.country || 'N/A'}</td>
+                            <td><span class="referral-code">${user.referral_code}</span></td>
+                            <td>${user.referred_by || 'N/A'}</td>
+                            <td><span class="role-badge ${user.role === 'admin' ? 'role-admin' : 'role-user'}">${user.role}</span></td>
+                            <td>${new Date(user.created_at).toLocaleString()}</td>
+                            <td>${deleteButton}</td>
+                        </tr>`;
+                    }).join('');
+
+                    if (usersTable) usersTable.destroy();
+                    
+                    usersTable = $('#usersTable').DataTable({
+                        responsive: false,
+                        pageLength: 25,
+                        order: [[0, 'desc']]
+                    });
+
+                    $('#userSearch').off().on('keyup', function() {
+                        usersTable.search(this.value).draw();
+                    });
+
+                    $('#roleFilter').off().on('change', function() {
+                        usersTable.column(8).search(this.value).draw();
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        async function loadPaymentsData() {
+            try {
+                const response = await fetch(`${API_URL}/get_all_payments.php`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const tbody = document.getElementById('paymentsBody');
+                    tbody.innerHTML = data.payments.map(payment => {
+                        let statusClass = 'status-pending';
+                        let statusText = 'Pending';
+                        
+                        if (payment.status === 'verified') {
+                            statusClass = 'status-verified';
+                            statusText = 'Verified';
+                        } else if (payment.status === 'paid') {
+                            statusClass = 'status-paid';
+                            statusText = 'Paid';
+                        }
+
+                        const verifyButton = payment.status === 'pending' 
+                            ? `<button class="action-btn btn-verify" onclick="openVerifyModal(${payment.id})"><i class="fas fa-check"></i> Verify</button>`
+                            : '';
+
+                        return `<tr>
+                            <td>${payment.id}</td>
+                            <td>${payment.user_id}</td>
+                            <td>${payment.phone || 'N/A'}</td>
+                            <td>${payment.email || 'N/A'}</td>
+                            <td>KES ${payment.amount}</td>
+                            <td>${payment.mpesa_code || 'N/A'}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                            <td>${payment.verified_by || 'N/A'}</td>
+                            <td>${payment.verified_at ? new Date(payment.verified_at).toLocaleString() : 'N/A'}</td>
+                            <td>${new Date(payment.created_at).toLocaleString()}</td>
+                            <td>${verifyButton} <button class="action-btn btn-delete" onclick="openDeleteModal('payment', ${payment.id}, 'Payment #${payment.id}')"><i class="fas fa-trash-alt"></i> Delete</button></td>
+                        </tr>`;
+                    }).join('');
+
+                    if (paymentsTable) paymentsTable.destroy();
+                    
+                    paymentsTable = $('#paymentsTable').DataTable({
+                        responsive: false,
+                        pageLength: 25,
+                        order: [[0, 'desc']]
+                    });
+
+                    $('#paymentSearch').off().on('keyup', function() {
+                        paymentsTable.search(this.value).draw();
+                    });
+
+                    $('#statusFilter').off().on('change', function() {
+                        paymentsTable.column(6).search(this.value).draw();
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading payments:', error);
+            }
+        }
+
+        async function loadAdminPaymentData() {
+            try {
+                const response = await fetch(`${API_URL}/get_admin_payment_table.php`);
+                const data = await response.json();
+
+                if (data.success) {
+                    if (adminPaymentTable) adminPaymentTable.destroy();
+
+                    adminPaymentTable = $('#adminPaymentTable').DataTable({
+                        data: data.data,
+                        columns: [
+                            { data: 'id' },
+                            { data: 'name' },
+                            { data: 'referral_code' },
+                            { data: 'referred_by_code' },
+                            { data: 'referred_by_phone' },
+                            { data: 'phone' },
+                            { 
+                                data: 'amount',
+                                render: d => d ? `KES ${d}` : 'N/A'
+                            },
+                            { data: 'mpesa_code' },
+                            { 
+                                data: 'status',
+                                render: d => {
+                                    let c = 'status-pending', t = 'Pending';
+                                    if (d === 'verified') { c = 'status-verified'; t = 'Verified'; }
+                                    else if (d === 'paid') { c = 'status-paid'; t = 'Paid'; }
+                                    return `<span class="status-badge ${c}">${t}</span>`;
+                                }
+                            },
+                            { data: 'verified_by' },
+                            {
+                                data: null,
+                                render: d => {
+                                    let b = '';
+                                    if (d.status === 'pending') {
+                                        b += `<button class="action-btn btn-verify" onclick="openVerifyModal(${d.payment_id})"><i class="fas fa-check"></i> Verify</button>`;
+                                    }
+                                    b += `<button class="action-btn btn-delete" onclick="openDeleteModal('payment', ${d.payment_id}, 'Payment for ${d.name}')"><i class="fas fa-trash-alt"></i> Delete</button>`;
+                                    return b;
+                                }
+                            }
+                        ],
+                        responsive: false,
+                        pageLength: 25,
+                        order: [[0, 'desc']]
+                    });
+
+                    $('#adminPaymentSearch').off().on('keyup', function() {
+                        adminPaymentTable.search(this.value).draw();
+                    });
+
+                    $('#adminStatusFilter').off().on('change', function() {
+                        adminPaymentTable.column(8).search(this.value).draw();
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading admin payment data:', error);
+            }
+        }
+
+        // Payment Verification Functions
         function openVerifyModal(paymentId) {
             currentPaymentId = paymentId;
+            
             fetch(`${API_URL}/get_payment_details.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1117,7 +1578,13 @@
                         </div></div>
                     `;
                     document.getElementById('verifyModal').style.display = 'flex';
+                } else {
+                    alert('Error loading payment details: ' + data.message);
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Connection error. Please try again.');
             });
         }
 
@@ -1127,12 +1594,21 @@
         }
 
         async function updatePaymentStatus(status) {
-            if (!currentPaymentId) return;
-            
-            const paymentId_int = parseInt(currentPaymentId);
-            if (isNaN(paymentId_int)) { alert('Invalid payment ID'); return; }
+            if (!currentPaymentId) {
+                alert('No payment selected');
+                return;
+            }
 
             try {
+                const paymentId_int = parseInt(currentPaymentId);
+                
+                if (isNaN(paymentId_int) || paymentId_int <= 0) {
+                    alert('Invalid payment ID format');
+                    return;
+                }
+
+                console.log('Updating payment:', { payment_id: paymentId_int, status, verified_by: adminData.name || adminData.username });
+
                 const response = await fetch(`${API_URL}/update_payment_status.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1142,67 +1618,109 @@
                         verified_by: adminData.name || adminData.username
                     })
                 });
+
                 const data = await response.json();
+                console.log('Update response:', data);
+
                 if (data.success) {
                     alert(`Payment ${status} successfully!`);
                     closeModal();
                     loadDashboardData();
-                    if (paymentsTable) loadPaymentsData();
+                    loadPaymentsData();
                     if (adminPaymentTable) loadAdminPaymentData();
                 } else {
-                    alert('Error: ' + data.message);
+                    alert('Error: ' + (data.message || 'Unknown error occurred'));
                 }
             } catch (error) {
-                alert('Connection error');
+                console.error('Error updating payment:', error);
+                alert('Connection error. Please try again.');
             }
         }
 
+        // Delete Functions
         function openDeleteModal(type, id, name) {
-            deleteType = type; deleteId = id;
+            deleteType = type;
+            deleteId = id;
+            
             document.getElementById('deleteModalDetails').innerHTML = `
                 <div class="detail-row"><div class="detail-label">Type:</div><div class="detail-value">${type.toUpperCase()}</div></div>
                 <div class="detail-row"><div class="detail-label">ID:</div><div class="detail-value">${id}</div></div>
                 <div class="detail-row"><div class="detail-label">Details:</div><div class="detail-value">${name}</div></div>
-                <div style="color: #f87171; margin-top: 15px; text-align: center;"><i class="fas fa-exclamation-triangle"></i> This action cannot be undone!</div>
+                <div style="color: #f87171; margin-top: 15px; text-align: center;">
+                    <i class="fas fa-exclamation-triangle"></i> This action cannot be undone!
+                </div>
             `;
+            
             document.getElementById('deleteModal').style.display = 'flex';
+            document.getElementById('confirmPassword').value = '';
         }
 
         function closeDeleteModal() {
             document.getElementById('deleteModal').style.display = 'none';
-            deleteType = null; deleteId = null;
+            deleteType = null;
+            deleteId = null;
         }
 
         async function confirmDelete() {
             const password = document.getElementById('confirmPassword').value;
-            if (!password) { alert('Enter admin password'); return; }
+            if (!password) { 
+                alert('Please enter your admin password'); 
+                return; 
+            }
 
             try {
-                const verify = await (await fetch(`${API_URL}/admin_login.php`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: adminData.username || adminData.email, password })
-                })).json();
+                const verifyResponse = await fetch(`${API_URL}/admin_login.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        username: adminData.username || adminData.email, 
+                        password: password 
+                    })
+                });
+                const verifyData = await verifyResponse.json();
 
-                if (!verify.success) { alert('Invalid password!'); return; }
+                if (!verifyData.success) { 
+                    alert('Invalid password! Deletion cancelled.'); 
+                    return; 
+                }
 
-                const delId = parseInt(deleteId), adminId = parseInt(adminData.id);
-                if (isNaN(delId) || isNaN(adminId)) { alert('Invalid ID'); return; }
+                const deleteId_int = parseInt(deleteId);
+                const adminId_int = parseInt(adminData.id);
+                
+                if (isNaN(deleteId_int) || isNaN(adminId_int) || deleteId_int <= 0 || adminId_int <= 0) {
+                    alert('Invalid ID format');
+                    return;
+                }
+
+                console.log('Deleting:', { type: deleteType, id: deleteId_int, admin_id: adminId_int });
 
                 const endpoint = deleteType === 'user' ? 'delete_user.php' : 'delete_payment.php';
-                const del = await (await fetch(`${API_URL}/${endpoint}`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: delId, admin_id: adminId })
-                })).json();
+                const deleteResponse = await fetch(`${API_URL}/${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        id: deleteId_int, 
+                        admin_id: adminId_int 
+                    })
+                });
+                
+                const deleteData = await deleteResponse.json();
+                console.log('Delete response:', deleteData);
 
-                if (del.success) {
-                    alert(`${deleteType} deleted!`);
+                if (deleteData.success) {
+                    alert(`${deleteType} deleted successfully!`);
                     closeDeleteModal();
                     loadDashboardData();
-                    if (usersTable) loadUsersData();
-                    if (paymentsTable) loadPaymentsData();
+                    loadUsersData();
+                    loadPaymentsData();
                     if (adminPaymentTable) loadAdminPaymentData();
-                } else alert('Error: ' + del.message);
-            } catch (error) { alert('Connection error'); }
+                } else {
+                    alert('Error: ' + (deleteData.message || 'Unknown error occurred'));
+                }
+            } catch (error) {
+                console.error('Error during delete:', error);
+                alert('Connection error. Please try again.');
+            }
         }
 
         function logout() {
