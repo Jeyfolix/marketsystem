@@ -670,6 +670,17 @@
             color: white;
         }
 
+        .btn-delete {
+            color: #f87171;
+            border-color: #f87171;
+        }
+
+        .btn-delete:hover {
+            background: rgba(248,113,113,0.2);
+            transform: translateY(-2px);
+            color: white;
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -910,7 +921,7 @@
                 <!-- Stats will be loaded here -->
                 <div class="stats-grid" id="statsGrid"></div>
 
-                <!-- Recent Users -->
+                <!-- Recent Users - Keep limited to 10 for dashboard -->
                 <div class="table-card">
                     <div class="section-title">
                         <i class="fas fa-user-plus"></i>
@@ -945,7 +956,7 @@
                     </div>
                 </div>
 
-                <!-- Recent Payments -->
+                <!-- Recent Payments - Keep limited to 10 for dashboard -->
                 <div class="table-card">
                     <div class="section-title">
                         <i class="fas fa-history"></i>
@@ -979,7 +990,7 @@
                 </div>
             </div>
 
-            <!-- Users Tab (initially hidden) -->
+            <!-- Users Tab (All Users) -->
             <div id="users-tab" style="display: none;">
                 <div class="table-card">
                     <div class="section-title">
@@ -1025,7 +1036,7 @@
                 </div>
             </div>
 
-            <!-- Payments Tab (initially hidden) -->
+            <!-- Payments Tab (All Payments) -->
             <div id="payments-tab" style="display: none;">
                 <div class="table-card">
                     <div class="section-title">
@@ -1072,7 +1083,7 @@
                 </div>
             </div>
 
-            <!-- Admin Payment Table Tab (initially hidden) -->
+            <!-- Admin Payment Table Tab (All Combined Data) -->
             <div id="admin-payments-tab" style="display: none;">
                 <div class="table-card">
                     <div class="section-title">
@@ -1121,20 +1132,26 @@
         </div>
     </div>
 
-    <!-- Verification Modal -->
-    <div id="verifyModal" class="modal">
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-check-circle"></i> Verify Payment</h3>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
+                <h3><i class="fas fa-trash-alt" style="color: #f87171;"></i> Confirm Delete</h3>
+                <button class="close-modal" onclick="closeDeleteModal()">&times;</button>
             </div>
-            <div id="modalDetails"></div>
+            <div id="deleteModalDetails"></div>
+            <div class="input-group" style="margin: 20px 0;">
+                <label style="color: var(--gold); display: block; margin-bottom: 10px;">
+                    <i class="fas fa-lock"></i> Enter Admin Password to Confirm:
+                </label>
+                <input type="password" id="confirmPassword" class="search-box" placeholder="Enter your password" style="width: 100%;">
+            </div>
             <div class="modal-actions">
-                <button class="action-btn btn-view" onclick="updatePaymentStatus('pending')">
-                    <i class="fas fa-clock"></i> Mark Pending
+                <button class="action-btn btn-view" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i> Cancel
                 </button>
-                <button class="action-btn btn-verify" onclick="updatePaymentStatus('verified')">
-                    <i class="fas fa-check"></i> Verify Payment
+                <button class="action-btn btn-delete" onclick="confirmDelete()">
+                    <i class="fas fa-trash-alt"></i> Delete Permanently
                 </button>
             </div>
         </div>
@@ -1156,6 +1173,10 @@
 
         // Display admin info
         document.querySelector('#adminInfo span').textContent = adminData.name || adminData.username;
+
+        // Variables for delete operations
+        let deleteType = null;
+        let deleteId = null;
 
         // DataTables instances
         let usersTable, paymentsTable, adminPaymentTable;
@@ -1199,7 +1220,7 @@
                     renderStats(statsData.stats);
                 }
 
-                // Load recent users
+                // Load recent users (last 10)
                 const usersResponse = await fetch(`${API_URL}/get_all_users.php`);
                 const usersData = await usersResponse.json();
 
@@ -1208,7 +1229,7 @@
                     document.getElementById('totalUsersCount').textContent = `(${usersData.users.length} total)`;
                 }
 
-                // Load recent payments
+                // Load recent payments (last 10)
                 const paymentsResponse = await fetch(`${API_URL}/get_all_payments.php`);
                 const paymentsData = await paymentsResponse.json();
 
@@ -1347,7 +1368,14 @@
                             {
                                 data: null,
                                 render: function(data) {
-                                    return `<button class="action-btn btn-view" onclick="viewUser(${data.id})"><i class="fas fa-eye"></i> View</button>`;
+                                    return `
+                                        <button class="action-btn btn-view" onclick="viewUser(${data.id})">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn btn-delete" onclick="openDeleteModal('user', ${data.id}, '${data.name}')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    `;
                                 }
                             }
                         ],
@@ -1432,10 +1460,12 @@
                             {
                                 data: null,
                                 render: function(data) {
+                                    let buttons = '';
                                     if (data.status !== 'verified') {
-                                        return `<button class="action-btn btn-verify" onclick="openVerifyModal(${data.id})"><i class="fas fa-check"></i> Verify</button>`;
+                                        buttons += `<button class="action-btn btn-verify" onclick="openVerifyModal(${data.id})"><i class="fas fa-check"></i></button>`;
                                     }
-                                    return '<span class="status-badge status-verified">Verified</span>';
+                                    buttons += `<button class="action-btn btn-delete" onclick="openDeleteModal('payment', ${data.id}, 'Payment #${data.id}')"><i class="fas fa-trash-alt"></i></button>`;
+                                    return buttons;
                                 }
                             }
                         ],
@@ -1504,10 +1534,12 @@
                             {
                                 data: null,
                                 render: function(data) {
+                                    let buttons = '';
                                     if (data.status && data.status !== 'verified') {
-                                        return `<button class="action-btn btn-verify" onclick="openVerifyModal(${data.payment_id})"><i class="fas fa-check"></i> Verify</button>`;
+                                        buttons += `<button class="action-btn btn-verify" onclick="openVerifyModal(${data.payment_id})"><i class="fas fa-check"></i></button>`;
                                     }
-                                    return '<span class="status-badge status-verified">Verified</span>';
+                                    buttons += `<button class="action-btn btn-delete" onclick="openDeleteModal('payment', ${data.payment_id}, 'Payment for ${data.name}')"><i class="fas fa-trash-alt"></i></button>`;
+                                    return buttons;
                                 }
                             }
                         ],
@@ -1596,7 +1628,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        payment_id: currentPaymentId,
+                        payment_id: parseInt(currentPaymentId), // Ensure integer
                         status: status,
                         verified_by: adminData.name || adminData.username
                     })
@@ -1615,7 +1647,7 @@
                     if (adminPaymentTable) {
                         loadAdminPaymentData();
                     }
-                    loadDashboardData(); // Refresh stats
+                    loadDashboardData();
                 } else {
                     alert('Error: ' + data.message);
                 }
@@ -1625,9 +1657,110 @@
             }
         }
 
+        // Delete Functions
+        function openDeleteModal(type, id, name) {
+            deleteType = type;
+            deleteId = id;
+            
+            document.getElementById('deleteModalDetails').innerHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">Type:</div>
+                    <div class="detail-value">${type.toUpperCase()}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">ID:</div>
+                    <div class="detail-value">${id}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Details:</div>
+                    <div class="detail-value">${name}</div>
+                </div>
+                <div style="color: #f87171; margin-top: 15px; text-align: center;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    This action cannot be undone!
+                </div>
+            `;
+            
+            document.getElementById('deleteModal').style.display = 'flex';
+            document.getElementById('confirmPassword').value = '';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            deleteType = null;
+            deleteId = null;
+        }
+
+        async function confirmDelete() {
+            const password = document.getElementById('confirmPassword').value;
+            
+            if (!password) {
+                alert('Please enter your admin password');
+                return;
+            }
+
+            // First verify admin password
+            try {
+                const verifyResponse = await fetch(`${API_URL}/admin_login.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: adminData.username || adminData.email,
+                        password: password
+                    })
+                });
+
+                const verifyData = await verifyResponse.json();
+
+                if (!verifyData.success) {
+                    alert('Invalid password! Deletion cancelled.');
+                    return;
+                }
+
+                // Password verified, proceed with delete
+                const endpoint = deleteType === 'user' ? 'delete_user.php' : 'delete_payment.php';
+                
+                const deleteResponse = await fetch(`${API_URL}/${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: deleteId,
+                        admin_id: adminData.id
+                    })
+                });
+
+                const deleteData = await deleteResponse.json();
+
+                if (deleteData.success) {
+                    alert(`${deleteType} deleted successfully!`);
+                    closeDeleteModal();
+                    
+                    // Refresh all data
+                    loadDashboardData();
+                    if (usersTable) {
+                        loadUsersData();
+                    }
+                    if (paymentsTable) {
+                        loadPaymentsData();
+                    }
+                    if (adminPaymentTable) {
+                        loadAdminPaymentData();
+                    }
+                } else {
+                    alert('Error: ' + deleteData.message);
+                }
+            } catch (error) {
+                console.error('Error during delete:', error);
+                alert('Connection error. Please try again.');
+            }
+        }
+
         function viewUser(userId) {
             alert('View user details - User ID: ' + userId);
-            // Implement user details view if needed
         }
 
         function logout() {

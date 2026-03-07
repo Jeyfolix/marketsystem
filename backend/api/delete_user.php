@@ -32,38 +32,37 @@ $db = $database->getConnection();
 
 $data = json_decode(file_get_contents("php://input"));
 
-if(!isset($data->payment_id) || !isset($data->status)) {
+if(!isset($data->id) || !isset($data->admin_id)) {
     http_response_code(400);
-    echo json_encode(["success" => false, "message" => "Payment ID and status required"]);
+    echo json_encode(["success" => false, "message" => "User ID and Admin ID required"]);
     exit();
 }
 
-// Ensure payment_id is integer
-$payment_id = intval($data->payment_id);
-$status = $data->status;
-$verified_by = isset($data->verified_by) ? $data->verified_by : null;
-
 try {
-    $query = "UPDATE transactions 
-              SET status = :status, 
-                  verified_by = :verified_by, 
-                  verified_at = NOW() 
-              WHERE id = :payment_id";
+    // Check if admin exists
+    $check_admin = $db->prepare("SELECT id FROM users WHERE id = ? AND role = 'admin'");
+    $check_admin->execute([$data->admin_id]);
     
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
-    $stmt->bindParam(':status', $status);
-    $stmt->bindParam(':verified_by', $verified_by);
+    if($check_admin->rowCount() == 0) {
+        http_response_code(403);
+        echo json_encode(["success" => false, "message" => "Unauthorized"]);
+        exit();
+    }
     
-    if($stmt->execute()) {
+    // First delete any transactions related to this user
+    $delete_trans = $db->prepare("DELETE FROM transactions WHERE user_id = ?");
+    $delete_trans->execute([$data->id]);
+    
+    // Then delete the user
+    $delete_user = $db->prepare("DELETE FROM users WHERE id = ? AND role != 'admin'");
+    $delete_user->execute([$data->id]);
+    
+    if($delete_user->rowCount() > 0) {
         http_response_code(200);
-        echo json_encode([
-            "success" => true,
-            "message" => "Payment status updated successfully"
-        ]);
+        echo json_encode(["success" => true, "message" => "User deleted successfully"]);
     } else {
-        http_response_code(500);
-        echo json_encode(["success" => false, "message" => "Failed to update payment"]);
+        http_response_code(404);
+        echo json_encode(["success" => false, "message" => "User not found or is an admin"]);
     }
     
 } catch(PDOException $e) {
