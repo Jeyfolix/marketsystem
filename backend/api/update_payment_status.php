@@ -49,9 +49,8 @@ if(!isset($data->payment_id) || !isset($data->status)) {
     exit();
 }
 
-// AGGRESSIVE INTEGER CONVERSION - Remove any non-numeric characters
-$payment_id = preg_replace('/[^0-9]/', '', $data->payment_id);
-$payment_id = intval($payment_id);
+// CRITICAL FIX: Cast to integer and remove any quotes by using intval
+$payment_id = intval($data->payment_id);
 
 if ($payment_id <= 0) {
     http_response_code(400);
@@ -77,9 +76,11 @@ if (!in_array($status, $allowed_status)) {
 }
 
 try {
-    // First check if payment exists using direct integer in query
-    $check_query = "SELECT id FROM transactions WHERE id = " . $payment_id;
-    $check_stmt = $db->query($check_query);
+    // First check if payment exists using CAST to ensure integer comparison
+    $check_query = "SELECT id FROM transactions WHERE CAST(id AS UNSIGNED) = :payment_id";
+    $check_stmt = $db->prepare($check_query);
+    $check_stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
+    $check_stmt->execute();
     
     if($check_stmt->rowCount() == 0) {
         http_response_code(404);
@@ -90,16 +91,21 @@ try {
         exit();
     }
     
-    // DIRECT STRING CONCATENATION - Avoid parameter binding issues
+    // Update payment status using CAST to ensure integer comparison
     $query = "UPDATE transactions 
-              SET status = '" . $status . "', 
-                  verified_by = '" . $verified_by . "', 
+              SET status = :status, 
+                  verified_by = :verified_by, 
                   verified_at = NOW() 
-              WHERE id = " . $payment_id;
+              WHERE CAST(id AS UNSIGNED) = :payment_id";
     
-    error_log("Executing query: " . $query);
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
+    $stmt->bindParam(':status', $status);
+    $stmt->bindParam(':verified_by', $verified_by);
     
-    if($db->exec($query) !== false) {
+    error_log("Executing query with payment_id: " . $payment_id . " (type: " . gettype($payment_id) . ")");
+    
+    if($stmt->execute()) {
         http_response_code(200);
         echo json_encode([
             "success" => true,
@@ -107,7 +113,7 @@ try {
             "payment_id" => $payment_id
         ]);
     } else {
-        $error = $db->errorInfo();
+        $error = $stmt->errorInfo();
         http_response_code(500);
         echo json_encode([
             "success" => false, 
