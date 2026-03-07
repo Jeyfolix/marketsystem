@@ -25,11 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 header("Content-Type: application/json; charset=UTF-8");
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include_once '../config/database.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
+// Get posted data
 $data = json_decode(file_get_contents("php://input"));
 
 // Log received data for debugging
@@ -45,13 +50,15 @@ if(!isset($data->payment_id) || !isset($data->status)) {
     exit();
 }
 
-// Ensure payment_id is integer - CRITICAL FIX
-$payment_id = filter_var($data->payment_id, FILTER_VALIDATE_INT);
-if ($payment_id === false || $payment_id <= 0) {
+// CRITICAL FIX: Force convert to integer and remove any quotes
+$payment_id = intval($data->payment_id);
+
+// Double-check that we have a valid integer
+if ($payment_id === 0 && $data->payment_id !== "0") {
     http_response_code(400);
     echo json_encode([
         "success" => false, 
-        "message" => "Invalid payment ID format"
+        "message" => "Invalid payment ID format - must be a number"
     ]);
     exit();
 }
@@ -71,38 +78,40 @@ if (!in_array($status, $allowed_status)) {
 }
 
 try {
-    // Check if payment exists
-    $check_query = "SELECT id FROM transactions WHERE id = :id";
+    // First check if payment exists
+    $check_query = "SELECT id FROM transactions WHERE id = ?";
     $check_stmt = $db->prepare($check_query);
-    $check_stmt->bindParam(':id', $payment_id, PDO::PARAM_INT);
-    $check_stmt->execute();
+    $check_stmt->execute([$payment_id]);
     
     if($check_stmt->rowCount() == 0) {
         http_response_code(404);
         echo json_encode([
             "success" => false, 
-            "message" => "Payment not found"
+            "message" => "Payment not found with ID: " . $payment_id
         ]);
         exit();
     }
     
-    // Update payment status
+    // Update payment status - using direct value binding
     $query = "UPDATE transactions 
-              SET status = :status, 
-                  verified_by = :verified_by, 
+              SET status = ?, 
+                  verified_by = ?, 
                   verified_at = NOW() 
-              WHERE id = :payment_id";
+              WHERE id = ?";
     
     $stmt = $db->prepare($query);
-    $stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
-    $stmt->bindParam(':status', $status);
-    $stmt->bindParam(':verified_by', $verified_by);
+    
+    // Bind parameters - order matters
+    $stmt->bindParam(1, $status);
+    $stmt->bindParam(2, $verified_by);
+    $stmt->bindParam(3, $payment_id, PDO::PARAM_INT);
     
     if($stmt->execute()) {
         http_response_code(200);
         echo json_encode([
             "success" => true,
-            "message" => "Payment status updated successfully"
+            "message" => "Payment status updated successfully",
+            "payment_id" => $payment_id
         ]);
     } else {
         $error = $stmt->errorInfo();
