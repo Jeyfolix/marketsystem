@@ -983,7 +983,7 @@
                     <div class="section-title">
                         <i class="fas fa-users"></i>
                         <h2>User Management</h2>
-                        <span id="totalUsersCount"></span>
+                        <span id="usersTabCount"></span>
                     </div>
                     <div class="filter-section">
                         <input type="text" id="userSearch" class="search-box" placeholder="Search users by name, email, phone...">
@@ -1222,6 +1222,7 @@
                 if (usersData.success) {
                     renderDashboardUsers(usersData.users);
                     document.getElementById('totalUsersCount').textContent = `(${usersData.users.length} total)`;
+                    document.getElementById('usersTabCount').textContent = `(${usersData.users.length} total)`;
                 }
 
                 // Load ALL payments for dashboard
@@ -1525,9 +1526,9 @@
                                 render: d => {
                                     let b = '';
                                     if (d.status && d.status !== 'verified') {
-                                        b += `<button class="action-btn btn-verify" onclick="openVerifyModal(${d.payment_id})"><i class="fas fa-check"></i></button>`;
+                                        b += `<button class="action-btn btn-verify" onclick="openVerifyModal(${d.payment_id})"><i class="fas fa-check"></i> Verify</button>`;
                                     }
-                                    b += `<button class="action-btn btn-delete" onclick="openDeleteModal('payment', ${d.payment_id}, 'Payment for ${d.name}')"><i class="fas fa-trash-alt"></i></button>`;
+                                    b += `<button class="action-btn btn-delete" onclick="openDeleteModal('payment', ${d.payment_id}, 'Payment for ${d.name}')"><i class="fas fa-trash-alt"></i> Delete</button>`;
                                     return b;
                                 }
                             }
@@ -1574,7 +1575,13 @@
                         </div></div>
                     `;
                     document.getElementById('verifyModal').style.display = 'flex';
+                } else {
+                    alert('Error loading payment details: ' + data.message);
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Connection error. Please try again.');
             });
         }
 
@@ -1583,21 +1590,36 @@
             currentPaymentId = null;
         }
 
+        // FIXED: updatePaymentStatus function with proper integer validation
         async function updatePaymentStatus(status) {
-            if (!currentPaymentId) return;
+            if (!currentPaymentId) {
+                alert('No payment selected');
+                return;
+            }
 
             try {
+                // Ensure payment_id is integer - CRITICAL FIX
+                const paymentId_int = parseInt(currentPaymentId);
+                
+                if (isNaN(paymentId_int) || paymentId_int <= 0) {
+                    alert('Invalid payment ID format');
+                    return;
+                }
+
+                console.log('Updating payment:', { payment_id: paymentId_int, status, verified_by: adminData.name || adminData.username });
+
                 const response = await fetch(`${API_URL}/update_payment_status.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        payment_id: parseInt(currentPaymentId),
+                        payment_id: paymentId_int,
                         status: status,
                         verified_by: adminData.name || adminData.username
                     })
                 });
 
                 const data = await response.json();
+                console.log('Update response:', data);
 
                 if (data.success) {
                     alert(`Payment ${status} successfully!`);
@@ -1606,7 +1628,7 @@
                     loadPaymentsData();
                     if (adminPaymentTable) loadAdminPaymentData();
                 } else {
-                    alert('Error: ' + data.message);
+                    alert('Error: ' + (data.message || 'Unknown error occurred'));
                 }
             } catch (error) {
                 console.error('Error updating payment:', error);
@@ -1638,15 +1660,23 @@
             deleteId = null;
         }
 
+        // FIXED: confirmDelete function with proper integer validation
         async function confirmDelete() {
             const password = document.getElementById('confirmPassword').value;
-            if (!password) { alert('Please enter your admin password'); return; }
+            if (!password) { 
+                alert('Please enter your admin password'); 
+                return; 
+            }
 
             try {
+                // Verify admin password
                 const verifyResponse = await fetch(`${API_URL}/admin_login.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: adminData.username || adminData.email, password: password })
+                    body: JSON.stringify({ 
+                        username: adminData.username || adminData.email, 
+                        password: password 
+                    })
                 });
                 const verifyData = await verifyResponse.json();
 
@@ -1655,13 +1685,29 @@
                     return; 
                 }
 
+                // Ensure IDs are integers before sending - CRITICAL FIX
+                const deleteId_int = parseInt(deleteId);
+                const adminId_int = parseInt(adminData.id);
+                
+                if (isNaN(deleteId_int) || isNaN(adminId_int) || deleteId_int <= 0 || adminId_int <= 0) {
+                    alert('Invalid ID format');
+                    return;
+                }
+
+                console.log('Deleting:', { type: deleteType, id: deleteId_int, admin_id: adminId_int });
+
                 const endpoint = deleteType === 'user' ? 'delete_user.php' : 'delete_payment.php';
                 const deleteResponse = await fetch(`${API_URL}/${endpoint}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: deleteId, admin_id: adminData.id })
+                    body: JSON.stringify({ 
+                        id: deleteId_int, 
+                        admin_id: adminId_int 
+                    })
                 });
+                
                 const deleteData = await deleteResponse.json();
+                console.log('Delete response:', deleteData);
 
                 if (deleteData.success) {
                     alert(`${deleteType} deleted successfully!`);
@@ -1671,7 +1717,7 @@
                     loadPaymentsData();
                     if (adminPaymentTable) loadAdminPaymentData();
                 } else {
-                    alert('Error: ' + deleteData.message);
+                    alert('Error: ' + (deleteData.message || 'Unknown error occurred'));
                 }
             } catch (error) {
                 console.error('Error during delete:', error);

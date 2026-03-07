@@ -32,34 +32,53 @@ $db = $database->getConnection();
 
 $data = json_decode(file_get_contents("php://input"));
 
+// Log received data for debugging
+error_log("Delete payment request: " . print_r($data, true));
+
 if(!isset($data->id) || !isset($data->admin_id)) {
     http_response_code(400);
-    echo json_encode(["success" => false, "message" => "Payment ID and Admin ID required"]);
+    echo json_encode([
+        "success" => false, 
+        "message" => "Payment ID and Admin ID required",
+        "received" => $data
+    ]);
     exit();
 }
+
+// Ensure IDs are integers
+$payment_id = intval($data->id);
+$admin_id = intval($data->admin_id);
 
 try {
     // Check if admin exists
     $check_admin = $db->prepare("SELECT id FROM users WHERE id = ? AND role = 'admin'");
-    $check_admin->execute([$data->admin_id]);
+    $check_admin->execute([$admin_id]);
     
     if($check_admin->rowCount() == 0) {
         http_response_code(403);
-        echo json_encode(["success" => false, "message" => "Unauthorized"]);
+        echo json_encode(["success" => false, "message" => "Unauthorized: Admin not found"]);
+        exit();
+    }
+    
+    // Check if payment exists
+    $check_payment = $db->prepare("SELECT id FROM transactions WHERE id = ?");
+    $check_payment->execute([$payment_id]);
+    
+    if($check_payment->rowCount() == 0) {
+        http_response_code(404);
+        echo json_encode(["success" => false, "message" => "Payment not found"]);
         exit();
     }
     
     // Delete the payment
     $delete_payment = $db->prepare("DELETE FROM transactions WHERE id = ?");
-    $delete_payment->execute([$data->id]);
+    $delete_payment->execute([$payment_id]);
     
-    if($delete_payment->rowCount() > 0) {
-        http_response_code(200);
-        echo json_encode(["success" => true, "message" => "Payment deleted successfully"]);
-    } else {
-        http_response_code(404);
-        echo json_encode(["success" => false, "message" => "Payment not found"]);
-    }
+    http_response_code(200);
+    echo json_encode([
+        "success" => true, 
+        "message" => "Payment deleted successfully"
+    ]);
     
 } catch(PDOException $e) {
     http_response_code(500);
