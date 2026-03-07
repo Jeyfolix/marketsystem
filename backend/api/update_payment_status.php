@@ -49,8 +49,16 @@ if(!isset($data->payment_id) || !isset($data->status)) {
     exit();
 }
 
-// CRITICAL FIX: Cast to integer and remove any quotes by using intval
-$payment_id = intval($data->payment_id);
+// ULTIMATE FIX: Get the raw value and ensure it's a number
+$payment_id = $data->payment_id;
+
+// If it's a string, remove any quotes
+if (is_string($payment_id)) {
+    $payment_id = trim($payment_id, '"\'');
+}
+
+// Force it to be an integer
+$payment_id = intval($payment_id);
 
 if ($payment_id <= 0) {
     http_response_code(400);
@@ -76,13 +84,12 @@ if (!in_array($status, $allowed_status)) {
 }
 
 try {
-    // First check if payment exists using CAST to ensure integer comparison
-    $check_query = "SELECT id FROM transactions WHERE CAST(id AS UNSIGNED) = :payment_id";
-    $check_stmt = $db->prepare($check_query);
-    $check_stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
-    $check_stmt->execute();
+    // DIRECT SQL EXECUTION - No parameter binding at all
+    // First check if payment exists
+    $check_query = "SELECT id FROM transactions WHERE id = " . $payment_id;
+    $check_stmt = $db->query($check_query);
     
-    if($check_stmt->rowCount() == 0) {
+    if(!$check_stmt || $check_stmt->rowCount() == 0) {
         http_response_code(404);
         echo json_encode([
             "success" => false, 
@@ -91,21 +98,22 @@ try {
         exit();
     }
     
-    // Update payment status using CAST to ensure integer comparison
+    // Escape strings to prevent SQL injection
+    $status_escaped = $db->quote($status);
+    $verified_by_escaped = $verified_by ? $db->quote($verified_by) : "NULL";
+    
+    // Direct SQL update with concatenated values - NO PARAMETER BINDING
     $query = "UPDATE transactions 
-              SET status = :status, 
-                  verified_by = :verified_by, 
+              SET status = " . $status_escaped . ", 
+                  verified_by = " . $verified_by_escaped . ", 
                   verified_at = NOW() 
-              WHERE CAST(id AS UNSIGNED) = :payment_id";
+              WHERE id = " . $payment_id;
     
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
-    $stmt->bindParam(':status', $status);
-    $stmt->bindParam(':verified_by', $verified_by);
+    error_log("Executing raw query: " . $query);
     
-    error_log("Executing query with payment_id: " . $payment_id . " (type: " . gettype($payment_id) . ")");
+    $stmt = $db->exec($query);
     
-    if($stmt->execute()) {
+    if($stmt !== false) {
         http_response_code(200);
         echo json_encode([
             "success" => true,
@@ -113,7 +121,7 @@ try {
             "payment_id" => $payment_id
         ]);
     } else {
-        $error = $stmt->errorInfo();
+        $error = $db->errorInfo();
         http_response_code(500);
         echo json_encode([
             "success" => false, 
