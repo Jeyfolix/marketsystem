@@ -205,7 +205,7 @@
             color: #ffcccc;
         }
 
-        /* Navigation Tabs - ALL 4 TABS RESTORED */
+        /* Navigation Tabs - ALL 4 TABS */
         .nav-tabs {
             display: flex;
             gap: 15px;
@@ -550,7 +550,7 @@
             border-color: transparent !important;
         }
 
-        /* Status Badges - UPDATED to match database enum */
+        /* Status Badges - Updated to match database enum */
         .status-badge {
             padding: 8px 16px;
             border-radius: 40px;
@@ -864,7 +864,7 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs - ALL 4 TABS RESTORED -->
+        <!-- Navigation Tabs - ALL 4 TABS -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="showTab('dashboard')">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -882,12 +882,12 @@
 
         <!-- Content Area -->
         <div id="content">
-            <!-- Dashboard Tab - Shows ALL Users and ALL Payments -->
+            <!-- Dashboard Tab -->
             <div id="dashboard-tab">
                 <!-- Stats -->
                 <div class="stats-grid" id="statsGrid"></div>
 
-                <!-- ALL USERS with Delete Buttons -->
+                <!-- ALL USERS -->
                 <div class="table-card">
                     <div class="section-title">
                         <i class="fas fa-users"></i>
@@ -931,7 +931,7 @@
                     </div>
                 </div>
 
-                <!-- ALL Payments with Delete and Verify Buttons -->
+                <!-- ALL Payments -->
                 <div class="table-card">
                     <div class="section-title">
                         <i class="fas fa-credit-card"></i>
@@ -977,7 +977,7 @@
                 </div>
             </div>
 
-            <!-- User Management Tab (ALL Users with Delete) -->
+            <!-- User Management Tab -->
             <div id="users-tab" style="display: none;">
                 <div class="table-card">
                     <div class="section-title">
@@ -1023,7 +1023,7 @@
                 </div>
             </div>
 
-            <!-- Payment Tables Tab (ALL Payments with Delete) -->
+            <!-- Payment Tables Tab -->
             <div id="payments-tab" style="display: none;">
                 <div class="table-card">
                     <div class="section-title">
@@ -1194,6 +1194,7 @@
             loadDashboardData();
             loadUsersData();
             loadPaymentsData();
+            loadAdminPaymentData();
         });
 
         function showTab(tabName) {
@@ -1206,10 +1207,6 @@
             document.getElementById('admin-payments-tab').style.display = 'none';
 
             document.getElementById(tabName + '-tab').style.display = 'block';
-
-            if (tabName === 'admin-payments' && !adminPaymentTable) {
-                loadAdminPaymentData();
-            }
         }
 
         async function loadDashboardData() {
@@ -1627,7 +1624,7 @@
                     closeModal();
                     loadDashboardData();
                     loadPaymentsData();
-                    if (adminPaymentTable) loadAdminPaymentData();
+                    loadAdminPaymentData();
                 } else {
                     alert('Error: ' + (data.message || 'Unknown error occurred'));
                 }
@@ -1713,7 +1710,7 @@
                     loadDashboardData();
                     loadUsersData();
                     loadPaymentsData();
-                    if (adminPaymentTable) loadAdminPaymentData();
+                    loadAdminPaymentData();
                 } else {
                     alert('Error: ' + (deleteData.message || 'Unknown error occurred'));
                 }
